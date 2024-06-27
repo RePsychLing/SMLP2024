@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.46">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
+<meta name="dcterms.date" content="2024-06-27">
+
+<title>Analysis of the sleepstudy data – SMLP2024: Advanced Frequentist Track</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./sleepstudy_speed.html" rel="next">
+<link href="./arrow.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="site_libs/quarto-contrib/jquery-3.6.3/jquery-3.6.3.min.js"></script>
+<script src="site_libs/quarto-contrib/code-fullscreen-1.0.0/code-fullscreen.js" defer="true"></script>
+<link href="site_libs/quarto-contrib/code-fullscreen-1.0.0/code-fullscreen.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">SMLP2024: Advanced Frequentist Track</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/RePsychLing/SMLP2024"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./sleepstudy.html">Worked examples</a></li><li class="breadcrumb-item"><a href="./sleepstudy.html">Analysis of the sleepstudy data</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Getting started with Julia</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./useful_packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Useful packages</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pkg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Package management and reproducible environments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arrow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Saving data with Arrow</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Worked examples</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sleepstudy.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Analysis of the sleepstudy data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sleepstudy_speed.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The sleepstudy: Speed - for a change …</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kwdyz11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RePsychLing Kliegl et al.&nbsp;(2011)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kkl15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RePsychLing Kliegl, Kuschela, &amp; Laubrock (2015)- Reduction of Model Complexity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./largescaledesigned.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A large-scale designed experiment</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mrk17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RePsychLing Masson, Rabe, &amp; Kliegl, 2017) with Julia: Specification and selection</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./partial_within.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Partially-within subjects designs</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Contrast coding</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./contrasts_fggk21.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mixed Models Tutorial: Contrast Coding</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./contrasts_kwdyz11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Contrast Coding of Visual Attention Effects</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./glmm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Generalized linear mixed models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Bootstrap and profiling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bootstrap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Parametric bootstrap for mixed-effects models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./profiling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Confidence intervals from profiled objective</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kb07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bootstrapping a fitted model</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Visualizations and diagnostics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./singularity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Convergence, singularity and all that</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./shrinkageplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">More on shrinkage plots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./AoGPlots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Creating multi-panel plots</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#loading-the-data" id="toc-loading-the-data" class="nav-link active" data-scroll-target="#loading-the-data"><span class="header-section-number">1</span> Loading the data</a></li>
+  <li><a href="#fitting-an-initial-model" id="toc-fitting-an-initial-model" class="nav-link" data-scroll-target="#fitting-an-initial-model"><span class="header-section-number">2</span> Fitting an initial model</a></li>
+  <li><a href="#a-model-with-uncorrelated-random-effects" id="toc-a-model-with-uncorrelated-random-effects" class="nav-link" data-scroll-target="#a-model-with-uncorrelated-random-effects"><span class="header-section-number">3</span> A model with uncorrelated random effects</a></li>
+  <li><a href="#some-diagnostic-plots" id="toc-some-diagnostic-plots" class="nav-link" data-scroll-target="#some-diagnostic-plots"><span class="header-section-number">4</span> Some diagnostic plots</a></li>
+  <li><a href="#assessing-variability-by-bootstrapping" id="toc-assessing-variability-by-bootstrapping" class="nav-link" data-scroll-target="#assessing-variability-by-bootstrapping"><span class="header-section-number">5</span> Assessing variability by bootstrapping</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">6</span> References</a></li>
+  </ul>
+<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/RePsychLing/SMLP2024/edit/main/sleepstudy.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RePsychLing/SMLP2024/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./sleepstudy.html">Worked examples</a></li><li class="breadcrumb-item"><a href="./sleepstudy.html">Analysis of the sleepstudy data</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Analysis of the sleepstudy data</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Phillip Alday, Douglas Bates, and Reinhold Kliegl </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2024-06-27</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The <code>sleepstudy</code> data are from a study of the effects of sleep deprivation on response time reported in <span class="citation" data-cites="Balkin2000">Balkin et al. (<a href="#ref-Balkin2000" role="doc-biblioref">2000</a>)</span> and in <span class="citation" data-cites="Belenky2003">Belenky et al. (<a href="#ref-Belenky2003" role="doc-biblioref">2003</a>)</span>. Eighteen subjects were allowed only 3 hours of time to sleep each night for 9 successive nights. Their reaction time was measured each day, starting the day before the first night of sleep deprivation, when the subjects were on their regular sleep schedule.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This description is inaccurate. In fact the first two days were acclimatization, the third was a baseline and sleep deprivation was only enforced after day 2. To allow for comparison with earlier analyses of these data we retain the old data description for this notebook only.</p>
+</div>
+</div>
+<section id="loading-the-data" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Loading the data</h1>
+<p>First attach the MixedModels package and other packages for plotting. The CairoMakie package allows the Makie graphics system <span class="citation" data-cites="Danisch2021">(<a href="#ref-Danisch2021" role="doc-biblioref">Danisch &amp; Krumbiegel, 2021</a>)</span> to generate high quality static images. Activate that package with the SVG (Scalable Vector Graphics) backend.</p>
+<div id="2" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie</span>       <span class="co"># graphics back-end</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelDensity</span>    <span class="co"># density estimation</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie</span> <span class="co"># diagnostic plots</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random</span>           <span class="co"># random number generators</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RCall</span>            <span class="co"># call R from Julia</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">SMLP2024</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">SMLP2024</span>: dataset</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>CairoMakie.<span class="fu">activate!</span>(; <span class="kw">type</span><span class="op">=</span><span class="st">"svg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The <code>sleepstudy</code> data are one of the datasets available with the <code>MixedModels</code> package. It is re-exported by the <code>SMLP2024</code> package’s <code>dataset</code> function.</p>
+<div id="4" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sleepstudy <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"sleepstudy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>Arrow.Table with 180 rows, 3 columns, and schema:
+ :subj      String
+ :days      Int8
+ :reaction  Float64</code></pre>
+</div>
+</div>
+<p><a href="#fig-reaction_vs_days_by_subject" class="quarto-xref">Figure&nbsp;1</a> displays the data in a multi-panel plot created with the <code>lattice</code> package in <code>R</code> <span class="citation" data-cites="Sarkar2008">(<a href="#ref-Sarkar2008" role="doc-biblioref">Sarkar, 2008</a>)</span>, using <a href="https://github.com/JuliaInterop/RCall.jl">RCall.jl</a>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(lattice<span class="sc">::</span><span class="fu">xyplot</span>(reaction <span class="sc">~</span> days <span class="sc">|</span> subj,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">$</span>(<span class="fu">DataFrame</span>(sleepstudy)),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">aspect=</span><span class="st">"xy"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">layout=</span><span class="fu">c</span>(<span class="dv">9</span>,<span class="dv">2</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type=</span><span class="fu">c</span>(<span class="st">"g"</span>, <span class="st">"p"</span>, <span class="st">"r"</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">index.cond=</span><span class="cf">function</span>(x,y) <span class="fu">coef</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x))[<span class="dv">1</span>],</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Days of sleep deprivation"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Average reaction time (ms)"</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-fig-reaction_vs_days_by_subject" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display">
+<div id="fig-reaction_vs_days_by_subject" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-reaction_vs_days_by_subject-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="sleepstudy_files/figure-html/fig-reaction_vs_days_by_subject-output-1.png" width="768" height="576" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-reaction_vs_days_by_subject-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Average response time versus days of sleep deprivation by subject
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Each panel shows the data from one subject and a line fit by least squares to that subject’s data. Starting at the lower left panel and proceeding across rows, the panels are ordered by increasing intercept of the least squares line.</p>
+<p>There are some deviations from linearity within the panels but the deviations are neither substantial nor systematic.</p>
+</section>
+<section id="fitting-an-initial-model" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Fitting an initial model</h1>
+<div id="8" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="m1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="m1-1"><a href="#m1-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span><span class="dt">{Symbol,Any}</span>(<span class="op">:</span>subj <span class="op">=&gt;</span> <span class="fu">Grouping</span>())</span>
+<span id="m1-2"><a href="#m1-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="kw">let</span> f <span class="op">=</span> <span class="pp">@formula</span>(reaction <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> days <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> days <span class="op">|</span> subj))</span>
+<span id="m1-3"><a href="#m1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, f, sleepstudy; contrasts)</span>
+<span id="m1-4"><a href="#m1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_subj</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">251.4051</td>
+<td style="text-align: right;">6.6323</td>
+<td style="text-align: right;">37.91</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">23.7805</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">days</td>
+<td style="text-align: right;">10.4673</td>
+<td style="text-align: right;">1.5022</td>
+<td style="text-align: right;">6.97</td>
+<td style="text-align: right;">&lt;1e-11</td>
+<td style="text-align: right;">5.7168</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">25.5918</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>This model includes fixed effects for the intercept, representing the typical reaction time at the beginning of the experiment with zero days of sleep deprivation, and the slope w.r.t. days of sleep deprivation. The parameter estimates are about 250 ms. typical reaction time without deprivation and a typical increase of 10.5 ms. per day of sleep deprivation.</p>
+<p>The random effects represent shifts from the typical behavior for each subject. The shift in the intercept has a standard deviation of about 24 ms. which would suggest a range of about 200 ms. to 300 ms. in the intercepts. Similarly within-subject slopes would be expected to have a range of about 0 ms./day up to 20 ms./day.</p>
+<p>The random effects for the slope and for the intercept are allowed to be correlated within subject. The estimated correlation, 0.08, is small. This estimate is not shown in the default display above but is shown in the output from <code>VarCorr</code> (variance components and correlations).</p>
+<div id="10" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: left;" data-quarto-table-cell-role="th">Column</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Variance</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Std.Dev</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Corr.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">subj</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">565.51067</td>
+<td style="text-align: right;">23.78047</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">days</td>
+<td style="text-align: right;">32.68212</td>
+<td style="text-align: right;">5.71683</td>
+<td style="text-align: right;">+0.08</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">654.94145</td>
+<td style="text-align: right;">25.59182</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Technically, the random effects for each subject are unobserved random variables and are not “parameters” in the model per se. Hence we do not report standard errors or confidence intervals for these deviations. However, we can produce prediction intervals on the random effects for each subject. Because the experimental design is balanced, these intervals will have the same width for all subjects.</p>
+<p>A plot of the prediction intervals versus the level of the grouping factor (<code>subj</code>, in this case) is sometimes called a <em>caterpillar</em> plot because it can look like a fuzzy caterpillar if there are many levels of the grouping factor. By default, the levels of the grouping factor are sorted by increasing value of the first random effect.</p>
+<div id="cell-fig-m1caterpillar" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">caterpillar</span>(m1; vline_at_zero<span class="op">=</span><span class="cn">true</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div id="fig-m1caterpillar" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-m1caterpillar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="sleepstudy_files/figure-html/fig-m1caterpillar-output-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-m1caterpillar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Prediction intervals on random effects for model m1
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-m1caterpillar" class="quarto-xref">Figure&nbsp;2</a> reinforces the conclusion that there is little correlation between the random effect for intercept and the random effect for slope.</p>
+</section>
+<section id="a-model-with-uncorrelated-random-effects" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> A model with uncorrelated random effects</h1>
+<p>The <code>zerocorr</code> function applied to a random-effects term creates uncorrelated vector-valued per-subject random effects.</p>
+<div id="14" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="m2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="m2-1"><a href="#m2-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="op">=</span> <span class="kw">let</span> f <span class="op">=</span> <span class="pp">@formula</span> reaction <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> days <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> days <span class="op">|</span> subj)</span>
+<span id="m2-2"><a href="#m2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, f, sleepstudy; contrasts)</span>
+<span id="m2-3"><a href="#m2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_subj</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">251.4051</td>
+<td style="text-align: right;">6.7077</td>
+<td style="text-align: right;">37.48</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">24.1714</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">days</td>
+<td style="text-align: right;">10.4673</td>
+<td style="text-align: right;">1.5193</td>
+<td style="text-align: right;">6.89</td>
+<td style="text-align: right;">&lt;1e-11</td>
+<td style="text-align: right;">5.7994</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">25.5561</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Again, the default display doesn’t show that there is no correlation parameter to be estimated in this model, but the <code>VarCorr</code> display does.</p>
+<div id="16" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: left;" data-quarto-table-cell-role="th">Column</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Variance</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Std.Dev</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Corr.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">subj</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">584.25897</td>
+<td style="text-align: right;">24.17145</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">days</td>
+<td style="text-align: right;">33.63281</td>
+<td style="text-align: right;">5.79938</td>
+<td style="text-align: right;">.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">653.11578</td>
+<td style="text-align: right;">25.55613</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>This model has a slightly lower log-likelihood than does <code>m1</code> and one fewer parameter than <code>m1</code>. A likelihood-ratio test can be used to compare these nested models.</p>
+<div id="18" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m2, m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">model-dof</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">deviance</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">χ²</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">χ²-dof</td>
+<td style="text-align: left;" data-quarto-table-cell-role="th">P(&gt;χ²)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">reaction ~ 1 + days + zerocorr(1 + days | subj)</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1752</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">reaction ~ 1 + days + (1 + days | subj)</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1752</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">0.8004</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Alternatively, the AIC or BIC values can be compared.</p>
+<div id="20" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> mods <span class="op">=</span> [m2, m1]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Table</span>(;</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>[<span class="op">:</span>m2, <span class="op">:</span>m1],</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    pars<span class="op">=</span><span class="fu">dof</span>.(mods),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    geomdof<span class="op">=</span>(sum <span class="op">∘</span> leverage).(mods),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    AIC<span class="op">=</span><span class="fu">aic</span>.(mods),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    BIC<span class="op">=</span><span class="fu">bic</span>.(mods),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    AICc<span class="op">=</span><span class="fu">aicc</span>.(mods),</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>Table with 6 columns and 2 rows:
+     model  pars  geomdof  AIC      BIC      AICc
+   ┌────────────────────────────────────────────────
+ 1 │ m2     5     29.045   1762.0   1777.97  1762.35
+ 2 │ m1     6     28.6115  1763.94  1783.1   1764.42</code></pre>
+</div>
+</div>
+<p>The goodness of fit measures: AIC, BIC, and AICc, are all on a “smaller is better” scale and, hence, they all prefer <code>m2</code>.</p>
+<p>The <code>pars</code> column, which is the same as the <code>model-dof</code> column in the likelihood ratio test output, is simply a count of the number of parameters to be estimated when fitting the model. For example, in <code>m2</code> there are two fixed-effects parameters and three variance components (including the residual variance).</p>
+<p>An alternative, more geometrically inspired definition of “degrees of freedom”, is the sum of the leverage values, called <code>geomdof</code> in this table.</p>
+<p>Interestingly, the model with fewer parameters, <code>m2</code>, has a greater sum of the leverage values than the model with more parameters, <code>m1</code>. We’re not sure what to make of that.</p>
+<p>In both cases the sum of the leverage values is toward the upper end of the range of possible values, which is the rank of the fixed-effects model matrix (2) up to the rank of the fixed-effects plus the random effects model matrix (2 + 36 = 38).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I think that the upper bound may be 36, not 38, because the two columns of X lie in the column span of Z</p>
+</div>
+</div>
+<p>This comparison does show, however, that a simple count of the parameters in a mixed-effects model can underestimate, sometimes drastically, the model complexity. This is because a single variance component or multiple components can add many dimensions to the linear predictor.</p>
+</section>
+<section id="some-diagnostic-plots" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Some diagnostic plots</h1>
+<p>In mixed-effects models the <em>linear predictor</em> expression incorporates <em>fixed-effects parameters</em>, which summarize trends for the population or certain well-defined subpopulations, and <em>random effects</em> which represent deviations associated with the <em>experimental units</em> or <em>observational units</em> - individual subjects, in this case. The random effects are modeled as unobserved random variables.</p>
+<p>The conditional means of these random variables, sometimes called the BLUPs or <em>Best Linear Unbiased Predictors</em>, are not simply the least squares estimates. They are attenuated or <em>shrunk</em> towards zero to reflect the fact that the individuals are assumed to come from a population. A <em>shrinkage plot</em>, <a href="#fig-m1shrinkage" class="quarto-xref">Figure&nbsp;3</a>, shows the BLUPs from the model fit compared to the values without any shrinkage. If the BLUPs are similar to the unshrunk values then the more complicated model accounting for individual differences is supported. If the BLUPs are strongly shrunk towards zero then the additional complexity in the model to account for individual differences is not providing sufficient increase in fidelity to the data to warrant inclusion.</p>
+<div id="cell-fig-m1shrinkage" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shrinkageplot!</span>(<span class="fu">Figure</span>(; resolution<span class="op">=</span>(<span class="fl">500</span>, <span class="fl">500</span>)), m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>┌ Warning: Found `resolution` in the theme when creating a `Scene`. The `resolution` keyword for `Scene`s and `Figure`s has been deprecated. Use `Figure(; size = ...` or `Scene(; size = ...)` instead, which better reflects that this is a unitless size and not a pixel resolution. The key could also come from `set_theme!` calls or related theming functions.
+└ @ Makie ~/.julia/packages/Makie/qMluh/src/scenes.jl:227</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div id="fig-m1shrinkage" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-m1shrinkage-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="sleepstudy_files/figure-html/fig-m1shrinkage-output-2.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-m1shrinkage-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Shrinkage plot of means of the random effects in model m1
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This plot could be drawn as <code>shrinkageplot(m1)</code>. The reason for explicitly creating a <code>Figure</code> to be modified by <code>shrinkageplot!</code> is to control the resolution.</p>
+</div>
+</div>
+<p>This plot shows an intermediate pattern. The random effects are somewhat shrunk toward the origin, a model simplification trend, but not completely shrunk - indicating that fidelity to the data is enhanced with these additional coefficients in the linear predictor.</p>
+<p>If the shrinkage were primarily in one direction - for example, if the arrows from the unshrunk values to the shrunk values were mostly in the vertical direction - then we would get an indication that we could drop the random effect for slope and revert to a simpler model. This is not the case here.</p>
+<p>As would be expected, the unshrunk values that are further from the origin tend to be shrunk more toward the origin. That is, the arrows that originate furthest from the origin are longer. However, that is not always the case. The arrow in the upper right corner, from <code>S337</code>, is relatively short. Examination of the panel for <code>S337</code> in the data plot shows a strong linear trend, even though both the intercept and the slope are unusually large. The neighboring panels in the data plot, <code>S330</code> and <code>S331</code>, have more variability around the least squares line and are subject to a greater amount of shrinkage in the model. (They correspond to the two arrows on the right hand side of the figure around -5 on the vertical scale.)</p>
+</section>
+<section id="assessing-variability-by-bootstrapping" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Assessing variability by bootstrapping</h1>
+<p>The speed of fitting linear mixed-effects models using <code>MixedModels.jl</code> allows for using simulation-based approaches to inference instead of relying on approximate standard errors. A <em>parametric bootstrap sample</em> for model <code>m</code> is a collection of models of the same form as <code>m</code> fit to data values simulated from <code>m</code>. That is, we pretend that <code>m</code> and its parameter values are the <em>true</em> parameter values, simulate data from these values, and estimate parameters from the simulated data.</p>
+<p>Simulating and fitting a substantial number of model fits, 5000 in this case, takes only a few seconds, following which we extract a data frame of the parameter estimates and plot densities of some of these estimates.</p>
+<div id="24" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> <span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">42</span>)    <span class="co"># initialize a random number generator</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>m1bstp <span class="op">=</span> <span class="fu">parametricbootstrap</span>(rng, <span class="fl">5000</span>, m1)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>tbl <span class="op">=</span> m1bstp.tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>Table with 10 columns and 5000 rows:
+      obj      β1       β2       σ        σ1       σ2       ρ1          ⋯
+    ┌────────────────────────────────────────────────────────────────────
+ 1  │ 1717.29  260.712  9.84975  23.4092  15.3317  6.40296  -0.025958   ⋯
+ 2  │ 1744.06  262.253  12.3008  25.7047  16.3183  5.54688  0.552607    ⋯
+ 3  │ 1714.16  253.149  12.879   22.2753  25.4787  6.1444   0.0691545   ⋯
+ 4  │ 1711.54  263.376  11.5798  23.3128  18.8039  4.6557   0.103361    ⋯
+ 5  │ 1741.66  248.429  9.39444  25.4355  20.141   5.27357  -0.163599   ⋯
+ 6  │ 1754.81  256.794  8.024    26.5087  10.6781  7.14162  0.335471    ⋯
+ 7  │ 1777.73  253.388  8.83556  27.8623  17.8325  7.17386  0.00378979  ⋯
+ 8  │ 1768.59  254.441  11.4479  27.4033  16.2489  6.67042  0.725394    ⋯
+ 9  │ 1753.56  244.906  11.3423  25.6046  25.3607  5.98654  -0.171821   ⋯
+ 10 │ 1722.61  257.088  9.18397  23.3386  24.9274  5.18012  0.181143    ⋯
+ 11 │ 1738.16  251.262  11.6568  25.7823  17.6663  4.07218  0.25814     ⋯
+ 12 │ 1747.76  258.302  12.8015  26.1085  19.2398  5.06066  0.879712    ⋯
+ 13 │ 1745.91  254.57   11.8062  24.8863  24.2513  6.14642  0.0126996   ⋯
+ 14 │ 1738.8   251.179  10.3226  24.2672  23.7195  6.32645  0.368592    ⋯
+ 15 │ 1724.76  238.603  11.5045  25.23    19.0263  3.64038  -0.34657    ⋯
+ 16 │ 1777.7   254.133  8.26398  26.9846  26.3715  7.8283   -0.288773   ⋯
+ 17 │ 1748.33  251.571  9.5294   26.2927  21.9611  4.31316  -0.150104   ⋯
+ ⋮  │    ⋮        ⋮        ⋮        ⋮        ⋮        ⋮         ⋮       ⋱</code></pre>
+</div>
+</div>
+<p>An empirical density plot of the estimates for the fixed-effects coefficients, <a href="#fig-bsbetadensity" class="quarto-xref">Figure&nbsp;4</a>, shows the normal distribution, “bell-curve”, shape as we might expect.</p>
+<div id="cell-fig-bsbetadensity" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">begin</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  f1 <span class="op">=</span> <span class="fu">Figure</span>(; resolution<span class="op">=</span>(<span class="fl">1000</span>, <span class="fl">400</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  CairoMakie.<span class="fu">density!</span>(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Axis</span>(f1[<span class="fl">1</span>, <span class="fl">1</span>]; xlabel<span class="op">=</span><span class="st">"Intercept [ms]"</span>), tbl.β<span class="fl">1</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  CairoMakie.<span class="fu">density!</span>(</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Axis</span>(f1[<span class="fl">1</span>, <span class="fl">2</span>]; xlabel<span class="op">=</span><span class="st">"Coefficient of days [ms/day]"</span>),</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    tbl.β<span class="fl">2</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  f1</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>┌ Warning: Found `resolution` in the theme when creating a `Scene`. The `resolution` keyword for `Scene`s and `Figure`s has been deprecated. Use `Figure(; size = ...` or `Scene(; size = ...)` instead, which better reflects that this is a unitless size and not a pixel resolution. The key could also come from `set_theme!` calls or related theming functions.
+└ @ Makie ~/.julia/packages/Makie/qMluh/src/scenes.jl:227</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div id="fig-bsbetadensity" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bsbetadensity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="sleepstudy_files/figure-html/fig-bsbetadensity-output-2.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bsbetadensity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Empirical density plots of bootstrap replications of fixed-effects parameter estimates
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>It is also possible to create interval estimates of the parameters from the bootstrap replicates. We define the 1-α <code>shortestcovint</code> to be the shortest interval that contains a proportion 1-α (defaults to 95%) of the bootstrap estimates of the parameter.</p>
+<div id="28" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Table</span>(<span class="fu">shortestcovint</span>(m1bstp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>Table with 5 columns and 6 rows:
+     type  group     names              lower      upper
+   ┌──────────────────────────────────────────────────────
+ 1 │ β     missing   (Intercept)        239.64     265.228
+ 2 │ β     missing   days               7.42347    13.1607
+ 3 │ σ     subj      (Intercept)        10.1722    33.0876
+ 4 │ σ     subj      days               2.9948     7.66116
+ 5 │ ρ     subj      (Intercept), days  -0.401353  1.0
+ 6 │ σ     residual  missing            22.701     28.5016</code></pre>
+</div>
+</div>
+<p>The intervals look reasonable except that the upper end point of the interval for ρ1, the correlation coefficient, is 1.0 . It turns out that the estimates of ρ have a great deal of variability.</p>
+<p>Because there are several values on the boundary (<code>ρ = 1.0</code>) and a <em>pulse</em> like this is not handled well by a density plot, we plot this sample as a histogram, <a href="#fig-correlationhist" class="quarto-xref">Figure&nbsp;5</a>.</p>
+<div id="cell-fig-correlationhist" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  tbl.ρ<span class="fl">1</span>;</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  bins<span class="op">=</span><span class="fl">40</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  axis<span class="op">=</span>(; xlabel<span class="op">=</span><span class="st">"Estimated correlation of the random effects"</span>),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  figure<span class="op">=</span>(; resolution<span class="op">=</span>(<span class="fl">500</span>, <span class="fl">500</span>)),</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>┌ Warning: Found `resolution` in the theme when creating a `Scene`. The `resolution` keyword for `Scene`s and `Figure`s has been deprecated. Use `Figure(; size = ...` or `Scene(; size = ...)` instead, which better reflects that this is a unitless size and not a pixel resolution. The key could also come from `set_theme!` calls or related theming functions.
+└ @ Makie ~/.julia/packages/Makie/qMluh/src/scenes.jl:227</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div id="fig-correlationhist" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-correlationhist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="sleepstudy_files/figure-html/fig-correlationhist-output-2.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-correlationhist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Histogram of bootstrap replications of the within-subject correlation parameter
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Finally, density plots for the variance components (but on the scale of the standard deviation), <a href="#fig-bssigmadensity" class="quarto-xref">Figure&nbsp;6</a>, show reasonable symmetry.</p>
+<div id="cell-fig-bssigmadensity" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">begin</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  f2 <span class="op">=</span> <span class="fu">Figure</span>(; resolution<span class="op">=</span>(<span class="fl">1000</span>, <span class="fl">300</span>))</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  CairoMakie.<span class="fu">density!</span>(</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Axis</span>(f2[<span class="fl">1</span>, <span class="fl">1</span>]; xlabel<span class="op">=</span><span class="st">"Residual σ"</span>),</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    tbl.σ,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  CairoMakie.<span class="fu">density!</span>(</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Axis</span>(f2[<span class="fl">1</span>, <span class="fl">2</span>]; xlabel<span class="op">=</span><span class="st">"subj-Intercept σ"</span>),</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    tbl.σ<span class="fl">1</span>,</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  CairoMakie.<span class="fu">density!</span>(</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Axis</span>(f2[<span class="fl">1</span>, <span class="fl">3</span>]; xlabel<span class="op">=</span><span class="st">"subj-slope σ"</span>),</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    tbl.σ<span class="fl">2</span>,</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  f2</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>┌ Warning: Found `resolution` in the theme when creating a `Scene`. The `resolution` keyword for `Scene`s and `Figure`s has been deprecated. Use `Figure(; size = ...` or `Scene(; size = ...)` instead, which better reflects that this is a unitless size and not a pixel resolution. The key could also come from `set_theme!` calls or related theming functions.
+└ @ Makie ~/.julia/packages/Makie/qMluh/src/scenes.jl:227</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div id="fig-bssigmadensity" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bssigmadensity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="sleepstudy_files/figure-html/fig-bssigmadensity-output-2.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bssigmadensity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Empirical density plots of bootstrap replicates of standard deviation estimates
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The estimates of the coefficients, β₁ and β₂, are not highly correlated as shown in a scatterplot of the bootstrap estimates, <a href="#fig-bsbetacontours" class="quarto-xref">Figure&nbsp;7</a> .</p>
+<div id="34" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vcov</span>(m1; corr<span class="op">=</span><span class="cn">true</span>)  <span class="co"># correlation estimate from the model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>2×2 Matrix{Float64}:
+  1.0       -0.137545
+ -0.137545   1.0</code></pre>
+</div>
+</div>
+<div id="cell-fig-bsbetacontours" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scatter</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    tbl.β<span class="fl">1</span>, tbl.β<span class="fl">2</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span>(<span class="op">:</span>blue, <span class="fl">0.20</span>),</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    axis<span class="op">=</span>(; xlabel<span class="op">=</span><span class="st">"Intercept"</span>, ylabel<span class="op">=</span><span class="st">"Coefficient of days"</span>),</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    figure<span class="op">=</span>(; resolution<span class="op">=</span>(<span class="fl">500</span>, <span class="fl">500</span>)),</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">contour!</span>(<span class="fu">kde</span>((tbl.β<span class="fl">1</span>, tbl.β<span class="fl">2</span>)))</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">current_figure</span>()</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>┌ Warning: Found `resolution` in the theme when creating a `Scene`. The `resolution` keyword for `Scene`s and `Figure`s has been deprecated. Use `Figure(; size = ...` or `Scene(; size = ...)` instead, which better reflects that this is a unitless size and not a pixel resolution. The key could also come from `set_theme!` calls or related theming functions.
+└ @ Makie ~/.julia/packages/Makie/qMluh/src/scenes.jl:227</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div id="fig-bsbetacontours" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bsbetacontours-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="sleepstudy_files/figure-html/fig-bsbetacontours-output-2.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bsbetacontours-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Scatter-plot of bootstrap replicates of fixed-effects estimates with contours
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="references" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-Balkin2000" class="csl-entry" role="listitem">
+Balkin, T., Thome, D., Sing, H., Thomas, M., Redmond, D., Wesensten, N., Williams, J., Hall, S., &amp; Belenky, G. (2000). <em>Effects of sleep schedules on commercial motor vehicle driver performance</em> (DOT-MC-00-133). Federal Motor Carrier Safety Administration. <a href="https://doi.org/10.21949/1503015.">https://doi.org/10.21949/1503015.</a>
+</div>
+<div id="ref-Belenky2003" class="csl-entry" role="listitem">
+Belenky, G., Wesensten, N. J., Thorne, D. R., Thomas, M. L., Sing, H. C., Redmond, D. P., Russo, M. B., &amp; Balkin, T. J. (2003). Patterns of performance degradation and restoration during sleep restriction and subsequent recovery: A sleep dose-response study. <em>Journal of Sleep Research</em>, <em>12</em>(1), 1–12. <a href="https://doi.org/10.1046/j.1365-2869.2003.00337.x">https://doi.org/10.1046/j.1365-2869.2003.00337.x</a>
+</div>
+<div id="ref-Danisch2021" class="csl-entry" role="listitem">
+Danisch, S., &amp; Krumbiegel, J. (2021). Makie.jl: Flexible high-performance data visualization for julia. <em>Journal of Open Source Software</em>, <em>6</em>(65), 3349. <a href="https://doi.org/10.21105/joss.03349">https://doi.org/10.21105/joss.03349</a>
+</div>
+<div id="ref-Sarkar2008" class="csl-entry" role="listitem">
+Sarkar, D. (2008). <em>Lattice: Mutivariate data visualization with r</em>. Springer-Verlag GmbH. <a href="https://www.ebook.de/de/product/11429038/deepayan_sarkar_lattice.html">https://www.ebook.de/de/product/11429038/deepayan_sarkar_lattice.html</a>
+</div>
+</div>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/RePsychLing\.github\.io\/SMLP2024");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./arrow.html" class="pagination-link" aria-label="Saving data with Arrow">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Saving data with Arrow</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./sleepstudy_speed.html" class="pagination-link" aria-label="The sleepstudy: Speed - for a change ...">
+        <span class="nav-page-text">The sleepstudy: Speed - for a change …</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/RePsychLing/SMLP2024/edit/main/sleepstudy.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RePsychLing/SMLP2024/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

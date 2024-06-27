@@ -1,0 +1,2603 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.46">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
+<meta name="dcterms.date" content="2024-06-27">
+
+<title>Generalized linear mixed models – SMLP2024: Advanced Frequentist Track</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./bootstrap.html" rel="next">
+<link href="./contrasts_kwdyz11.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="site_libs/quarto-contrib/jquery-3.6.3/jquery-3.6.3.min.js"></script>
+<script src="site_libs/quarto-contrib/code-fullscreen-1.0.0/code-fullscreen.js" defer="true"></script>
+<link href="site_libs/quarto-contrib/code-fullscreen-1.0.0/code-fullscreen.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">SMLP2024: Advanced Frequentist Track</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/RePsychLing/SMLP2024"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./glmm.html">Generalized linear mixed models</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Getting started with Julia</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./useful_packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Useful packages</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pkg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Package management and reproducible environments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arrow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Saving data with Arrow</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Worked examples</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sleepstudy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analysis of the sleepstudy data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sleepstudy_speed.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The sleepstudy: Speed - for a change …</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kwdyz11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RePsychLing Kliegl et al.&nbsp;(2011)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kkl15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RePsychLing Kliegl, Kuschela, &amp; Laubrock (2015)- Reduction of Model Complexity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./largescaledesigned.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A large-scale designed experiment</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mrk17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RePsychLing Masson, Rabe, &amp; Kliegl, 2017) with Julia: Specification and selection</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./partial_within.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Partially-within subjects designs</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Contrast coding</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./contrasts_fggk21.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mixed Models Tutorial: Contrast Coding</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./contrasts_kwdyz11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Contrast Coding of Visual Attention Effects</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./glmm.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Generalized linear mixed models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Bootstrap and profiling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bootstrap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Parametric bootstrap for mixed-effects models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./profiling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Confidence intervals from profiled objective</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kb07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bootstrapping a fitted model</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Visualizations and diagnostics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./singularity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Convergence, singularity and all that</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./shrinkageplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">More on shrinkage plots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./AoGPlots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Creating multi-panel plots</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#matrix-notation-for-the-sleepstudy-model" id="toc-matrix-notation-for-the-sleepstudy-model" class="nav-link active" data-scroll-target="#matrix-notation-for-the-sleepstudy-model"><span class="header-section-number">1</span> Matrix notation for the sleepstudy model</a></li>
+  <li><a href="#linear-predictors-in-lmms-and-glmms" id="toc-linear-predictors-in-lmms-and-glmms" class="nav-link" data-scroll-target="#linear-predictors-in-lmms-and-glmms"><span class="header-section-number">2</span> Linear predictors in LMMs and GLMMs</a></li>
+  <li><a href="#generalized-linear-mixed-models" id="toc-generalized-linear-mixed-models" class="nav-link" data-scroll-target="#generalized-linear-mixed-models"><span class="header-section-number">3</span> Generalized Linear Mixed Models</a></li>
+  <li><a href="#summarizing-the-results" id="toc-summarizing-the-results" class="nav-link" data-scroll-target="#summarizing-the-results"><span class="header-section-number">4</span> Summarizing the results</a></li>
+  </ul>
+<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/RePsychLing/SMLP2024/edit/main/glmm.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RePsychLing/SMLP2024/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Generalized linear mixed models</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Phillip Alday, Douglas Bates, and Reinhold Kliegl </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2024-06-27</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Load the packages to be used</p>
+<div id="2" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">AlgebraOfGraphics</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrameMacros</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">SMLP2024</span>: dataset</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>CairoMakie.<span class="fu">activate!</span>(; <span class="kw">type</span><span class="op">=</span><span class="st">"svg"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">ProgressMeter</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ul>
+<li><p>A GLMM (Generalized Linear Mixed Model) is used instead of a LMM (Linear Mixed Model) when the response is binary or, perhaps, a count with a low expected count.</p></li>
+<li><p>The specification of the model includes the distribution family for the response and, possibly, the <em>link function</em>, g, relating the <em>mean response</em>, μ, to the value of the <em>linear predictor</em>, η.</p></li>
+<li><p>To explain the model it helps to consider the linear mixed model in some detail first.</p></li>
+</ul>
+<section id="matrix-notation-for-the-sleepstudy-model" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="matrix-notation-for-the-sleepstudy-model"><span class="header-section-number">1</span> Matrix notation for the sleepstudy model</h2>
+<div id="4" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sleepstudy <span class="op">=</span> <span class="fu">DataFrame</span>(<span class="fu">dataset</span>(<span class="op">:</span>sleepstudy))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div><div style="float: left;"><span>180×3 DataFrame</span></div><div style="float: right;"><span style="font-style: italic;">155 rows omitted</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
+<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">subj</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">days</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">reaction</th>
+</tr>
+<tr class="odd subheader headerLastRow">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="String">String</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int8">Int8</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
+<td style="text-align: left;">S308</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">249.56</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
+<td style="text-align: left;">S308</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">258.705</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
+<td style="text-align: left;">S308</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">250.801</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">4</td>
+<td style="text-align: left;">S308</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">321.44</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">5</td>
+<td style="text-align: left;">S308</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">356.852</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">6</td>
+<td style="text-align: left;">S308</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">414.69</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">7</td>
+<td style="text-align: left;">S308</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">382.204</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8</td>
+<td style="text-align: left;">S308</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">290.149</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">9</td>
+<td style="text-align: left;">S308</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">430.585</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">10</td>
+<td style="text-align: left;">S308</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">466.353</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">11</td>
+<td style="text-align: left;">S309</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">222.734</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">12</td>
+<td style="text-align: left;">S309</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">205.266</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">13</td>
+<td style="text-align: left;">S309</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">202.978</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">169</td>
+<td style="text-align: left;">S371</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">350.781</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">170</td>
+<td style="text-align: left;">S371</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">369.469</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">171</td>
+<td style="text-align: left;">S372</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">269.412</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">172</td>
+<td style="text-align: left;">S372</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">273.474</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">173</td>
+<td style="text-align: left;">S372</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">297.597</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">174</td>
+<td style="text-align: left;">S372</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">310.632</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">175</td>
+<td style="text-align: left;">S372</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">287.173</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">176</td>
+<td style="text-align: left;">S372</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">329.608</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">177</td>
+<td style="text-align: left;">S372</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">334.482</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">178</td>
+<td style="text-align: left;">S372</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">343.22</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">179</td>
+<td style="text-align: left;">S372</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">369.142</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">180</td>
+<td style="text-align: left;">S372</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">364.124</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="6" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>subj <span class="op">=&gt;</span> <span class="fu">Grouping</span>())</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="kw">let</span> f <span class="op">=</span> <span class="pp">@formula</span> reaction <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> days <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> days <span class="op">|</span> subj)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, f, sleepstudy; contrasts)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by maximum likelihood
+ reaction ~ 1 + days + (1 + days | subj)
+   logLik   -2 logLik     AIC       AICc        BIC    
+  -875.9697  1751.9393  1763.9393  1764.4249  1783.0971
+
+Variance components:
+            Column    Variance Std.Dev.   Corr.
+subj     (Intercept)  565.51067 23.78047
+         days          32.68212  5.71683 +0.08
+Residual              654.94145 25.59182
+ Number of obs: 180; levels of grouping factors: 18
+
+  Fixed-effects parameters:
+──────────────────────────────────────────────────
+                Coef.  Std. Error      z  Pr(&gt;|z|)
+──────────────────────────────────────────────────
+(Intercept)  251.405      6.63226  37.91    &lt;1e-99
+days          10.4673     1.50224   6.97    &lt;1e-11
+──────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+<p>The response vector, y, has 180 elements. The fixed-effects coefficient vector, β, has 2 elements and the fixed-effects model matrix, X, is of size 180 × 2.</p>
+<div id="8" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>m1.y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>180-element view(::Matrix{Float64}, :, 3) with eltype Float64:
+ 249.56
+ 258.7047
+ 250.8006
+ 321.4398
+ 356.8519
+ 414.6901
+ 382.2038
+ 290.1486
+ 430.5853
+ 466.3535
+   ⋮
+ 273.474
+ 297.5968
+ 310.6316
+ 287.1726
+ 329.6076
+ 334.4818
+ 343.2199
+ 369.1417
+ 364.1236</code></pre>
+</div>
+</div>
+<div id="10" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>m1.β</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>2-element Vector{Float64}:
+ 251.4051048484851
+  10.4672859595964</code></pre>
+</div>
+</div>
+<div id="12" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>m1.X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>180×2 Matrix{Float64}:
+ 1.0  0.0
+ 1.0  1.0
+ 1.0  2.0
+ 1.0  3.0
+ 1.0  4.0
+ 1.0  5.0
+ 1.0  6.0
+ 1.0  7.0
+ 1.0  8.0
+ 1.0  9.0
+ ⋮    
+ 1.0  1.0
+ 1.0  2.0
+ 1.0  3.0
+ 1.0  4.0
+ 1.0  5.0
+ 1.0  6.0
+ 1.0  7.0
+ 1.0  8.0
+ 1.0  9.0</code></pre>
+</div>
+</div>
+<p>The second column of X is just the <code>days</code> vector and the first column is all 1’s.</p>
+<p>There are 36 random effects, 2 for each of the 18 levels of <code>subj</code>. The “estimates” (technically, the conditional means or conditional modes) are returned as a vector of matrices, one matrix for each grouping factor. In this case there is only one grouping factor for the random effects so there is one one matrix which contains 18 intercept random effects and 18 slope random effects.</p>
+<div id="14" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m1.b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>1-element Vector{Matrix{Float64}}:
+ [2.815819244491056 -40.04844174471745 … 0.723262023911267 12.118907794830154; 9.075511691265579 -8.644079439241482 … -0.9710526311820062 1.3106980688400298]</code></pre>
+</div>
+</div>
+<div id="16" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">only</span>(m1.b)   <span class="co"># only one grouping factor</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>2×18 Matrix{Float64}:
+ 2.81582  -40.0484   -38.4331  22.8321   …  -24.7101   0.723262  12.1189
+ 9.07551   -8.64408   -5.5134  -4.65872       4.6597  -0.971053   1.3107</code></pre>
+</div>
+</div>
+<p>There is a model matrix, Z, for the random effects. In general it has one chunk of columns for the first grouping factor, a chunk of columns for the second grouping factor, etc.</p>
+<p>In this case there is only one grouping factor.</p>
+<div id="18" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Int</span>.(<span class="fu">first</span>(m1.reterms))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>180×36 Matrix{Int64}:
+ 1  0  0  0  0  0  0  0  0  0  0  0  0  …  0  0  0  0  0  0  0  0  0  0  0  0
+ 1  1  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  0  0
+ 1  2  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  0  0
+ 1  3  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  0  0
+ 1  4  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  0  0
+ 1  5  0  0  0  0  0  0  0  0  0  0  0  …  0  0  0  0  0  0  0  0  0  0  0  0
+ 1  6  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  0  0
+ 1  7  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  0  0
+ 1  8  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  0  0
+ 1  9  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  0  0
+ ⋮              ⋮              ⋮        ⋱     ⋮              ⋮              ⋮
+ 0  0  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  1  1
+ 0  0  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  1  2
+ 0  0  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  1  3
+ 0  0  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  1  4
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  …  0  0  0  0  0  0  0  0  0  0  1  5
+ 0  0  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  1  6
+ 0  0  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  1  7
+ 0  0  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  1  8
+ 0  0  0  0  0  0  0  0  0  0  0  0  0     0  0  0  0  0  0  0  0  0  0  1  9</code></pre>
+</div>
+</div>
+<p>The defining property of a linear model or linear mixed model is that the fitted values are linear combinations of the fixed-effects parameters and the random effects. We can write the fitted values as</p>
+<div id="20" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>m1.X <span class="op">*</span> m1.β <span class="op">+</span> <span class="fu">only</span>(m1.reterms) <span class="op">*</span> <span class="fu">vec</span>(<span class="fu">only</span>(m1.b))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>180-element Vector{Float64}:
+ 254.22092409297616
+ 273.7637217438381
+ 293.30651939470016
+ 312.8493170455621
+ 332.3921146964241
+ 351.93491234728606
+ 371.47770999814804
+ 391.02050764901
+ 410.563305299872
+ 430.106102950734
+   ⋮
+ 275.3019966717517
+ 287.0799807001881
+ 298.85796472862455
+ 310.635948757061
+ 322.4139327854974
+ 334.19191681393386
+ 345.96990084237024
+ 357.74788487080673
+ 369.52586889924316</code></pre>
+</div>
+</div>
+<div id="22" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fitted</span>(m1)   <span class="co"># just to check that these are indeed the same as calculated above</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>180-element Vector{Float64}:
+ 254.22092409297616
+ 273.7637217438382
+ 293.30651939470016
+ 312.84931704556215
+ 332.3921146964241
+ 351.9349123472861
+ 371.47770999814804
+ 391.02050764901
+ 410.563305299872
+ 430.106102950734
+   ⋮
+ 275.3019966717517
+ 287.0799807001881
+ 298.85796472862455
+ 310.63594875706093
+ 322.4139327854974
+ 334.1919168139338
+ 345.96990084237024
+ 357.74788487080673
+ 369.5258688992431</code></pre>
+</div>
+</div>
+<p>In symbols we would write the <em>linear predictor expression</em> as <span class="math display">\[
+\boldsymbol{\eta} = \mathbf{X}\boldsymbol{\beta} +\mathbf{Z b}
+\]</span> where <span class="math inline">\(\boldsymbol{\eta}\)</span> has 180 elements, <span class="math inline">\(\boldsymbol{\beta}\)</span> has 2 elements, <span class="math inline">\(\bf b\)</span> has 36 elements, <span class="math inline">\(\bf X\)</span> is of size 180 × 2 and <span class="math inline">\(\bf Z\)</span> is of size 180 × 36.</p>
+<p>For a linear model or linear mixed model the linear predictor <strong>is</strong> the mean response, <span class="math inline">\(\boldsymbol\mu\)</span>. That is, we can write the probability model in terms of a 180-dimensional random variable, <span class="math inline">\(\mathcal Y\)</span>, for the response and a 36-dimensional random variable, <span class="math inline">\(\mathcal B\)</span>, for the random effects as <span class="math display">\[
+\begin{aligned}
+(\mathcal{Y} | \mathcal{B}=\bf{b}) &amp;\sim\mathcal{N}(\bf{ X\boldsymbol\beta + Z b},\sigma^2\bf{I})\\\\
+\mathcal{B}&amp;\sim\mathcal{N}(\bf{0},\boldsymbol{\Sigma}_{\boldsymbol\theta}) .
+\end{aligned}
+\]</span> where <span class="math inline">\(\boldsymbol{\Sigma}_\boldsymbol{\theta}\)</span> is a 36 × 36 symmetric covariance matrix that has a special form - it consists of 18 diagonal blocks, each of size 2 × 2 and all the same.</p>
+<p>Recall that this symmetric matrix can be constructed from the parameters <span class="math inline">\(\boldsymbol\theta\)</span>, which generate the lower triangular matrix <span class="math inline">\(\boldsymbol\lambda\)</span>, and the estimate <span class="math inline">\(\widehat{\sigma^2}\)</span>.</p>
+<div id="24" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>m1.θ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>3-element Vector{Float64}:
+ 0.9292213162629417
+ 0.018168381188609965
+ 0.22264487194620683</code></pre>
+</div>
+</div>
+<div id="26" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>λ <span class="op">=</span> <span class="fu">only</span>(m1.λ)  <span class="co"># with multiple grouping factors there will be multiple λ's</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>2×2 LinearAlgebra.LowerTriangular{Float64, Matrix{Float64}}:
+ 0.929221    ⋅ 
+ 0.0181684  0.222645</code></pre>
+</div>
+</div>
+<div id="28" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>Σ <span class="op">=</span> <span class="fu">varest</span>(m1) <span class="op">*</span> (λ <span class="op">*</span> λ<span class="ch">')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>2×2 Matrix{Float64}:
+ 565.511  11.057
+  11.057  32.6821</code></pre>
+</div>
+</div>
+<p>Compare the diagonal elements to the <em>Variance</em> column of</p>
+<div id="30" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: left;" data-quarto-table-cell-role="th">Column</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Variance</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Std.Dev</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Corr.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">subj</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">565.51067</td>
+<td style="text-align: right;">23.78047</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">days</td>
+<td style="text-align: right;">32.68212</td>
+<td style="text-align: right;">5.71683</td>
+<td style="text-align: right;">+0.08</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">654.94145</td>
+<td style="text-align: right;">25.59182</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="linear-predictors-in-lmms-and-glmms" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="linear-predictors-in-lmms-and-glmms"><span class="header-section-number">2</span> Linear predictors in LMMs and GLMMs</h2>
+<p>Writing the model for <span class="math inline">\(\mathcal Y\)</span> as <span class="math display">\[
+(\mathcal{Y} | \mathcal{B}=\bf{b})\sim\mathcal{N}(\bf{ X\boldsymbol\beta + Z b},\sigma^2\bf{I})
+\]</span> may seem like over-mathematization (or “overkill”, if you prefer) relative to expressions like <span class="math display">\[
+y_i = \beta_1 x_{i,1} + \beta_2 x_{i,2}+ b_1 z_{i,1} +\dots+b_{36} z_{i,36}+\epsilon_i
+\]</span> but this more abstract form is necessary for generalizations.</p>
+<p>The way that I read the first form is</p>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The conditional distribution of the response vector, <span class="math inline">\(\mathcal Y\)</span>, given that the random effects vector, <span class="math inline">\(\mathcal B =\bf b\)</span>, is a multivariate normal (or <em>Gaussian</em>) distribution whose mean, <span class="math inline">\(\boldsymbol\mu\)</span>, is the linear predictor, <span class="math inline">\(\boldsymbol\eta=\bf{X\boldsymbol\beta+Zb}\)</span>, and whose covariance matrix is <span class="math inline">\(\sigma^2\bf I\)</span>. That is, conditional on <span class="math inline">\(\bf b\)</span>, the elements of <span class="math inline">\(\mathcal Y\)</span> are independent normal random variables with constant variance, <span class="math inline">\(\sigma^2\)</span>, and means of the form <span class="math inline">\(\boldsymbol\mu = \boldsymbol\eta = \bf{X\boldsymbol\beta+Zb}\)</span>.</p>
+</div>
+</div>
+</div>
+<p>So the only things that differ in the distributions of the <span class="math inline">\(y_i\)</span>’s are the means and they are determined by this linear predictor, <span class="math inline">\(\boldsymbol\eta = \bf{X\boldsymbol\beta+Zb}\)</span>.</p>
+</section>
+<section id="generalized-linear-mixed-models" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="generalized-linear-mixed-models"><span class="header-section-number">3</span> Generalized Linear Mixed Models</h2>
+<p>Consider first a GLMM for a vector, <span class="math inline">\(\bf y\)</span>, of binary (i.e.&nbsp;yes/no) responses. The probability model for the conditional distribution <span class="math inline">\(\mathcal Y|\mathcal B=\bf b\)</span> consists of independent <a href="https://en.wikipedia.org/wiki/Bernoulli_distribution">Bernoulli distributions</a> where the mean, <span class="math inline">\(\mu_i\)</span>, for the i’th response is again determined by the i’th element of a <em>linear predictor</em>, <span class="math inline">\(\boldsymbol\eta = \mathbf{X}\boldsymbol\beta+\mathbf{Z b}\)</span>.</p>
+<p>However, in this case we will run into trouble if we try to make <span class="math inline">\(\boldsymbol\mu=\boldsymbol\eta\)</span> because <span class="math inline">\(\mu_i\)</span> is the probability of “success” for the i’th response and must be between 0 and 1. We can’t guarantee that the i’th component of <span class="math inline">\(\boldsymbol\eta\)</span> will be between 0 and 1. To get around this problem we apply a transformation to take <span class="math inline">\(\eta_i\)</span> to <span class="math inline">\(\mu_i\)</span>. For historical reasons this transformation is called the <em>inverse link</em>, written <span class="math inline">\(g^{-1}\)</span>, and the opposite transformation - from the probability scale to an unbounded scale - is called the <em>link</em>, g.</p>
+<p>Each probability distribution in the <a href="https://en.wikipedia.org/wiki/Exponential_family">exponential family</a> (which is most of the important ones), has a <em>canonical link</em> which comes from the form of the distribution itself. The details aren’t as important as recognizing that the distribution itself determines a preferred link function.</p>
+<p>For the Bernoulli distribution, the canonical link is the <em>logit</em> or <em>log-odds</em> function, <span class="math display">\[
+\eta = g(\mu) = \log\left(\frac{\mu}{1-\mu}\right),
+\]</span> (it’s called <em>log-odds</em> because it is the logarithm of the odds ratio, <span class="math inline">\(p/(1-p)\)</span>) and the canonical inverse link is the <em>logistic</em> <span class="math display">\[
+\mu=g^{-1}(\eta)=\frac{1}{1+\exp(-\eta)}.
+\]</span> This is why fitting a binary response is sometimes called <em>logistic regression</em>.</p>
+<p>For later use we define a Julia <code>logistic</code> function. See <a href="https://github.com/dmbates/JSM2021/blob/main/notebooks/2compilation.jl">this presentation</a> for more information than you could possibly want to know on how Julia converts code like this to run on the processor.</p>
+<div id="32" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">increment</span>(x) <span class="op">=</span> x <span class="op">+</span> <span class="fu">one</span>(x)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">logistic</span>(η) <span class="op">=</span> <span class="fu">inv</span>(<span class="fu">increment</span>(<span class="fu">exp</span>(<span class="op">-</span>η)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>logistic (generic function with 1 method)</code></pre>
+</div>
+</div>
+<p>To reiterate, the probability model for a Generalized Linear Mixed Model (GLMM) is <span class="math display">\[
+\begin{aligned}
+(\mathcal{Y} | \mathcal{B}=\bf{b}) &amp;\sim\mathcal{D}(\bf{g^{-1}(X\boldsymbol\beta + Z b)},\phi)\\\\
+\mathcal{B}&amp;\sim\mathcal{N}(\bf{0},\Sigma_{\boldsymbol\theta}) .
+\end{aligned}
+\]</span> where <span class="math inline">\(\mathcal{D}\)</span> is the distribution family (such as Bernoulli or Poisson), <span class="math inline">\(g^{-1}\)</span> is the inverse link and <span class="math inline">\(\phi\)</span> is a scale parameter for <span class="math inline">\(\mathcal{D}\)</span> if it has one. The important cases of the Bernoulli and Poisson distributions don’t have a scale parameter - once you know the mean you know everything you need to know about the distribution. (For those following the presentation, <a href="https://www.poetryfoundation.org/poems/44477/ode-on-a-grecian-urn">this poem</a> by John Keats is the one with the couplet “Beauty is truth, truth beauty - that is all ye know on earth and all ye need to know.”)</p>
+<section id="an-example-of-a-bernoulli-glmm" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="an-example-of-a-bernoulli-glmm"><span class="header-section-number">3.1</span> An example of a Bernoulli GLMM</h3>
+<p>The <code>contra</code> dataset in the <code>MixedModels</code> package is from a survey on the use of artificial contraception by women in Bangladesh.</p>
+<div id="34" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>contra <span class="op">=</span> <span class="fu">DataFrame</span>(<span class="fu">dataset</span>(<span class="op">:</span>contra))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div><div style="float: left;"><span>1934×5 DataFrame</span></div><div style="float: right;"><span style="font-style: italic;">1909 rows omitted</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
+<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">dist</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">urban</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">livch</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">age</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">use</th>
+</tr>
+<tr class="odd subheader headerLastRow">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="String">String</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="String">String</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="String">String</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="String">String</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
+<td style="text-align: left;">D01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">3+</td>
+<td style="text-align: right;">18.44</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
+<td style="text-align: left;">D01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">-5.56</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
+<td style="text-align: left;">D01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">1.44</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">4</td>
+<td style="text-align: left;">D01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">3+</td>
+<td style="text-align: right;">8.44</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">5</td>
+<td style="text-align: left;">D01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">-13.56</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">6</td>
+<td style="text-align: left;">D01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">-11.56</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">7</td>
+<td style="text-align: left;">D01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">3+</td>
+<td style="text-align: right;">18.44</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8</td>
+<td style="text-align: left;">D01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">3+</td>
+<td style="text-align: right;">-3.56</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">9</td>
+<td style="text-align: left;">D01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">-5.56</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">10</td>
+<td style="text-align: left;">D01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">3+</td>
+<td style="text-align: right;">1.44</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">11</td>
+<td style="text-align: left;">D01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">-11.56</td>
+<td style="text-align: left;">Y</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">12</td>
+<td style="text-align: left;">D01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">-2.56</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">13</td>
+<td style="text-align: left;">D01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">-4.56</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1923</td>
+<td style="text-align: left;">D61</td>
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">-11.56</td>
+<td style="text-align: left;">Y</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1924</td>
+<td style="text-align: left;">D61</td>
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">3+</td>
+<td style="text-align: right;">1.44</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1925</td>
+<td style="text-align: left;">D61</td>
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">-5.56</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1926</td>
+<td style="text-align: left;">D61</td>
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">3+</td>
+<td style="text-align: right;">14.44</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1927</td>
+<td style="text-align: left;">D61</td>
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">3+</td>
+<td style="text-align: right;">19.44</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1928</td>
+<td style="text-align: left;">D61</td>
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">-9.56</td>
+<td style="text-align: left;">Y</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1929</td>
+<td style="text-align: left;">D61</td>
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">-2.56</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1930</td>
+<td style="text-align: left;">D61</td>
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">3+</td>
+<td style="text-align: right;">14.44</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1931</td>
+<td style="text-align: left;">D61</td>
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">-4.56</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1932</td>
+<td style="text-align: left;">D61</td>
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">3+</td>
+<td style="text-align: right;">14.44</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1933</td>
+<td style="text-align: left;">D61</td>
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">-13.56</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1934</td>
+<td style="text-align: left;">D61</td>
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">3+</td>
+<td style="text-align: right;">10.44</td>
+<td style="text-align: left;">N</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="36" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">combine</span>(<span class="fu">groupby</span>(contra, <span class="op">:</span>dist), nrow)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div><div style="float: left;"><span>60×2 DataFrame</span></div><div style="float: right;"><span style="font-style: italic;">35 rows omitted</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
+<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">dist</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">nrow</th>
+</tr>
+<tr class="odd subheader headerLastRow">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="String">String</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
+<td style="text-align: left;">D01</td>
+<td style="text-align: right;">117</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
+<td style="text-align: left;">D02</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
+<td style="text-align: left;">D03</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">4</td>
+<td style="text-align: left;">D04</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">5</td>
+<td style="text-align: left;">D05</td>
+<td style="text-align: right;">39</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">6</td>
+<td style="text-align: left;">D06</td>
+<td style="text-align: right;">65</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">7</td>
+<td style="text-align: left;">D07</td>
+<td style="text-align: right;">18</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8</td>
+<td style="text-align: left;">D08</td>
+<td style="text-align: right;">37</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">9</td>
+<td style="text-align: left;">D09</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">10</td>
+<td style="text-align: left;">D10</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">11</td>
+<td style="text-align: left;">D11</td>
+<td style="text-align: right;">21</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">12</td>
+<td style="text-align: left;">D12</td>
+<td style="text-align: right;">29</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">13</td>
+<td style="text-align: left;">D13</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">49</td>
+<td style="text-align: left;">D49</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">50</td>
+<td style="text-align: left;">D50</td>
+<td style="text-align: right;">19</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">51</td>
+<td style="text-align: left;">D51</td>
+<td style="text-align: right;">37</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">52</td>
+<td style="text-align: left;">D52</td>
+<td style="text-align: right;">61</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">53</td>
+<td style="text-align: left;">D53</td>
+<td style="text-align: right;">19</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">54</td>
+<td style="text-align: left;">D55</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">55</td>
+<td style="text-align: left;">D56</td>
+<td style="text-align: right;">45</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">56</td>
+<td style="text-align: left;">D57</td>
+<td style="text-align: right;">27</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">57</td>
+<td style="text-align: left;">D58</td>
+<td style="text-align: right;">33</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">58</td>
+<td style="text-align: left;">D59</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">59</td>
+<td style="text-align: left;">D60</td>
+<td style="text-align: right;">32</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">60</td>
+<td style="text-align: left;">D61</td>
+<td style="text-align: right;">42</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>The information recorded included woman’s age, the number of live children she has, whether she lives in an urban or rural setting, and the political district in which she lives.</p>
+<p>The age was centered. Unfortunately, the version of the data to which I had access did not record what the centering value was.</p>
+<p>A data plot, <a href="#fig-contradata" class="quarto-xref">Figure&nbsp;1</a>, shows that the probability of contraception use is <strong>not</strong> linear in <code>age</code> - it is low for younger women, higher for women in the middle of the range (assumed to be women in late 20’s to early 30’s) and low again for older women (late 30’s to early 40’s in this survey).</p>
+<p>If we fit a model with only the <code>age</code> term in the fixed effects, that term will not be significant. This doesn’t mean that there is no “age effect”, it only means that there is no significant linear effect for <code>age</code>.</p>
+<div id="cell-fig-contradata" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@transform</span>(</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>      contra,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span>numuse <span class="op">=</span> <span class="fu">Int</span>(<span class="op">:</span>use <span class="op">==</span> <span class="st">"Y"</span>),</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span>urb <span class="op">=</span> <span class="fu">ifelse</span>(<span class="op">:</span>urban <span class="op">==</span> <span class="st">"Y"</span>, <span class="st">"Urban"</span>, <span class="st">"Rural"</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="op">*</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mapping</span>(</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>age <span class="op">=&gt;</span> <span class="st">"Centered age (yr)"</span>,</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>numuse <span class="op">=&gt;</span> <span class="st">"Frequency of contraception use"</span>;</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    col<span class="op">=:</span>urb,</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=:</span>livch,</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="op">*</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">smooth</span>();</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>  figure<span class="op">=</span>(; resolution<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">450</span>)),</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>┌ Warning: Found `resolution` in the theme when creating a `Scene`. The `resolution` keyword for `Scene`s and `Figure`s has been deprecated. Use `Figure(; size = ...` or `Scene(; size = ...)` instead, which better reflects that this is a unitless size and not a pixel resolution. The key could also come from `set_theme!` calls or related theming functions.
+└ @ Makie ~/.julia/packages/Makie/qMluh/src/scenes.jl:227</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div id="fig-contradata" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-contradata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="glmm_files/figure-html/fig-contradata-output-2.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-contradata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Smoothed relative frequency of contraception use versus centered age for women in the 1989 Bangladesh Fertility Survey
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="40" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>dist <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>urban <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(),</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>livch <span class="op">=&gt;</span> <span class="fu">DummyCoding</span>(), <span class="co"># default, but no harm in being explicit</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>nAGQ <span class="op">=</span> <span class="fl">9</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>dist <span class="op">=</span> <span class="fu">Bernoulli</span>()</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>gm1 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    use <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> age <span class="op">+</span> <span class="fu">abs2</span>(age) <span class="op">+</span> urban <span class="op">+</span> livch <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> dist)</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, contra, dist; nAGQ, contrasts)</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Minimizing 2    Time: 0:00:00 (91.92 ms/it)
+  objective:  2396.263956678254
+Minimizing 208    Time: 0:00:01 ( 5.00 ms/it)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_dist</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-0.6871</td>
+<td style="text-align: right;">0.1686</td>
+<td style="text-align: right;">-4.08</td>
+<td style="text-align: right;">&lt;1e-04</td>
+<td style="text-align: right;">0.4786</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age</td>
+<td style="text-align: right;">0.0035</td>
+<td style="text-align: right;">0.0092</td>
+<td style="text-align: right;">0.38</td>
+<td style="text-align: right;">0.7021</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">abs2(age)</td>
+<td style="text-align: right;">-0.0046</td>
+<td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">-6.29</td>
+<td style="text-align: right;">&lt;1e-09</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">urban: Y</td>
+<td style="text-align: right;">0.3483</td>
+<td style="text-align: right;">0.0600</td>
+<td style="text-align: right;">5.81</td>
+<td style="text-align: right;">&lt;1e-08</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">livch: 1</td>
+<td style="text-align: right;">0.8152</td>
+<td style="text-align: right;">0.1622</td>
+<td style="text-align: right;">5.03</td>
+<td style="text-align: right;">&lt;1e-06</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">livch: 2</td>
+<td style="text-align: right;">0.9165</td>
+<td style="text-align: right;">0.1851</td>
+<td style="text-align: right;">4.95</td>
+<td style="text-align: right;">&lt;1e-06</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">livch: 3+</td>
+<td style="text-align: right;">0.9153</td>
+<td style="text-align: right;">0.1858</td>
+<td style="text-align: right;">4.93</td>
+<td style="text-align: right;">&lt;1e-06</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Notice that the linear term for <code>age</code> is not significant but the quadratic term for <code>age</code> is highly significant. We usually retain the lower order term, even if it is not significant, if the higher order term is significant.</p>
+<p>Notice also that the parameter estimates for the treatment contrasts for <code>livch</code> are similar. Thus the distinction of 1, 2, or 3+ children is not as important as the contrast between having any children and not having any. Those women who already have children are more likely to use artificial contraception.</p>
+<p>Furthermore, the women without children have a different probability vs age profile than the women with children. To allow for this we define a binary <code>children</code> factor and incorporate an <code>age&amp;children</code> interaction.</p>
+<div id="42" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(gm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: left;" data-quarto-table-cell-role="th">Column</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Variance</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Std.Dev</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">dist</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">0.22907</td>
+<td style="text-align: right;">0.47861</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Notice that there is no “residual” variance being estimated. This is because the Bernoulli distribution doesn’t have a scale parameter.</p>
+</section>
+<section id="convert-livch-to-a-binary-factor" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="convert-livch-to-a-binary-factor"><span class="header-section-number">3.2</span> Convert <code>livch</code> to a binary factor</h3>
+<div id="44" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@transform</span>!(contra, <span class="op">:</span>children <span class="op">=</span> <span class="op">:</span>livch <span class="op">≠</span> <span class="st">"0"</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># add the associated contrast specifier</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>contrasts[<span class="op">:</span>children] <span class="op">=</span> <span class="fu">EffectsCoding</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>EffectsCoding(nothing, nothing)</code></pre>
+</div>
+</div>
+<div id="46" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>gm2 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    use <span class="op">~</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>      age <span class="op">*</span> children <span class="op">+</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">abs2</span>(age) <span class="op">+</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>      children <span class="op">+</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>      urban <span class="op">+</span></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>      (<span class="fl">1</span> <span class="op">|</span> dist)</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, contra, dist; nAGQ, contrasts)</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Minimizing 95    Time: 0:00:00 ( 1.06 ms/it)
+  objective:  2364.92044533042
+Minimizing 140    Time: 0:00:00 ( 1.06 ms/it)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_dist</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-0.3615</td>
+<td style="text-align: right;">0.1275</td>
+<td style="text-align: right;">-2.84</td>
+<td style="text-align: right;">0.0046</td>
+<td style="text-align: right;">0.4757</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age</td>
+<td style="text-align: right;">-0.0131</td>
+<td style="text-align: right;">0.0110</td>
+<td style="text-align: right;">-1.19</td>
+<td style="text-align: right;">0.2351</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">children: true</td>
+<td style="text-align: right;">0.6055</td>
+<td style="text-align: right;">0.1035</td>
+<td style="text-align: right;">5.85</td>
+<td style="text-align: right;">&lt;1e-08</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">abs2(age)</td>
+<td style="text-align: right;">-0.0058</td>
+<td style="text-align: right;">0.0008</td>
+<td style="text-align: right;">-6.89</td>
+<td style="text-align: right;">&lt;1e-11</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">urban: Y</td>
+<td style="text-align: right;">0.3567</td>
+<td style="text-align: right;">0.0602</td>
+<td style="text-align: right;">5.93</td>
+<td style="text-align: right;">&lt;1e-08</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age &amp; children: true</td>
+<td style="text-align: right;">0.0342</td>
+<td style="text-align: right;">0.0127</td>
+<td style="text-align: right;">2.69</td>
+<td style="text-align: right;">0.0072</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="48" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  mods <span class="op">=</span> [gm2, gm1]</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DataFrame</span>(;</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>[<span class="op">:</span>gm2, <span class="op">:</span>gm1],</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    npar<span class="op">=</span><span class="fu">dof</span>.(mods),</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    deviance<span class="op">=</span><span class="fu">deviance</span>.(mods),</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>    AIC<span class="op">=</span><span class="fu">aic</span>.(mods),</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>    BIC<span class="op">=</span><span class="fu">bic</span>.(mods),</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>    AICc<span class="op">=</span><span class="fu">aicc</span>.(mods),</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div><div style="float: left;"><span>2×6 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
+<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">npar</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">deviance</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">AIC</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">BIC</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">AICc</th>
+</tr>
+<tr class="odd subheader headerLastRow">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Symbol">Symbol</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
+<td style="text-align: left;">gm2</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2364.92</td>
+<td style="text-align: right;">2379.18</td>
+<td style="text-align: right;">2418.15</td>
+<td style="text-align: right;">2379.24</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
+<td style="text-align: left;">gm1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2372.46</td>
+<td style="text-align: right;">2388.73</td>
+<td style="text-align: right;">2433.27</td>
+<td style="text-align: right;">2388.81</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Because these models are not nested, we cannot do a likelihood ratio test. Nevertheless we see that the deviance is much lower in the model with <code>age &amp; children</code> even though the 3 levels of <code>livch</code> have been collapsed into a single level of <code>children</code>. There is a substantial decrease in the deviance even though there are fewer parameters in model <code>gm2</code> than in <code>gm1</code>. This decrease is because the flexibility of the model - its ability to model the behavior of the response - is being put to better use in <code>gm2</code> than in <code>gm1</code>.</p>
+<p>At present the calculation of the <code>geomdof</code> as <code>sum(influence(m))</code> is not correctly defined in our code for a GLMM so we need to do some more work before we can examine those values.</p>
+</section>
+<section id="using-urbandist-as-a-grouping-factor" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="using-urbandist-as-a-grouping-factor"><span class="header-section-number">3.3</span> Using <code>urban&amp;dist</code> as a grouping factor</h3>
+<p>It turns out that there can be more difference between urban and rural settings within the same political district than there is between districts. To model this difference we build a model with <code>urban&amp;dist</code> as a grouping factor.</p>
+<div id="50" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>gm3 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    use <span class="op">~</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>      age <span class="op">*</span> children <span class="op">+</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">abs2</span>(age) <span class="op">+</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>      children <span class="op">+</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>      urban <span class="op">+</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>      (<span class="fl">1</span> <span class="op">|</span> urban <span class="op">&amp;</span> dist)</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, contra, dist; nAGQ, contrasts)</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Minimizing 90    Time: 0:00:00 ( 1.12 ms/it)
+  objective:  2353.829069935298
+Minimizing 144    Time: 0:00:00 ( 1.11 ms/it)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_urban &amp; dist</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-0.3415</td>
+<td style="text-align: right;">0.1269</td>
+<td style="text-align: right;">-2.69</td>
+<td style="text-align: right;">0.0071</td>
+<td style="text-align: right;">0.5761</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age</td>
+<td style="text-align: right;">-0.0129</td>
+<td style="text-align: right;">0.0112</td>
+<td style="text-align: right;">-1.16</td>
+<td style="text-align: right;">0.2472</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">children: true</td>
+<td style="text-align: right;">0.6064</td>
+<td style="text-align: right;">0.1045</td>
+<td style="text-align: right;">5.80</td>
+<td style="text-align: right;">&lt;1e-08</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">abs2(age)</td>
+<td style="text-align: right;">-0.0056</td>
+<td style="text-align: right;">0.0008</td>
+<td style="text-align: right;">-6.66</td>
+<td style="text-align: right;">&lt;1e-10</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">urban: Y</td>
+<td style="text-align: right;">0.3936</td>
+<td style="text-align: right;">0.0859</td>
+<td style="text-align: right;">4.58</td>
+<td style="text-align: right;">&lt;1e-05</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age &amp; children: true</td>
+<td style="text-align: right;">0.0332</td>
+<td style="text-align: right;">0.0128</td>
+<td style="text-align: right;">2.59</td>
+<td style="text-align: right;">0.0096</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="52" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  mods <span class="op">=</span> [gm3, gm2, gm1]</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DataFrame</span>(;</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>[<span class="op">:</span>gm3, <span class="op">:</span>gm2, <span class="op">:</span>gm1],</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    npar<span class="op">=</span><span class="fu">dof</span>.(mods),</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    deviance<span class="op">=</span><span class="fu">deviance</span>.(mods),</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    AIC<span class="op">=</span><span class="fu">aic</span>.(mods),</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    BIC<span class="op">=</span><span class="fu">bic</span>.(mods),</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    AICc<span class="op">=</span><span class="fu">aicc</span>.(mods),</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div><div style="float: left;"><span>3×6 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
+<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">npar</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">deviance</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">AIC</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">BIC</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">AICc</th>
+</tr>
+<tr class="odd subheader headerLastRow">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Symbol">Symbol</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
+<td style="text-align: left;">gm3</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2353.82</td>
+<td style="text-align: right;">2368.48</td>
+<td style="text-align: right;">2407.46</td>
+<td style="text-align: right;">2368.54</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
+<td style="text-align: left;">gm2</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2364.92</td>
+<td style="text-align: right;">2379.18</td>
+<td style="text-align: right;">2418.15</td>
+<td style="text-align: right;">2379.24</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
+<td style="text-align: left;">gm1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2372.46</td>
+<td style="text-align: right;">2388.73</td>
+<td style="text-align: right;">2433.27</td>
+<td style="text-align: right;">2388.81</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Notice that the parameter count in <code>gm3</code> is the same as that of <code>gm2</code> - the thing that has changed is the number of levels of the grouping factor- resulting in a much lower deviance for <code>gm3</code>. This reinforces the idea that a simple count of the number of parameters to be estimated does not always reflect the complexity of the model.</p>
+<div id="54" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>gm2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_dist</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-0.3615</td>
+<td style="text-align: right;">0.1275</td>
+<td style="text-align: right;">-2.84</td>
+<td style="text-align: right;">0.0046</td>
+<td style="text-align: right;">0.4757</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age</td>
+<td style="text-align: right;">-0.0131</td>
+<td style="text-align: right;">0.0110</td>
+<td style="text-align: right;">-1.19</td>
+<td style="text-align: right;">0.2351</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">children: true</td>
+<td style="text-align: right;">0.6055</td>
+<td style="text-align: right;">0.1035</td>
+<td style="text-align: right;">5.85</td>
+<td style="text-align: right;">&lt;1e-08</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">abs2(age)</td>
+<td style="text-align: right;">-0.0058</td>
+<td style="text-align: right;">0.0008</td>
+<td style="text-align: right;">-6.89</td>
+<td style="text-align: right;">&lt;1e-11</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">urban: Y</td>
+<td style="text-align: right;">0.3567</td>
+<td style="text-align: right;">0.0602</td>
+<td style="text-align: right;">5.93</td>
+<td style="text-align: right;">&lt;1e-08</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age &amp; children: true</td>
+<td style="text-align: right;">0.0342</td>
+<td style="text-align: right;">0.0127</td>
+<td style="text-align: right;">2.69</td>
+<td style="text-align: right;">0.0072</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="56" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>gm3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_urban &amp; dist</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-0.3415</td>
+<td style="text-align: right;">0.1269</td>
+<td style="text-align: right;">-2.69</td>
+<td style="text-align: right;">0.0071</td>
+<td style="text-align: right;">0.5761</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age</td>
+<td style="text-align: right;">-0.0129</td>
+<td style="text-align: right;">0.0112</td>
+<td style="text-align: right;">-1.16</td>
+<td style="text-align: right;">0.2472</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">children: true</td>
+<td style="text-align: right;">0.6064</td>
+<td style="text-align: right;">0.1045</td>
+<td style="text-align: right;">5.80</td>
+<td style="text-align: right;">&lt;1e-08</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">abs2(age)</td>
+<td style="text-align: right;">-0.0056</td>
+<td style="text-align: right;">0.0008</td>
+<td style="text-align: right;">-6.66</td>
+<td style="text-align: right;">&lt;1e-10</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">urban: Y</td>
+<td style="text-align: right;">0.3936</td>
+<td style="text-align: right;">0.0859</td>
+<td style="text-align: right;">4.58</td>
+<td style="text-align: right;">&lt;1e-05</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age &amp; children: true</td>
+<td style="text-align: right;">0.0332</td>
+<td style="text-align: right;">0.0128</td>
+<td style="text-align: right;">2.59</td>
+<td style="text-align: right;">0.0096</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The coefficient for <code>age</code> may be regarded as insignificant but we retain it for two reasons: we have a term of <code>age²</code> (written <code>abs2(age)</code>) in the model and we have a significant interaction <code>age &amp; children</code> in the model.</p>
+</section>
+<section id="predictions-for-some-subgroups" class="level3" data-number="3.4">
+<h3 data-number="3.4" class="anchored" data-anchor-id="predictions-for-some-subgroups"><span class="header-section-number">3.4</span> Predictions for some subgroups</h3>
+<p>For a “typical” district (random effect near zero) the predictions on the linear predictor scale for a woman whose age is near the centering value (i.e.&nbsp;centered age of zero) are:</p>
+<div id="58" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Effects</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>design <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>children <span class="op">=&gt;</span> [<span class="cn">true</span>, <span class="cn">false</span>], <span class="op">:</span>urban <span class="op">=&gt;</span> [<span class="st">"Y"</span>, <span class="st">"N"</span>], <span class="op">:</span>age <span class="op">=&gt;</span> [<span class="fl">0.0</span>]</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> <span class="fu">effects</span>(design, gm3; invlink<span class="op">=</span><span class="fu">AutoInvLink</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div><div style="float: left;"><span>4×7 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
+<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">children</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">age</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">urban</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">use: Y</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">err</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">lower</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">upper</th>
+</tr>
+<tr class="odd subheader headerLastRow">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Bool">Bool</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="String">String</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
+<td style="text-align: right;">true</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: right;">0.65894</td>
+<td style="text-align: right;">0.03383</td>
+<td style="text-align: right;">0.62511</td>
+<td style="text-align: right;">0.69277</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
+<td style="text-align: right;">false</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: right;">0.364868</td>
+<td style="text-align: right;">0.0534102</td>
+<td style="text-align: right;">0.311458</td>
+<td style="text-align: right;">0.418278</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
+<td style="text-align: right;">true</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: left;">N</td>
+<td style="text-align: right;">0.46789</td>
+<td style="text-align: right;">0.0281379</td>
+<td style="text-align: right;">0.439752</td>
+<td style="text-align: right;">0.496028</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">4</td>
+<td style="text-align: right;">false</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: left;">N</td>
+<td style="text-align: right;">0.207265</td>
+<td style="text-align: right;">0.0364059</td>
+<td style="text-align: right;">0.17086</td>
+<td style="text-align: right;">0.243671</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="summarizing-the-results" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="summarizing-the-results"><span class="header-section-number">4</span> Summarizing the results</h2>
+<ul>
+<li>From the data plot we can see a quadratic trend in the probability by age.</li>
+<li>The patterns for women with children are similar and we do not need to distinguish between 1, 2, and 3+ children.</li>
+<li>We do distinguish between those women who do not have children and those with children. This shows up in a significant <code>age &amp; children</code> interaction term.</li>
+</ul>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/RePsychLing\.github\.io\/SMLP2024");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./contrasts_kwdyz11.html" class="pagination-link" aria-label="Contrast Coding of Visual Attention Effects">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Contrast Coding of Visual Attention Effects</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./bootstrap.html" class="pagination-link" aria-label="Parametric bootstrap for mixed-effects models">
+        <span class="nav-page-text">Parametric bootstrap for mixed-effects models</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/RePsychLing/SMLP2024/edit/main/glmm.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RePsychLing/SMLP2024/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
