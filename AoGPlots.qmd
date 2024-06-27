@@ -1,5 +1,8 @@
 ---
 title: "Creating multi-panel plots"
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 This notebook shows creating a multi-panel plot similar to Figure 2 of @Fuehner2021.

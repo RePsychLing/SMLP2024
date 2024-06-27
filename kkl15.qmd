@@ -1,6 +1,8 @@
 ---
 title: 'RePsychLing Kliegl, Kuschela, & Laubrock (2015)- Reduction of Model Complexity'
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 # Background

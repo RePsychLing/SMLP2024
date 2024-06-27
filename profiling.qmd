@@ -1,6 +1,9 @@
 ---
 title: "Confidence intervals from profiled objective"
 author: "Douglas Bates"
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 # Assessing the variability of parameter estimates

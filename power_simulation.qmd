@@ -1,7 +1,9 @@
 ---
 title: "Using simulation to estimate uncertainty and power"
 subtitle: "Or how I learned how to stop worrying and love the bootstrap"
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 format:
   html:
     embed-resources: true

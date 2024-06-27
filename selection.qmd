@@ -1,5 +1,7 @@
 ---
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 ```{julia}

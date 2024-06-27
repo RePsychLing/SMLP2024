@@ -1,6 +1,8 @@
 ---
 title: "Generalized linear mixed models"
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 Load the packages to be used

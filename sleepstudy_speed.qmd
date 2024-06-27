@@ -1,6 +1,8 @@
 ---
 title: "The sleepstudy: Speed - for a change ..."
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 # Background

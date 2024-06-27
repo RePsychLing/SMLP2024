@@ -2,6 +2,9 @@
 title: "Seventh Summer School on Statistical Methods for Linguistics and Psychology"
 subtitle: "Advanced methods in frequentist statistics with Julia"
 author: "Phillip Alday, Reinhold Kliegl and Douglas Bates"
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 This site provides materials for the **Advanced frequentist methods** stream of the [Summer School on Statistical Methods](https://vasishth.github.io/smlp2024/) to be held at the University of Potsdam, 11-15 September, 2024.

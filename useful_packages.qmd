@@ -1,6 +1,9 @@
 ---
 title: "Useful packages"
 author: "Phillip Alday"
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 Unlike R, Julia does not immediately expose a huge number of functions, but instead requires loading packages (whether from the standard library or from the broader package ecosystem) for a lot of relevant functionality for statistical analysis.
@@ -14,7 +17,7 @@ This has two important implications:
 
 This notebook is not intended to be an exhaustive list of packages, but rather to highlight a few packages that I suspect will be particularly useful.
 Before getting onto the packages, I have one final hint: take advantage of how easy and first-class package management in Julia is.
-Having good package management makes reproducible analyses much easier and avoids breaking old analyses when you start a new one. 
+Having good package management makes reproducible analyses much easier and avoids breaking old analyses when you start a new one.
 The package-manager REPL mode (activated by typing `]` at the `julia>` prompt) is very useful.
 
 # Data wrangling

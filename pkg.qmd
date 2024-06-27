@@ -1,5 +1,8 @@
 ---
 title: "Package management and reproducible environments"
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 *Julius Krumbiegel also has a [great blog post](https://jkrumbiegel.com/pages/2022-08-26-pkg-introduction/) with more details on Julia environments.*

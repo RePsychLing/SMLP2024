@@ -1,6 +1,8 @@
 ---
 title: "RePsychLing Kliegl et al. (2011)"
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 author: "Reinhold Kliegl"
 ---
 

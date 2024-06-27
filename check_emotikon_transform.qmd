@@ -1,5 +1,8 @@
 ---
 title: Transformed and original metrics in Emotikon
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 In @Fuehner2021 the original metric of two tasks (Star, S20) is time, but they were transformed to speed scores in the publication prior to computing z-scores.

@@ -1,3 +1,13 @@
+date: today
+date-format: iso
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
+execute:
+  cache: true
+  freeze: auto
+number-sections: true
+
 project:
   type: website
   title: "SMLP2024"
@@ -28,14 +38,6 @@ project:
   - sleepstudy.qmd
   - sleepstudy_speed.qmd
   - useful_packages.qmd
-
-date: today
-date-format: iso
-jupyter: julia-1.9
-execute:
-  cache: true
-  freeze: auto
-number-sections: true
 
 # editor_options:
 #   chunk_output_type: console
