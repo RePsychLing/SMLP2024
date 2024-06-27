@@ -31,7 +31,7 @@ using CairoMakie
 using MixedModels
 using MixedModelsMakie
 using Random
-using SMLP2023: dataset
+using SMLP2024: dataset
 
 CairoMakie.activate!(; type="svg")
 import ProgressMeter

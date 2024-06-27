@@ -33,7 +33,7 @@ using ProgressMeter
 using Random
 using Statistics
 using StatsBase
-using SMLP2023: dataset
+using SMLP2024: dataset
 
 ProgressMeter.ijulia_behavior(:clear)
 CairoMakie.activate!(; type="svg")

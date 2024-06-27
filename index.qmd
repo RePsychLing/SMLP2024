@@ -4,7 +4,7 @@ subtitle: "Advanced methods in frequentist statistics with Julia"
 author: "Phillip Alday, Reinhold Kliegl and Douglas Bates"
 ---
 
-This site provides materials for the **Advanced frequentist methods** stream of the [Summer School on Statistical Methods](https://vasishth.github.io/smlp2023/) to be held at the University of Potsdam, 11-15 September, 2023.
+This site provides materials for the **Advanced frequentist methods** stream of the [Summer School on Statistical Methods](https://vasishth.github.io/smlp2024/) to be held at the University of Potsdam, 11-15 September, 2024.
 
 # Installation of tools prior to the course
 
@@ -16,11 +16,11 @@ Because most students in the course will have more experience with [R](https://r
 We will assume that you have git installed and are able to clone a repository from github.
 If not, [Happy Git with R](https://happygitwithr.com/) is a good place to learn about git for data science.
 
-This website is built using [quarto](https://quarto.org), described below, from the [repository](https://github.com/RePsychLing/SMLP2023).
+This website is built using [quarto](https://quarto.org), described below, from the [repository](https://github.com/RePsychLing/SMLP2024).
 Clone this repository with, e.g.
 
 ```sh
-git clone https://github.com/RePsychLing/SMLP2023
+git clone https://github.com/RePsychLing/SMLP2024
 ```
 
 ## Julia Programming Language

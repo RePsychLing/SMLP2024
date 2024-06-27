@@ -1,13 +1,13 @@
-# SMLP2023
+# SMLP2024
 
-SMLP2023: Advanced methods in frequentist statistics with Julia
+SMLP2024: Advanced methods in frequentist statistics with Julia
 
-The rendered website version of the course materials is available [here](https://repsychling.github.io/SMLP2023/).
+The rendered website version of the course materials is available [here](https://repsychling.github.io/SMLP2024/).
 
 This repository uses [Quarto](https://quarto.org). To be able to render all the pages, you will need an appropriate Jupyter kernel installed and the local environment instantiated.
 
 ```sh
-~/SMLP2023$ julia
+~/SMLP2024$ julia
 
 julia> using Pkg
 
@@ -23,14 +23,14 @@ julia> installkernel("julia", "--threads=auto", "--project=@.")
 "~/.local/share/jupyter/kernels/julia-1.9"
 
 julia> Pkg.activate(".")
-  Activating project at `~/SMLP2023`
+  Activating project at `~/SMLP2024`
 
 julia> Pkg.instantiate()
 < lots of output >
 
 julia> exit()
 
-~/SMLP2023$ quarto preview
+~/SMLP2024$ quarto preview
 
 < lots of output >
 

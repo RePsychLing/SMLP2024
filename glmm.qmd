@@ -14,7 +14,7 @@ using DataFrameMacros
 using DataFrames
 using MixedModels
 using MixedModelsMakie
-using SMLP2023: dataset
+using SMLP2024: dataset
 
 CairoMakie.activate!(; type="svg")
 

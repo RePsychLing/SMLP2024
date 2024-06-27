@@ -36,7 +36,7 @@ using DataFrames
 using MixedModels
 using MixedModelsMakie
 using Random
-using SMLP2023: dataset
+using SMLP2024: dataset
 
 using AlgebraOfGraphics: AlgebraOfGraphics as AoG
 CairoMakie.activate!(; type="svg") # use SVG (other options include PNG)

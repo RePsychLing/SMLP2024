@@ -12,7 +12,7 @@ using CategoricalArrays
 using DataFrames
 using MixedModels
 using MixedModelsMakie
-using SMLP2023: dataset
+using SMLP2024: dataset
 using Statistics: mean, std
 ```
 
@@ -118,7 +118,7 @@ using CategoricalArrays
 using DataFrames
 using MixedModels
 using MixedModelsMakie
-using SMLP2023: dataset
+using SMLP2024: dataset
 using Statistics: mean, std
 
 ```

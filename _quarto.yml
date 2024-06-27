@@ -1,6 +1,6 @@
 project:
   type: website
-  title: "SMLP2023"
+  title: "SMLP2024"
   execute-dir: project
   output-dir: _build/
   render:
@@ -56,9 +56,9 @@ format:
     fig-height: 6
 
 website:
-  title: "SMLP2023: Advanced Frequentist Track"
-  site-url: https://RePsychLing.github.io/SMLP2023
-  repo-url: https://github.com/RePsychLing/SMLP2023
+  title: "SMLP2024: Advanced Frequentist Track"
+  site-url: https://RePsychLing.github.io/SMLP2024
+  repo-url: https://github.com/RePsychLing/SMLP2024
   repo-actions: [edit, issue]
   # reader-mode: true
   navbar:
@@ -69,7 +69,7 @@ website:
     #   - about.qmd
     right:
       - icon: github
-        href: https://github.com/RePsychLing/SMLP2023
+        href: https://github.com/RePsychLing/SMLP2024
   page-navigation: true
   back-to-top-navigation: true
   sidebar:
