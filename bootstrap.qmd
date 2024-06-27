@@ -173,7 +173,7 @@ ridgeplot(samp)
 Often the intercept will be on a different scale and potentially less interesting, so we can stop it from being included in the plot:
 
 ```{julia}
-ridgeplot(samp; show_intercept=false, xlabel="Bootstrap density and 95%CI")
+ridgeplot(samp; show_intercept=false)
 ```
 
 
