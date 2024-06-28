@@ -483,9 +483,9 @@ window.Quarto = {
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(pr01.m) <span class="co"># model is a property of the profile object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Minimizing 2    Time: 0:00:00 ( 0.39  s/it)
-  objective:  -1585.184301073052
-Minimizing 67    Time: 0:00:01 (22.29 ms/it)
+<pre><code>Minimizing 2    Time: 0:00:00 ( 0.37  s/it)
+  objective:  -1585.1843010730784
+Minimizing 67    Time: 0:00:01 (21.88 ms/it)
 Linear mixed model fit by maximum likelihood
  :(1000 / rt_raw) ~ 1 + load + spkr + prec + (1 + prec | item) + (1 | subj)
    logLik   -2 logLik     AIC       AICc        BIC    
@@ -617,12 +617,12 @@ Figure&nbsp;1: ζ versus the value of the coefficient for the fixed-effects para
  ────┬─────────────────────────────────
  β1  │ 0.531523   0.497103    0.565942
  β2  │ 0.0212959  0.0148295   0.0277621
- β3  │ 0.011218   0.00475174  0.0176844
+ β3  │ 0.011218   0.00475175  0.0176844
  β4  │ 0.0698293  0.0523046   0.0873562
  σ   │ 0.139458   0.13486     0.144322
  σ1  │ 0.0781364  0.0612443   0.103257
  σ2  │ 0.0452502  0.0338521   0.0618819
- σ3  │ 0.0736113  0.0600845   0.0916852</code></pre>
+ σ3  │ 0.0736113  0.0600844   0.0916852</code></pre>
 </div>
 </div>
 <p>as shown in <a href="#fig-kb07abszetabeta" class="quarto-xref">Figure&nbsp;2</a>, which shows the absolute value of <span class="math inline">\(\zeta\)</span>, which is simply the square root of the difference in the objective, versus the parameter being profiled.</p>
@@ -718,12 +718,12 @@ Figure&nbsp;4: Absolute value of ζ versus parameter value for the θ parameters
  β1  │ 0.497384    0.562267
  β2  │ 0.0147172   0.0274258
  β3  │ 0.00481004  0.0169282
- β4  │ 0.0524409   0.0857708
- ρ1  │ -0.577499   0.183778
- σ   │ 0.134747    0.144354
- σ1  │ 0.0587605   0.0986544
- σ2  │ 0.0316108   0.0571327
- σ3  │ 0.0572288   0.087862</code></pre>
+ β4  │ 0.0524409   0.0857707
+ ρ1  │ -0.557298   0.203936
+ σ   │ 0.134749    0.144354
+ σ1  │ 0.0587605   0.0986167
+ σ2  │ 0.0316134   0.0571327
+ σ3  │ 0.05724     0.087862</code></pre>
 </div>
 </div>
 <p>Comparing these intervals with those from the profile results shows that the intervals on the fixed-effects parameters from the two methods are quite similar. The intervals on <span class="math inline">\(\sigma\)</span> from the two methods are quite similar but the bootstrap intervals on the other variance components are shifted to the left relative to those from the profiling results. The reason for this is because the bootstrap intervals are chosen to be the shortest intervals with the desired coverage. In a density that is skewed to the right, as these are, the shortest interval will be to the left of an interval with equal tail coverage, which is how the profile-based intervals are constructed.</p>

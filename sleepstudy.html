@@ -549,7 +549,7 @@ Figure&nbsp;1: Average response time versus days of sleep deprivation by subject
 <tr class="even">
 <td style="text-align: left;">subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">565.51067</td>
+<td style="text-align: right;">565.51065</td>
 <td style="text-align: right;">23.78047</td>
 <td style="text-align: right;"></td>
 </tr>
@@ -809,22 +809,22 @@ Note
 <pre><code>Table with 10 columns and 5000 rows:
       obj      β1       β2       σ        σ1       σ2       ρ1          ⋯
     ┌────────────────────────────────────────────────────────────────────
- 1  │ 1717.29  260.712  9.84975  23.4092  15.3317  6.40296  -0.025958   ⋯
- 2  │ 1744.06  262.253  12.3008  25.7047  16.3183  5.54688  0.552607    ⋯
- 3  │ 1714.16  253.149  12.879   22.2753  25.4787  6.1444   0.0691545   ⋯
- 4  │ 1711.54  263.376  11.5798  23.3128  18.8039  4.6557   0.103361    ⋯
- 5  │ 1741.66  248.429  9.39444  25.4355  20.141   5.27357  -0.163599   ⋯
- 6  │ 1754.81  256.794  8.024    26.5087  10.6781  7.14162  0.335471    ⋯
- 7  │ 1777.73  253.388  8.83556  27.8623  17.8325  7.17386  0.00378979  ⋯
- 8  │ 1768.59  254.441  11.4479  27.4033  16.2489  6.67042  0.725394    ⋯
+ 1  │ 1717.29  260.712  9.84975  23.4092  15.3314  6.40292  -0.0259483  ⋯
+ 2  │ 1744.06  262.253  12.3008  25.7047  16.3184  5.54693  0.552601    ⋯
+ 3  │ 1714.16  253.149  12.879   22.2753  25.4787  6.1444   0.0691544   ⋯
+ 4  │ 1711.54  263.376  11.5798  23.3128  18.8039  4.65569  0.103361    ⋯
+ 5  │ 1741.66  248.429  9.39444  25.4355  20.1412  5.27358  -0.163606   ⋯
+ 6  │ 1754.81  256.794  8.024    26.5088  10.6781  7.14155  0.335447    ⋯
+ 7  │ 1777.73  253.388  8.83556  27.8623  17.8325  7.17386  0.00379004  ⋯
+ 8  │ 1768.59  254.441  11.4479  27.4033  16.2484  6.67057  0.725411    ⋯
  9  │ 1753.56  244.906  11.3423  25.6046  25.3607  5.98654  -0.171821   ⋯
  10 │ 1722.61  257.088  9.18397  23.3386  24.9274  5.18012  0.181143    ⋯
- 11 │ 1738.16  251.262  11.6568  25.7823  17.6663  4.07218  0.25814     ⋯
- 12 │ 1747.76  258.302  12.8015  26.1085  19.2398  5.06066  0.879712    ⋯
- 13 │ 1745.91  254.57   11.8062  24.8863  24.2513  6.14642  0.0126996   ⋯
+ 11 │ 1738.16  251.262  11.6568  25.7823  17.6663  4.07215  0.258142    ⋯
+ 12 │ 1747.76  258.302  12.8015  26.1083  19.2395  5.06103  0.879669    ⋯
+ 13 │ 1745.91  254.57   11.8062  24.8863  24.2513  6.14642  0.0126995   ⋯
  14 │ 1738.8   251.179  10.3226  24.2672  23.7195  6.32645  0.368592    ⋯
- 15 │ 1724.76  238.603  11.5045  25.23    19.0263  3.64038  -0.34657    ⋯
- 16 │ 1777.7   254.133  8.26398  26.9846  26.3715  7.8283   -0.288773   ⋯
+ 15 │ 1724.76  238.603  11.5045  25.2301  19.026   3.64035  -0.346558   ⋯
+ 16 │ 1777.7   254.133  8.26397  26.9846  26.3715  7.8283   -0.288773   ⋯
  17 │ 1748.33  251.571  9.5294   26.2927  21.9611  4.31316  -0.150104   ⋯
  ⋮  │    ⋮        ⋮        ⋮        ⋮        ⋮        ⋮         ⋮       ⋱</code></pre>
 </div>
@@ -867,14 +867,14 @@ Figure&nbsp;4: Empirical density plots of bootstrap replications of fixed-effect
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Table</span>(<span class="fu">shortestcovint</span>(m1bstp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Table with 5 columns and 6 rows:
-     type  group     names              lower      upper
-   ┌──────────────────────────────────────────────────────
- 1 │ β     missing   (Intercept)        239.64     265.228
- 2 │ β     missing   days               7.42347    13.1607
- 3 │ σ     subj      (Intercept)        10.1722    33.0876
- 4 │ σ     subj      days               2.9948     7.66116
- 5 │ ρ     subj      (Intercept), days  -0.401353  1.0
- 6 │ σ     residual  missing            22.701     28.5016</code></pre>
+     type  group     names              lower     upper
+   ┌─────────────────────────────────────────────────────
+ 1 │ β     missing   (Intercept)        239.64    265.228
+ 2 │ β     missing   days               7.42347   13.1607
+ 3 │ σ     subj      (Intercept)        10.1722   33.0876
+ 4 │ σ     subj      days               2.99476   7.66118
+ 5 │ ρ     subj      (Intercept), days  -0.40135  1.0
+ 6 │ σ     residual  missing            22.701    28.5016</code></pre>
 </div>
 </div>
 <p>The intervals look reasonable except that the upper end point of the interval for ρ1, the correlation coefficient, is 1.0 . It turns out that the estimates of ρ have a great deal of variability.</p>
