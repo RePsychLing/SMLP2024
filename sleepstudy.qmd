@@ -30,14 +30,9 @@ using DataFrames
 using KernelDensity    # density estimation
 using MixedModels
 using MixedModelsMakie # diagnostic plots
-using ProgressMeter
 using Random           # random number generators
 using RCall            # call R from Julia
-using SMLP2024
 using SMLP2024: dataset
-
-ProgressMeter.ijulia_behavior(:clear)
-CairoMakie.activate!(; type="svg")
 ```
 
 The `sleepstudy` data are one of the datasets available with the `MixedModels` package.  It is re-exported by the `SMLP2024` package's `dataset` function.

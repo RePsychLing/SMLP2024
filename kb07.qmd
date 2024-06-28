@@ -14,13 +14,10 @@ using AlgebraOfGraphics
 using CairoMakie
 using DataFrames
 using MixedModels
-using ProgressMeter
 using Random
 using SMLP2024: dataset
 
-CairoMakie.activate!(; type="svg")
-
-ProgressMeter.ijulia_behavior(:clear)
+const progress=false
 ```
 
 # Data set and model
@@ -39,18 +36,10 @@ describe(DataFrame(kb07))
 
 The experimental factors; `spkr`, `prec`, and `load`, are two-level factors.
 The `EffectsCoding` contrast is used with these to create a $\pm1$ encoding.
-Furthermore, `Grouping` contrasts are assigned to the `subj` and `item` factors.
-This is not a contrast per-se but an indication that these factors will be used as grouping factors for random effects and, therefore, there is no need to create a contrast matrix.
-For large numbers of levels in a grouping factor, an attempt to create a contrast matrix may cause memory overflow.
-
-It is not important in these cases but a good practice in any case.
 
 ```{julia}
 #| output: false
-contrasts = merge(
-  Dict(nm => EffectsCoding() for nm in (:spkr, :prec, :load)),
-  Dict(nm => Grouping() for nm in (:subj, :item)),
-)
+contrasts = Dict{Symbol,Any}(nm => EffectsCoding() for nm in (:spkr, :prec, :load))
 ```
 
 The display of an initial model fit
@@ -64,7 +53,7 @@ kbm01 = let
       (1 + spkr + prec + load | subj) +
       (1 + spkr + prec + load | item)
   )
-  fit(MixedModel, form, kb07; contrasts)
+  fit(MixedModel, form, kb07; contrasts, progress)
 end
 ```
 
@@ -85,7 +74,7 @@ kbm02 = let
     rt_trunc ~
       1 + spkr + prec + load + (1 | subj) + (1 + prec | item)
   )
-  fit(MixedModel, form, kb07; contrasts)
+  fit(MixedModel, form, kb07; contrasts, progress)
 end
 ```
 

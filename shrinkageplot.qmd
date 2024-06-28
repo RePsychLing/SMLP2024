@@ -21,7 +21,7 @@ using MixedModelsMakie
 using Random
 using ProgressMeter
 
-ProgressMeter.ijulia_behavior(:clear);
+const progress=false
 ```
 
 Load the kb07 data set (don't tell Reinhold that I used these data).
@@ -46,7 +46,7 @@ m1 = let
       (1 + spkr + prec + load | subj) +
       (1 + spkr + prec + load | item)
   )
-  fit(MixedModel, form, kb07; contrasts)
+  fit(MixedModel, form, kb07; contrasts, progress)
 end
 ```
 
@@ -132,7 +132,7 @@ m2 = let
     rt_trunc ~
       1 + prec * spkr * load + (1 | subj) + (1 + prec | item)
   )
-  fit(MixedModel, form, kb07; contrasts)
+  fit(MixedModel, form, kb07; contrasts, progress)
 end
 ```
 
@@ -154,7 +154,7 @@ m3 = let
     rt_trunc ~
       1 + prec + spkr + load + (1 | subj) + (1 + prec | item)
   )
-  fit(MixedModel, form, kb07; contrasts)
+  fit(MixedModel, form, kb07; contrasts, progress)
 end
 ```
 
@@ -192,7 +192,7 @@ m4 = let
     rt_trunc ~
       1 + prec + spkr + load + (1 + prec | item) + (1 | subj)
   )
-  fit(MixedModel, form, kb07; contrasts)
+  fit(MixedModel, form, kb07; contrasts, progress)
 end
 ```
 

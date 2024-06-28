@@ -10,12 +10,13 @@ julia:
 Packages we (might) use.
 
 ```{julia}
-using CategoricalArrays
 using DataFrames
 using MixedModels
 using MixedModelsMakie
 using SMLP2024: dataset
 using Statistics: mean, std
+
+const progress=false
 ```
 
 ```{julia}
@@ -111,34 +112,13 @@ The data (variables and observations) used by Masson et al. (2017) are available
 
 Corresponding indicator variables (-1/+1):
 
-# Setup
-
-Packages we (might) use.
-
-```{julia}
-using CategoricalArrays
-using DataFrames
-using MixedModels
-using MixedModelsMakie
-using SMLP2024: dataset
-using Statistics: mean, std
-
-```
-
-```{julia}
-dat = DataFrame(dataset(:mrk17_exp1))
-describe(dat)
-```
-
 ```{julia}
 cells = combine(
   groupby(dat, [:F, :P, :Q, :lQ, :lT]),
   nrow => :n,
   :rt => mean => :rt_m,
   :rt => std => :rt_sd
- # :rt => (c -> mean(log, c)) => :lrt_m,
 )
-#dat_subj.CTR = categorical(dat_subj.CTR, levels=levels(dat.CTR))
 cells
 ```
 
@@ -161,7 +141,7 @@ m_cpx = let
     form = @formula (1000/rt) ~ 1+F*P*Q*lQ*lT +
                                (1+F+P+Q+lQ+lT | subj) +
                                (1  +P+Q+lQ+lT | item);
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end
 
 VarCorr(m_cpx)
@@ -205,7 +185,7 @@ m_zcp = let
     form = @formula (1000/rt) ~ 1+F*P*Q*lQ*lT +
                        zerocorr(1+F+P+Q+lQ+lT | subj) +
                        zerocorr(1  +P+Q+lQ+lT | item);
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end
 
 VarCorr(m_zcp)
@@ -224,7 +204,7 @@ m_zcp2 = let
     form = @formula (1000/rt) ~ 1+F*P*Q*lQ*lT +
                        zerocorr(1  +P+Q+lQ+lT | subj) +
                        zerocorr(1  +P+Q   +lT | item);
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end
 VarCorr(m_zcp2)
 ```
@@ -239,7 +219,7 @@ We can perhaps remove some more.
 m_zcp3 = let
     form = @formula (1000/rt) ~ 1+F*P*Q*lQ*lT +
                        zerocorr(1    +Q   +lT | subj) + (1 | item);
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end
 VarCorr(m_zcp3)
 ```
@@ -254,7 +234,7 @@ And another iteration.
 m_zcp4 = let
     form = @formula (1000/rt) ~ 1+F*P*Q*lQ*lT +
                        zerocorr(1         +lT | subj) + (1 | item);
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end
 VarCorr(m_zcp4)
 ```
@@ -269,7 +249,7 @@ Too much removed. Stay with `m_zcp3`, but extend with CPs.
 m_prm = let
     form = @formula (1000/rt) ~ 1+F*P*Q*lQ*lT +
                                (1+    Q+lT | subj) + (1 | item);
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end
 VarCorr(m_prm)
 ```
@@ -278,7 +258,7 @@ VarCorr(m_prm)
 m_prm = let
     form = @formula (1000/rt) ~ 1+F*P*Q*lQ*lT +
                                (1+    Q+lT | subj) + (1 | item);
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end
 VarCorr(m_prm)
 ```
@@ -320,7 +300,7 @@ The LMM is not nested in the previous sequence.
 m_mrk17_crossed =let
    form = @formula (1000/rt) ~ 1 + F*P*Q*lQ*lT +
         (1+Q | subj) + zerocorr(0+lT | subj) + zerocorr(1 + P | item) ;
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end
 
 VarCorr(m_prm)
@@ -338,7 +318,7 @@ Finally, a look at the fixed effects. The four-factor interaction reported in Ma
 m_mrk17_nested =let
    form = @formula (1000/rt) ~ 1 + Q/(F/P) +
         (1+Q | subj) + zerocorr(0+lT | subj) + zerocorr(1 + P | item) ;
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end
 ```
 
@@ -352,7 +332,7 @@ Include parenthesis
 m_mrk17_nested =let
    form = @formula (1000/rt) ~ 1 + Q/(F/P) +
         (1+Q | subj) + zerocorr(0+lT | subj) + zerocorr(1 + P | item) ;
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end
 ```
 
@@ -363,27 +343,27 @@ using RegressionFormulae
 # m_prm_5 is equivalent to m_prm
 m_prm_5 = let
     form = @formula (1000/rt) ~ 1+(F+P+Q+lQ+lT)^5 + (1+Q+lT | subj) + (1 | item);
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end;
 
 m_prm_4 = let
     form = @formula (1000/rt) ~ 1+(F+P+Q+lQ+lT)^4 + (1+Q+lT | subj) + (1 | item);
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end;
 
 m_prm_3 = let
     form = @formula (1000/rt) ~ 1+(F+P+Q+lQ+lT)^3 + (1+Q+lT | subj) + (1 | item);
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end;
 
 m_prm_2 = let
     form = @formula (1000/rt) ~ 1+(F+P+Q+lQ+lT)^2 + (1+Q+lT | subj) + (1 | item);
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end;
 
 m_prm_1 = let
     form = @formula (1000/rt) ~ 1+ F+P+Q+lQ+lT +   (1+Q+lT | subj) + (1 | item);
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end;
 
 # Compare the fits
@@ -415,7 +395,7 @@ We are using only three factors for the illustruation.
 m_prm3 = let
     form = @formula (1000/rt) ~ 1 + lT*lQ*Q +
                                (1+    Q+lT | subj) + (1 | item);
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end
 ```
 
@@ -425,7 +405,7 @@ The `lT & lQ & Q` interactions is significant. Let's follow it up with a post-ho
 m_prm3_posthoc = let
     form = @formula (1000/rt) ~ 1 + lT/(lQ*Q) +
                                (1+    Q+lT | subj) + (1 | item);
-    fit(MixedModel, form, dat; contrasts)
+    fit(MixedModel, form, dat; contrasts, progress)
 end
 ```
 
