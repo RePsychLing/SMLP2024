@@ -421,20 +421,310 @@ div.csl-indent {
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RCall</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Serialization</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>CairoMakie.<span class="fu">activate!</span>(; <span class="kw">type</span><span class="op">=</span><span class="st">"svg"</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>datadir <span class="op">=</span> <span class="fu">joinpath</span>(<span class="pp">@__DIR__</span>, <span class="st">"data"</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">SMLP2024</span>: dataset</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Serialization</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <section id="data-and-figure-in-publication" class="level3" data-number="1.1">
 <h3 data-number="1.1" class="anchored" data-anchor-id="data-and-figure-in-publication"><span class="header-section-number">1.1</span> Data and figure in publication</h3>
 <div id="4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dat <span class="op">=</span> <span class="fu">DataFrame</span>(Arrow.<span class="fu">Table</span>(<span class="fu">joinpath</span>(datadir, <span class="st">"fggk21.arrow"</span>)))</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@transform</span>!(dat, <span class="op">:</span>a1 <span class="op">=</span> <span class="op">:</span>age <span class="op">-</span> <span class="fl">8.5</span>);</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">select!</span>(<span class="fu">groupby</span>(dat, <span class="op">:</span><span class="bu">Test</span>), <span class="op">:</span>, <span class="op">:</span>score <span class="op">=&gt;</span> zscore <span class="op">=&gt;</span> <span class="op">:</span>zScore);</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dat <span class="op">=</span> <span class="fu">DataFrame</span>(<span class="fu">dataset</span>(<span class="op">:</span>fggk21))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div><div style="float: left;"><span>525126×7 DataFrame</span></div><div style="float: right;"><span style="font-style: italic;">525101 rows omitted</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
+<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Cohort</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">School</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Child</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Sex</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">age</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Test</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">score</th>
+</tr>
+<tr class="odd subheader headerLastRow">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="String">String</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="String">String</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="String">String</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="String">String</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="String">String</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
+<td style="text-align: left;">2013</td>
+<td style="text-align: left;">S100067</td>
+<td style="text-align: left;">C002352</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">7.99452</td>
+<td style="text-align: left;">S20_r</td>
+<td style="text-align: right;">5.26316</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
+<td style="text-align: left;">2013</td>
+<td style="text-align: left;">S100067</td>
+<td style="text-align: left;">C002352</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">7.99452</td>
+<td style="text-align: left;">BPT</td>
+<td style="text-align: right;">3.7</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
+<td style="text-align: left;">2013</td>
+<td style="text-align: left;">S100067</td>
+<td style="text-align: left;">C002352</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">7.99452</td>
+<td style="text-align: left;">SLJ</td>
+<td style="text-align: right;">125.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">4</td>
+<td style="text-align: left;">2013</td>
+<td style="text-align: left;">S100067</td>
+<td style="text-align: left;">C002352</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">7.99452</td>
+<td style="text-align: left;">Star_r</td>
+<td style="text-align: right;">2.47146</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">5</td>
+<td style="text-align: left;">2013</td>
+<td style="text-align: left;">S100067</td>
+<td style="text-align: left;">C002352</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">7.99452</td>
+<td style="text-align: left;">Run</td>
+<td style="text-align: right;">1053.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">6</td>
+<td style="text-align: left;">2013</td>
+<td style="text-align: left;">S100067</td>
+<td style="text-align: left;">C002353</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">7.99452</td>
+<td style="text-align: left;">S20_r</td>
+<td style="text-align: right;">5.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">7</td>
+<td style="text-align: left;">2013</td>
+<td style="text-align: left;">S100067</td>
+<td style="text-align: left;">C002353</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">7.99452</td>
+<td style="text-align: left;">BPT</td>
+<td style="text-align: right;">4.1</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8</td>
+<td style="text-align: left;">2013</td>
+<td style="text-align: left;">S100067</td>
+<td style="text-align: left;">C002353</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">7.99452</td>
+<td style="text-align: left;">SLJ</td>
+<td style="text-align: right;">116.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">9</td>
+<td style="text-align: left;">2013</td>
+<td style="text-align: left;">S100067</td>
+<td style="text-align: left;">C002353</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">7.99452</td>
+<td style="text-align: left;">Star_r</td>
+<td style="text-align: right;">1.76778</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">10</td>
+<td style="text-align: left;">2013</td>
+<td style="text-align: left;">S100067</td>
+<td style="text-align: left;">C002353</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">7.99452</td>
+<td style="text-align: left;">Run</td>
+<td style="text-align: right;">1089.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">11</td>
+<td style="text-align: left;">2013</td>
+<td style="text-align: left;">S100067</td>
+<td style="text-align: left;">C002354</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">7.99452</td>
+<td style="text-align: left;">S20_r</td>
+<td style="text-align: right;">4.54545</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">12</td>
+<td style="text-align: left;">2013</td>
+<td style="text-align: left;">S100067</td>
+<td style="text-align: left;">C002354</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">7.99452</td>
+<td style="text-align: left;">BPT</td>
+<td style="text-align: right;">3.9</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">13</td>
+<td style="text-align: left;">2013</td>
+<td style="text-align: left;">S100067</td>
+<td style="text-align: left;">C002354</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">7.99452</td>
+<td style="text-align: left;">SLJ</td>
+<td style="text-align: right;">111.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">525115</td>
+<td style="text-align: left;">2018</td>
+<td style="text-align: left;">S401470</td>
+<td style="text-align: left;">C117964</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">9.10609</td>
+<td style="text-align: left;">Star_r</td>
+<td style="text-align: right;">1.63704</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">525116</td>
+<td style="text-align: left;">2018</td>
+<td style="text-align: left;">S401470</td>
+<td style="text-align: left;">C117964</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">9.10609</td>
+<td style="text-align: left;">Run</td>
+<td style="text-align: right;">864.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">525117</td>
+<td style="text-align: left;">2018</td>
+<td style="text-align: left;">S401470</td>
+<td style="text-align: left;">C117965</td>
+<td style="text-align: left;">female</td>
+<td style="text-align: right;">9.10609</td>
+<td style="text-align: left;">S20_r</td>
+<td style="text-align: right;">4.65116</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">525118</td>
+<td style="text-align: left;">2018</td>
+<td style="text-align: left;">S401470</td>
+<td style="text-align: left;">C117965</td>
+<td style="text-align: left;">female</td>
+<td style="text-align: right;">9.10609</td>
+<td style="text-align: left;">BPT</td>
+<td style="text-align: right;">3.8</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">525119</td>
+<td style="text-align: left;">2018</td>
+<td style="text-align: left;">S401470</td>
+<td style="text-align: left;">C117965</td>
+<td style="text-align: left;">female</td>
+<td style="text-align: right;">9.10609</td>
+<td style="text-align: left;">SLJ</td>
+<td style="text-align: right;">123.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">525120</td>
+<td style="text-align: left;">2018</td>
+<td style="text-align: left;">S401470</td>
+<td style="text-align: left;">C117965</td>
+<td style="text-align: left;">female</td>
+<td style="text-align: right;">9.10609</td>
+<td style="text-align: left;">Star_r</td>
+<td style="text-align: right;">1.52889</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">525121</td>
+<td style="text-align: left;">2018</td>
+<td style="text-align: left;">S401470</td>
+<td style="text-align: left;">C117965</td>
+<td style="text-align: left;">female</td>
+<td style="text-align: right;">9.10609</td>
+<td style="text-align: left;">Run</td>
+<td style="text-align: right;">1080.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">525122</td>
+<td style="text-align: left;">2018</td>
+<td style="text-align: left;">S800200</td>
+<td style="text-align: left;">C117966</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">9.10609</td>
+<td style="text-align: left;">S20_r</td>
+<td style="text-align: right;">4.54545</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">525123</td>
+<td style="text-align: left;">2018</td>
+<td style="text-align: left;">S800200</td>
+<td style="text-align: left;">C117966</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">9.10609</td>
+<td style="text-align: left;">BPT</td>
+<td style="text-align: right;">3.8</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">525124</td>
+<td style="text-align: left;">2018</td>
+<td style="text-align: left;">S800200</td>
+<td style="text-align: left;">C117966</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">9.10609</td>
+<td style="text-align: left;">SLJ</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">525125</td>
+<td style="text-align: left;">2018</td>
+<td style="text-align: left;">S800200</td>
+<td style="text-align: left;">C117966</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">9.10609</td>
+<td style="text-align: left;">Star_r</td>
+<td style="text-align: right;">2.18506</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">525126</td>
+<td style="text-align: left;">2018</td>
+<td style="text-align: left;">S800200</td>
+<td style="text-align: left;">C117966</td>
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">9.10609</td>
+<td style="text-align: left;">Run</td>
+<td style="text-align: right;">990.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="6" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@transform</span>!(dat, <span class="op">:</span>a1 <span class="op">=</span> <span class="op">:</span>age <span class="op">-</span> <span class="fl">8.5</span>);</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">select!</span>(<span class="fu">groupby</span>(dat, <span class="op">:</span><span class="bu">Test</span>), <span class="op">:</span>, <span class="op">:</span>score <span class="op">=&gt;</span> zscore <span class="op">=&gt;</span> <span class="op">:</span>zScore);</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div><div style="float: left;"><span>9×7 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
 <table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
@@ -559,11 +849,11 @@ div.csl-indent {
 </section>
 <section id="data-and-figure-with-z-scores-based-on-original-metric" class="level3" data-number="1.2">
 <h3 data-number="1.2" class="anchored" data-anchor-id="data-and-figure-with-z-scores-based-on-original-metric"><span class="header-section-number">1.2</span> Data and figure with z-scores based on original metric</h3>
-<div id="6" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># dat_om = rcopy(R"readRDS('./data/fggk21_om.rds')");  #Don't know what the _om is</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># @transform!(dat_om, :a1 = :age - 8.5);</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># select!(groupby(dat_om, :Test), :, :score =&gt; zscore =&gt; :zScore);</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># describe(dat_om)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="8" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># dat_om = rcopy(R"readRDS('./data/fggk21_om.rds')");  #Don't know what the _om is</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># @transform!(dat_om, :a1 = :age - 8.5);</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># select!(groupby(dat_om, :Test), :, :score =&gt; zscore =&gt; :zScore);</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># describe(dat_om)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -571,25 +861,25 @@ div.csl-indent {
 <h2 data-number="2" class="anchored" data-anchor-id="lmms"><span class="header-section-number">2</span> LMMs</h2>
 <section id="contrasts" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="contrasts"><span class="header-section-number">2.1</span> Contrasts</h3>
-<div id="8" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span><span class="bu">Test</span> <span class="op">=&gt;</span> <span class="fu">SeqDiffCoding</span>(),</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Sex <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>School <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Child <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Cohort <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="10" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span><span class="bu">Test</span> <span class="op">=&gt;</span> <span class="fu">SeqDiffCoding</span>(),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Sex <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>School <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Child <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Cohort <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="formula" class="level3" data-number="2.2">
 <h3 data-number="2.2" class="anchored" data-anchor-id="formula"><span class="header-section-number">2.2</span> Formula</h3>
-<div id="10" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fl">1</span> <span class="op">+</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  (<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">+</span> a1 <span class="op">+</span> Sex <span class="op">|</span> School) <span class="op">+</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  (<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Child) <span class="op">+</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Cohort);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="12" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fl">1</span> <span class="op">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  (<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">+</span> a1 <span class="op">+</span> Sex <span class="op">|</span> School) <span class="op">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  (<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Child) <span class="op">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Cohort);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="restore-lmm-m1-from-publication" class="level3" data-number="2.3">
@@ -598,9 +888,9 @@ div.csl-indent {
 <li>Command for fitting LMM m1 = fit(MixedModel, f1, dat, contrasts=contr)</li>
 <li>Fit statistics for LMM m1: Minimizing 5179 Time: 0 Time: 1:00:38 ( 0.70 s/it)</li>
 </ul>
-<div id="12" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m1x <span class="op">=</span> <span class="fu">LinearMixedModel</span>(f1, dat; contrasts)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">restoreoptsum!</span>(m1x, <span class="st">"./fits/fggk21_m1_optsum.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="14" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>m1x <span class="op">=</span> <span class="fu">LinearMixedModel</span>(f1, dat; contrasts)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">restoreoptsum!</span>(m1x, <span class="st">"./fits/fggk21_m1_optsum.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>┌ Warning: optsum was saved with an older version of MixedModels.jl: consider resaving.
 └ @ MixedModels ~/.julia/packages/MixedModels/peUlR/src/serialization.jl:28</code></pre>
@@ -832,8 +1122,8 @@ div.csl-indent {
 </table>
 </div>
 </div>
-<div id="14" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m1x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="16" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m1x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -1080,39 +1370,39 @@ div.csl-indent {
 </ul>
 <section id="restoreoptsum" class="level4" data-number="2.4.1">
 <h4 data-number="2.4.1" class="anchored" data-anchor-id="restoreoptsum"><span class="header-section-number">2.4.1</span> … restoreoptsum!()</h4>
-<div id="16" class="cell" data-execution_count="0">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>m1_om <span class="op">=</span> <span class="fu">LinearMixedModel</span>(f1, dat; contrasts<span class="op">=</span>contr);</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">restoreoptsum!</span>(m1_om, <span class="st">"./fits/fggk21_m1_om_optsum.json"</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="18" class="cell" data-execution_count="0">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m1_om <span class="op">=</span> <span class="fu">LinearMixedModel</span>(f1, dat; contrasts);</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">restoreoptsum!</span>(m1_om, <span class="st">"./fits/fggk21_m1_om_optsum.json"</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="deserialize" class="level4" data-number="2.4.2">
 <h4 data-number="2.4.2" class="anchored" data-anchor-id="deserialize"><span class="header-section-number">2.4.2</span> … deserialize()</h4>
-<div id="18" class="cell" data-execution_count="0">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m1x_om <span class="op">=</span> <span class="fu">deserialize</span>(<span class="st">"./fits/m1_om.jls"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <div id="20" class="cell" data-execution_count="0">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m1x_om)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m1x_om <span class="op">=</span> <span class="fu">deserialize</span>(<span class="st">"./fits/m1_om.jls"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="22" class="cell" data-execution_count="0">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m1x_om)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
 <section id="residual-diagnostics-for-lmm-m1" class="level3" data-number="2.5">
 <h3 data-number="2.5" class="anchored" data-anchor-id="residual-diagnostics-for-lmm-m1"><span class="header-section-number">2.5</span> Residual diagnostics for LMM m1</h3>
 <p>Residual plots for published LMM</p>
-<div id="22" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#scatter(fitted(m1x), residuals(m1x)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <div id="24" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#qqnorm(m1x)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#scatter(fitted(m1x), residuals(m1x)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="26" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#qqnorm(m1x)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="residual-diagnostics-for-lmm-m1_om" class="level3" data-number="2.6">
 <h3 data-number="2.6" class="anchored" data-anchor-id="residual-diagnostics-for-lmm-m1_om"><span class="header-section-number">2.6</span> Residual diagnostics for LMM m1_om</h3>
 <p>Residual plots for LMM with Star and Speed in original metric.</p>
-<div id="26" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#scatter(fitted(m1_om_v2), residuals(m1_om_v2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <div id="28" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#qqnorm(m1_om_v2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#scatter(fitted(m1_om_v2), residuals(m1_om_v2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="30" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#qqnorm(m1_om_v2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-Fuehner2021" class="csl-entry" role="listitem">
