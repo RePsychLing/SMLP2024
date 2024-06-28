@@ -1,37 +1,27 @@
-# SMLP2023
+# SMLP2024
 
-SMLP2023: Advanced methods in frequentist statistics with Julia
+SMLP2024: Advanced methods in frequentist statistics with Julia
 
-The rendered website version of the course materials is available [here](https://repsychling.github.io/SMLP2023/).
+The rendered website version of the course materials is available [here](https://repsychling.github.io/SMLP2024/).
 
-This repository uses [Quarto](https://quarto.org). To be able to render all the pages, you will need an appropriate Jupyter kernel installed and the local environment instantiated.
+This repository uses [Quarto](https://quarto.org) with the Julia code execution supplied by [QuartoNotebookRunner.jl](https://github.com/PumasAI/QuartoNotebookRunner.jl/), which requires Quarto 1.5+.
+
+As of early May 2024, Quarto 1.5 is only available as a preview release, which you'll need to [download from GitHub](https://github.com/quarto-dev/quarto-cli/releases). Under each release's "Assets", you can find platform-specific installers.
 
 ```sh
-~/SMLP2023$ julia
+~/EmbraceUncertainty$ julia
 
 julia> using Pkg
 
-julia> Pkg.add("IJulia")
-    Updating registry at `~/.julia/registries/General.toml`
-   Resolving package versions...
-< lots of output >
-
-julia> using IJulia
-
-julia> installkernel("julia", "--threads=auto", "--project=@.")
-[ Info: Installing julia kernelspec in ~/.local/share/jupyter/kernels/julia-1.9
-"~/.local/share/jupyter/kernels/julia-1.9"
-
 julia> Pkg.activate(".")
-  Activating project at `~/SMLP2023`
+  Activating project at `~/SMLP2024`
 
 julia> Pkg.instantiate()
 < lots of output >
 
 julia> exit()
 
-~/SMLP2023$ quarto preview
+~/EmbraceUncertainty$ quarto preview
 
 < lots of output >
-
 ```

@@ -1,5 +1,8 @@
 ---
 title: Transformed and original metrics in Emotikon
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 In @Fuehner2021 the original metric of two tasks (Star, S20) is time, but they were transformed to speed scores in the publication prior to computing z-scores.
@@ -22,17 +25,18 @@ using DataFrameMacros
 using MixedModels
 using MixedModelsMakie
 using RCall
+using SMLP2024: dataset
 using Serialization
 using StatsBase
-
-CairoMakie.activate!(; type="svg")
-datadir = joinpath(@__DIR__, "data");
 ```
 
 ### Data and figure in publication
 
 ```{julia}
-dat = DataFrame(Arrow.Table(joinpath(datadir, "fggk21.arrow")))
+dat = DataFrame(dataset(:fggk21))
+```
+
+```{julia}
 @transform!(dat, :a1 = :age - 8.5);
 select!(groupby(dat, :Test), :, :score => zscore => :zScore);
 describe(dat)
@@ -97,7 +101,7 @@ VarCorr(m1x)
 
 ```{julia}
 #| eval: false
-m1_om = LinearMixedModel(f1, dat; contrasts=contr);
+m1_om = LinearMixedModel(f1, dat; contrasts);
 restoreoptsum!(m1_om, "./fits/fggk21_m1_om_optsum.json");
 ```
 

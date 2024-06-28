@@ -1,6 +1,8 @@
 ---
 title: "Mixed Models Tutorial: Contrast Coding"
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 author: "Reinhold Kliegl"
 ---
 
@@ -45,7 +47,7 @@ using DataFrames
 using DataFrameMacros
 using MixedModels
 using ProgressMeter
-using SMLP2023: dataset
+using SMLP2024: dataset
 using Statistics
 using StatsBase
 

@@ -1,6 +1,8 @@
 ---
 title: "Bootstrapping a fitted model"
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 Begin by loading the packages to be used.
@@ -14,7 +16,7 @@ using DataFrames
 using MixedModels
 using ProgressMeter
 using Random
-using SMLP2023: dataset
+using SMLP2024: dataset
 
 CairoMakie.activate!(; type="svg")
 

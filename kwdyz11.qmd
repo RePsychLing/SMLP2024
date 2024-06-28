@@ -1,6 +1,8 @@
 ---
 title: "RePsychLing Kliegl et al. (2011)"
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 author: "Reinhold Kliegl"
 ---
 
@@ -40,7 +42,7 @@ using Distributions
 using MixedModels
 using MixedModelsMakie
 using Random
-using SMLP2023: dataset
+using SMLP2024: dataset
 using StatsBase
 
 CairoMakie.activate!(; type="svg")
@@ -351,7 +353,7 @@ draw(
   data(tbl) *
   mapping(
     [:σ1, :σ2, :σ3, :σ4] .=> "Standard deviations [ms]";
-    color=dims(1) => 
+    color=dims(1) =>
     renamer(append!(["Grand mean"],["spatial", "object", "attraction"] .* " effect")) =>
     "Variance components",
   ) *

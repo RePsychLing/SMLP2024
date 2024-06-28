@@ -1,6 +1,9 @@
 ---
 title: Analysis of the sleepstudy data
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
+fig-format: png
 ---
 
 The `sleepstudy` data are from a study of the effects of sleep deprivation on response time reported in  @Balkin2000 and in @Belenky2003.
@@ -30,14 +33,14 @@ using MixedModelsMakie # diagnostic plots
 using ProgressMeter
 using Random           # random number generators
 using RCall            # call R from Julia
-using SMLP2023
-using SMLP2023: dataset
+using SMLP2024
+using SMLP2024: dataset
 
 ProgressMeter.ijulia_behavior(:clear)
 CairoMakie.activate!(; type="svg")
 ```
 
-The `sleepstudy` data are one of the datasets available with the `MixedModels` package.  It is re-exported by the `SMLP2023` package's `dataset` function.
+The `sleepstudy` data are one of the datasets available with the `MixedModels` package.  It is re-exported by the `SMLP2024` package's `dataset` function.
 
 ```{julia}
 sleepstudy = dataset("sleepstudy")
@@ -45,14 +48,11 @@ sleepstudy = dataset("sleepstudy")
 
 @fig-reaction_vs_days_by_subject displays the data in a multi-panel plot created with the `lattice` package in `R` [@Sarkar2008], using [RCall.jl](https://github.com/JuliaInterop/RCall.jl).
 
-```{julia}
+```{r}
 #| code-fold: true
 #| label: fig-reaction_vs_days_by_subject
 #| fig-cap: Average response time versus days of sleep deprivation by subject
-RCall.ijulia_setdevice(MIME("image/svg+xml"); width=10, height=4.5)
-R"""
-require("lattice", quietly=TRUE)
-print(xyplot(reaction ~ days | subj,
+print(lattice::xyplot(reaction ~ days | subj,
   $(DataFrame(sleepstudy)),
   aspect="xy",
   layout=c(9,2),
@@ -61,7 +61,7 @@ print(xyplot(reaction ~ days | subj,
   xlab = "Days of sleep deprivation",
   ylab = "Average reaction time (ms)"
 ))
-""";
+NULL
 ```
 
 Each panel shows the data from one subject and a line fit by least squares to that subject's data.

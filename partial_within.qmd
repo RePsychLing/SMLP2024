@@ -1,6 +1,8 @@
 ---
 title: "Partially-within subjects designs"
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 Begin by loading the packages to be used.

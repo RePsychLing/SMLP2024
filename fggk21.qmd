@@ -1,6 +1,8 @@
 ---
 title: Basics with Emotikon Project
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 This script uses a subset of data reported in @Fuehner2021.
@@ -33,7 +35,7 @@ using ProgressMeter
 using Random
 using Statistics
 using StatsBase
-using SMLP2023: dataset
+using SMLP2024: dataset
 
 ProgressMeter.ijulia_behavior(:clear)
 CairoMakie.activate!(; type="svg")

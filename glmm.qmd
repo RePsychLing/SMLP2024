@@ -1,6 +1,8 @@
 ---
 title: "Generalized linear mixed models"
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 Load the packages to be used
@@ -14,7 +16,7 @@ using DataFrameMacros
 using DataFrames
 using MixedModels
 using MixedModelsMakie
-using SMLP2023: dataset
+using SMLP2024: dataset
 
 CairoMakie.activate!(; type="svg")
 

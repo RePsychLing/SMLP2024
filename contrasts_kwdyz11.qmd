@@ -1,6 +1,8 @@
 ---
 title: Contrast Coding of Visual Attention Effects
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 ```{julia}
@@ -8,7 +10,7 @@ jupyter: julia-1.9
 using Chain
 using DataFrames
 using MixedModels
-using SMLP2023: dataset
+using SMLP2024: dataset
 using StatsBase
 using StatsModels
 

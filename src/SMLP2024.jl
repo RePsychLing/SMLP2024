@@ -1,4 +1,4 @@
-module SMLP2023
+module SMLP2024
 
 using Arrow
 using CSV
@@ -101,7 +101,7 @@ const OSF_IO_URIs = Dict{String,String}(
     "ELP_ldt_item" => "c6gxd",
     "ELP_ldt_subj" => "rqenu",
     "ELP_ldt_trial" => "3evhy",
-    "fggk21_Child" => "c2fmn", 
+    "fggk21_Child" => "c2fmn",
     "fggk21_Score" => "7fqx3",
     "fggk21" => "vwecy",
     "kkl15" => "p8cea",
@@ -132,12 +132,12 @@ end
 function progress()
     prog = ProgressThresh(1.0; desc="Download progress: ")
     return function (total::Int, now::Int)
-        if total > 0 
+        if total > 0
             update!(prog, now/total)
             if now == total
                 finish!(prog)
-            end 
-        end 
+            end
+        end
     end
 end
 
@@ -146,12 +146,12 @@ dataset(name::Symbol) = dataset(string(name))
 function dataset(name::AbstractString)
     name in MMDS && return MixedModels.dataset(name)
     name in keys(OSF_IO_URIs) ||
-        throw(ArgumentError("$(name) is not a dataset ")) 
+        throw(ArgumentError("$(name) is not a dataset "))
     f = _file(name)
     if !isfile(f)
         osfkey = OSF_IO_URIs[name]
         @info "Downloading $(name) dataset"
-        Downloads.download(string("https://osf.io/", osfkey, "/download"), f; progress=progress())                    
+        Downloads.download(string("https://osf.io/", osfkey, "/download"), f; progress=progress())
     end
     return Arrow.Table(f)
 end

@@ -1,10 +1,13 @@
 ---
 title: "Creating multi-panel plots"
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 This notebook shows creating a multi-panel plot similar to Figure 2 of @Fuehner2021.
 
-The data are available from the SMLP2023 example datasets.
+The data are available from the SMLP2024 example datasets.
 
 ```{julia}
 #| code-fold: true
@@ -14,7 +17,7 @@ using CairoMakie   # for displaying static plots
 using DataFrames
 using Statistics
 using StatsBase
-using SMLP2023: dataset
+using SMLP2024: dataset
 
 CairoMakie.activate!(; type="svg") # use SVG (other options include PNG)
 ```

@@ -1,6 +1,8 @@
 ---
 title: 'RePsychLing Kliegl, Kuschela, & Laubrock (2015)- Reduction of Model Complexity'
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 # Background
@@ -15,9 +17,9 @@ This comparison is of interest because a few years after the publication of @Kli
 
 Here we also include two additional experimental manipulations of target size and orientation of cue rectangle. A similar analysis was reported in the parsimonious mixed-model paper [@Bates2015]; it was also used in a paper of GAMMs [@Baayen2017]. Data and R scripts of those analyses are also available in [R-package RePsychLing](https://github.com/dmbates/RePsychLing/tree/master/data/).
 
-The analysis is based on log-transformed reaction times `lrt`, indicated by a _boxcox()_ check of model residuals. 
+The analysis is based on log-transformed reaction times `lrt`, indicated by a _boxcox()_ check of model residuals.
 
-In this vignette we focus on the reduction of model complexity. And we start with a quote: 
+In this vignette we focus on the reduction of model complexity. And we start with a quote:
 
 “Neither the [maximal] nor the [minimal] linear mixed models are appropriate for most repeated measures analysis. Using the [maximal] model is generally wasteful and costly in terms of statiscal power for testing hypotheses. On the other hand, the [minimal] model fails to account for nontrivial correlation among repeated measurements. This results in inflated [T]ype I error rates when non-negligible correlation does in fact exist. We can usually find middle ground, a covariance model that adequately accounts for correlation but is more parsimonious than the [maximal] model. Doing so allows us full control over [T]ype I error rates without needlessly sacrificing power.”
 
@@ -41,7 +43,7 @@ using MixedModels
 using MixedModelsMakie
 using ProgressMeter
 using Random
-using SMLP2023: dataset
+using SMLP2024: dataset
 using StatsBase
 
 ProgressMeter.ijulia_behavior(:clear)
@@ -135,7 +137,7 @@ contrasts = Dict(
 
 ```{julia}
 m_max_rt = let
-  form = @formula rt ~ 1 + CTR * size * cardinal + 
+  form = @formula rt ~ 1 + CTR * size * cardinal +
                            (1 + CTR * size * cardinal | Subj)
   fit(MixedModel, form, dat; contrasts)
 end
@@ -143,7 +145,7 @@ end
 
 ```{julia}
 m_cpx_rt = let
-  form = @formula rt ~ 1 + CTR * size * cardinal + 
+  form = @formula rt ~ 1 + CTR * size * cardinal +
                            (1 + CTR + size + cardinal | Subj)
   fit(MixedModel, form, dat; contrasts)
 end
@@ -174,7 +176,7 @@ This is the maximum LMM for the design.
 
 ```{julia}
 m_max = let
-  form = @formula log(rt) ~ 1 + CTR * size * cardinal + 
+  form = @formula log(rt) ~ 1 + CTR * size * cardinal +
                            (1 + CTR * size * cardinal | Subj)
   fit(MixedModel, form, dat; contrasts)
 end
@@ -201,7 +203,7 @@ Force CPs to zero.
 
 ```{julia}
 m_zcp1 = let
-  form = @formula log(rt) ~ 1 + CTR * size * cardinal + 
+  form = @formula log(rt) ~ 1 + CTR * size * cardinal +
                    zerocorr(1 + CTR * size * cardinal | Subj)
   fit(MixedModel, form, dat; contrasts)
 end
@@ -225,7 +227,7 @@ Take out VC for interactions.
 
 ```{julia}
 m_zcp1_rdc = let
-  form = @formula log(rt) ~ 1 + CTR * size * cardinal + 
+  form = @formula log(rt) ~ 1 + CTR * size * cardinal +
                    zerocorr(1 + CTR + size + cardinal | Subj)
   fit(MixedModel, form, dat; contrasts)
 end
@@ -252,7 +254,7 @@ gof_summary = let
   mods = eval.(nms)
   lrt = MixedModels.likelihoodratiotest(m_zcp1_rdc, m_zcp1, m_max)
   DataFrame(;
-    name = nms, 
+    name = nms,
     dof=dof.(mods),
     deviance=round.(deviance.(mods), digits=0),
     AIC=round.(aic.(mods),digits=0),
@@ -271,7 +273,7 @@ Extend zcp-reduced LMM with CPs
 
 ```{julia}
 m_prm1 = let
-  form = @formula log(rt) ~ 1 + CTR * size * cardinal + 
+  form = @formula log(rt) ~ 1 + CTR * size * cardinal +
                            (1 + CTR + size + cardinal | Subj)
   fit(MixedModel, form, dat; contrasts)
 end
@@ -299,7 +301,7 @@ gof_summary = let
   mods = eval.(nms)
   lrt = MixedModels.likelihoodratiotest(m_prm1, m_zcp1, m_max)
   DataFrame(;
-    name = nms, 
+    name = nms,
     dof=dof.(mods),
     deviance=round.(deviance.(mods), digits=0),
     AIC=round.(aic.(mods),digits=0),
@@ -319,7 +321,7 @@ Take out interaction VCs.
 
 ```{julia}
 m_cpx = let
-  form = @formula log(rt) ~ 1 + CTR * size * cardinal + 
+  form = @formula log(rt) ~ 1 + CTR * size * cardinal +
                            (1 + CTR + size + cardinal | Subj)
   fit(MixedModel, form, dat; contrasts)
 end
@@ -330,7 +332,7 @@ Take out interaction VCs.
 
 ```{julia}
 m_zcp2 = let
-  form = @formula log(rt) ~ 1 + CTR * size * cardinal + 
+  form = @formula log(rt) ~ 1 + CTR * size * cardinal +
                    zerocorr(1 + CTR + size + cardinal | Subj)
   fit(MixedModel, form, dat; contrasts)
 end
@@ -344,7 +346,7 @@ gof_summary = let
   mods = eval.(nms)
   lrt = MixedModels.likelihoodratiotest(m_zcp2, m_cpx, m_max)
   DataFrame(;
-    name = nms, 
+    name = nms,
     dof=dof.(mods),
     deviance=round.(deviance.(mods), digits=0),
     AIC=round.(aic.(mods),digits=0),
@@ -553,7 +555,7 @@ draw(
   data(tbl) *
   mapping(
     [:β02, :β03, :β04] .=> "Experimental effect size [ms]";
-    color=dims(1) => 
+    color=dims(1) =>
     renamer(["spatial effect", "object effect", "attraction effect"]) =>
     "Experimental effects",
   ) *

@@ -1,5 +1,8 @@
 ---
 title: "Package management and reproducible environments"
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 *Julius Krumbiegel also has a [great blog post](https://jkrumbiegel.com/pages/2022-08-26-pkg-introduction/) with more details on Julia environments.*
@@ -8,7 +11,7 @@ Julia packages can be configured (in a file called `Project.toml`) on a per-proj
 The packaged sources and compiled versions are stored in a central location, e.g. `~/.julia/packages` and `~/.julia/compiled` on Linux systems, but the configuration of packages to be used can be local to a project.
 The `Pkg` package is used to modify the local project's configuration.
 (An alternative is "package mode" in the read-eval-print-loop or REPL, which we will show at the summer school.)
-Start julia in the directory of the cloned `SMLP2023` repository
+Start julia in the directory of the cloned `SMLP2024` repository
 ```{julia}
 #| eval: false
 using Pkg        # there's a package called 'Pkg' to manipulate package configs

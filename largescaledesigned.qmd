@@ -1,5 +1,7 @@
 ---
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 # A large-scale designed experiment {#sec-largescaledesigned}
@@ -18,7 +20,7 @@ using DataFrames
 using Effects
 using MixedModels
 using MixedModelsMakie
-using SMLP2023: dataset
+using SMLP2024: dataset
 using StandardizedPredictors
 using StatsBase
 

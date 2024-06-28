@@ -1,6 +1,8 @@
 ---
 title: "RePsychLing Masson, Rabe, & Kliegl, 2017) with Julia: Specification and selection"
-jupyter: julia-1.9
+engine: julia
+julia:
+  exeflags: ["--project", "--threads=auto"]
 ---
 
 # Setup
@@ -12,7 +14,7 @@ using CategoricalArrays
 using DataFrames
 using MixedModels
 using MixedModelsMakie
-using SMLP2023: dataset
+using SMLP2024: dataset
 using Statistics: mean, std
 ```
 
@@ -118,7 +120,7 @@ using CategoricalArrays
 using DataFrames
 using MixedModels
 using MixedModelsMakie
-using SMLP2023: dataset
+using SMLP2024: dataset
 using Statistics: mean, std
 
 ```
