@@ -19,13 +19,11 @@ using Distributions
 using MixedModels
 using MixedModelsMakie
 using MixedModelsSim
-using ProgressMeter
 using StatsBase
+using SMLP2024: dataset
 using Random
 
-using AlgebraOfGraphics: AlgebraOfGraphics as AOG
-using MixedModels: dataset
-ProgressMeter.ijulia_behavior(:clear)
+const progress=false
 ```
 
 # The Parametric Bootstrap
@@ -41,7 +39,7 @@ fm1 = fit(MixedModel,
           @formula(rt_trunc ~ 1 * spkr * prec * load +
                              (1 | subj) +
                              (1 | item)),
-          kb07; contrasts)
+          kb07; contrasts, progress)
 ```
 
 We can perform a *parametric bootstrap* on the model to get estimates of our uncertainty.
@@ -130,7 +128,7 @@ We'll examine an example of this later.
 simmod = fit(MixedModel,
              @formula(dv ~ 1 + age * frequency +
                           (1 + frequency | subj) +
-                          (1 + age | item)), dat)
+                          (1 + age | item)), dat; progress)
 println(simmod)
 ```
 
@@ -169,7 +167,7 @@ fit!(simulate!(RNG, simmod; β, σ, θ))
 ```
 
 ```{julia}
-samp = parametricbootstrap(RNG, 1000, simmod; β, σ, θ)
+samp = parametricbootstrap(RNG, 1000, simmod; β, σ, θ, progress)
 ```
 
 ```{julia}
@@ -187,7 +185,8 @@ let f = Figure()
                conf_level=0.8,
                vline_at_zero=true,
                show_intercept=true,
-               xlabel="Normalized density and 80% range")
+#               xlabel="Normalized density and 80% range")
+    )
     scatter!(ax, β, length(β):-1:1;
              marker=:x,
              markersize=20,
@@ -199,7 +198,8 @@ end
 
 ```{julia}
 coefpvalues = DataFrame()
-@showprogress for subj_n in [20, 40, 60, 80, 100, 120, 140],  item_n in [40, 60, 80, 100, 120, 140]
+# @showprogress 
+for subj_n in [20, 40, 60, 80, 100, 120, 140],  item_n in [40, 60, 80, 100, 120, 140]
     dat = simdat_crossed(RNG, subj_n, item_n;
                          subj_btwn, item_btwn)
     simmod = MixedModel(@formula(dv ~ 1 + age * frequency +
@@ -211,7 +211,7 @@ coefpvalues = DataFrame()
     simboot = parametricbootstrap(RNG, 100, simmod;
                                   β, σ, θ,
                                   optsum_overrides=(;ftol_rel=1e-8),
-                                  progress=false)
+                                  progress)
     df = DataFrame(simboot.coefpvalues)
     df[!, :subj_n] .= subj_n
     df[!, :item_n] .= item_n
@@ -268,7 +268,7 @@ leftjoin!(dat, item_covariates; on=:item)
 simmod = fit(MixedModel,
              @formula(dv ~ 1 + age * frequency * chaos +
                           (1 + frequency | subj) +
-                          (1 + age | item)), dat; contrasts)
+                          (1 + age | item)), dat; contrasts, progress)
 ```
 
 TODO: continuous covariate

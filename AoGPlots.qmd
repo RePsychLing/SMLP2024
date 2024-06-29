@@ -18,8 +18,6 @@ using DataFrames
 using Statistics
 using StatsBase
 using SMLP2024: dataset
-
-CairoMakie.activate!(; type="svg") # use SVG (other options include PNG)
 ```
 
 ```{julia}

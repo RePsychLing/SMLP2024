@@ -39,11 +39,7 @@ using DataFrameMacros
 using DataFrames
 using MixedModels
 using MixedModelsMakie   # plots specific to mixed-effects models using Makie
-
-using ProgressMeter
-
-CairoMakie.activate!(; type="svg")
-ProgressMeter.ijulia_behavior(:clear);
+using SMLP2024: dataset
 ```
 
 # Preprocessing
@@ -55,7 +51,7 @@ The `sleepstudy` data are one of the datasets available with recent versions of 
   - Create a `GroupedDataFrame` by levels of `Subj` (the original dataframe is available as `gdf.parent`, which we name `df`)
 
 ```{julia}
-gdf = @chain MixedModels.dataset(:sleepstudy) begin
+gdf = @chain dataset(:sleepstudy) begin
   DataFrame
   rename!(:subj => :Subj, :days => :day)
   @transform!(:speed = 1000 / :reaction)
@@ -112,10 +108,9 @@ end
 # Basic LMM
 
 ```{julia}
-contrasts = Dict(:Subj => Grouping())
 m1 = let
   form = @formula speed ~ 1 + day + (1 + day | Subj)
-  fit(MixedModel, form, df; contrasts)
+  fit(MixedModel, form, df)
 end
 ```
 
@@ -132,7 +127,7 @@ The `zerocorr` function applied to a random-effects term estimates one parameter
 ```{julia}
 m2 = let
   form = @formula speed ~ 1 + day + zerocorr(1 + day | Subj)
-  fit(MixedModel, form, df; contrasts)
+  fit(MixedModel, form, df)
 end
 ```
 

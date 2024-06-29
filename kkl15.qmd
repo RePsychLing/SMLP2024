@@ -30,7 +30,6 @@ Stroup, W. W. (2012, p. 185). _Generalized linear mixed models: Modern concepts,
 ```{julia}
 #| code-fold: true
 #| output: false
-using Arrow
 using AlgebraOfGraphics
 using AlgebraOfGraphics: density
 using BoxCox
@@ -41,13 +40,9 @@ using DataFrameMacros
 using DataFrames
 using MixedModels
 using MixedModelsMakie
-using ProgressMeter
 using Random
 using SMLP2024: dataset
 using StatsBase
-
-ProgressMeter.ijulia_behavior(:clear)
-CairoMakie.activate!(; type="svg")
 ```
 
 # Read data, compute and plot means
@@ -128,7 +123,6 @@ end
 
 ```{julia}
 contrasts = Dict(
-  :Subj => Grouping(),
   :CTR => SeqDiffCoding(; levels=["val", "sod", "dos", "dod"]),
   :cardinal => EffectsCoding(; levels=["cardinal", "diagonal"]),
   :size => EffectsCoding(; levels=["big", "small"])
