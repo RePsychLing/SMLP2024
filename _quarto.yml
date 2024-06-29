@@ -1,4 +1,4 @@
-date: today
+date: last-modified
 date-format: iso
 engine: julia
 julia:

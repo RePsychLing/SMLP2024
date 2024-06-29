@@ -40,5 +40,5 @@ end
 export GENRES,
     age_at_event,
     tagpad
-    
+
 end # module EmbraceUncertainty
