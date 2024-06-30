@@ -41,13 +41,11 @@ using DataFrameMacros
 using DataFrames
 using MixedModels
 using MixedModelsMakie
-using ProgressMeter
 using Random
 using SMLP2024: dataset
 using StatsBase
 
-ProgressMeter.ijulia_behavior(:clear)
-CairoMakie.activate!(; type="svg")
+const progress=false
 ```
 
 # Read data, compute and plot means
@@ -128,7 +126,6 @@ end
 
 ```{julia}
 contrasts = Dict(
-  :Subj => Grouping(),
   :CTR => SeqDiffCoding(; levels=["val", "sod", "dos", "dod"]),
   :cardinal => EffectsCoding(; levels=["cardinal", "diagonal"]),
   :size => EffectsCoding(; levels=["big", "small"])
@@ -139,7 +136,7 @@ contrasts = Dict(
 m_max_rt = let
   form = @formula rt ~ 1 + CTR * size * cardinal +
                            (1 + CTR * size * cardinal | Subj)
-  fit(MixedModel, form, dat; contrasts)
+  fit(MixedModel, form, dat; contrasts, progress)
 end
 ```
 
@@ -147,24 +144,23 @@ end
 m_cpx_rt = let
   form = @formula rt ~ 1 + CTR * size * cardinal +
                            (1 + CTR + size + cardinal | Subj)
-  fit(MixedModel, form, dat; contrasts)
+  fit(MixedModel, form, dat; contrasts, progress)
 end
 ```
 
 ## Box-Cox
 
 ```{julia}
-#| eval: false
-bc1 = fit(BoxCoxTransformation, m_max_rt)
+bc1 = fit(BoxCoxTransformation, m_max_rt; progress)
 ```
 
 ```{julia}
-bc2 = fit(BoxCoxTransformation, m_cpx_rt)
+bc2 = fit(BoxCoxTransformation, m_cpx_rt; progress)
 ```
 
 
 ```{julia}
-#| eval: false
+# eval: false
 boxcoxplot(bc2; conf_level=0.95)
 ```
 
@@ -178,7 +174,7 @@ This is the maximum LMM for the design.
 m_max = let
   form = @formula log(rt) ~ 1 + CTR * size * cardinal +
                            (1 + CTR * size * cardinal | Subj)
-  fit(MixedModel, form, dat; contrasts)
+  fit(MixedModel, form, dat; contrasts, progress)
 end
 ```
 
@@ -205,7 +201,7 @@ Force CPs to zero.
 m_zcp1 = let
   form = @formula log(rt) ~ 1 + CTR * size * cardinal +
                    zerocorr(1 + CTR * size * cardinal | Subj)
-  fit(MixedModel, form, dat; contrasts)
+  fit(MixedModel, form, dat; contrasts, progress)
 end
 ```
 
@@ -229,7 +225,7 @@ Take out VC for interactions.
 m_zcp1_rdc = let
   form = @formula log(rt) ~ 1 + CTR * size * cardinal +
                    zerocorr(1 + CTR + size + cardinal | Subj)
-  fit(MixedModel, form, dat; contrasts)
+  fit(MixedModel, form, dat; contrasts, progress)
 end
 ```
 
@@ -275,7 +271,7 @@ Extend zcp-reduced LMM with CPs
 m_prm1 = let
   form = @formula log(rt) ~ 1 + CTR * size * cardinal +
                            (1 + CTR + size + cardinal | Subj)
-  fit(MixedModel, form, dat; contrasts)
+  fit(MixedModel, form, dat; contrasts, progress)
 end
 ```
 
@@ -323,7 +319,7 @@ Take out interaction VCs.
 m_cpx = let
   form = @formula log(rt) ~ 1 + CTR * size * cardinal +
                            (1 + CTR + size + cardinal | Subj)
-  fit(MixedModel, form, dat; contrasts)
+  fit(MixedModel, form, dat; contrasts, progress)
 end
 ```
 
@@ -334,7 +330,7 @@ Take out interaction VCs.
 m_zcp2 = let
   form = @formula log(rt) ~ 1 + CTR * size * cardinal +
                    zerocorr(1 + CTR + size + cardinal | Subj)
-  fit(MixedModel, form, dat; contrasts)
+  fit(MixedModel, form, dat; contrasts, progress)
 end
 ```
 
@@ -394,7 +390,6 @@ The slant in residuals show a lower and upper boundary of reaction times, that i
 #| code-fold: true
 #| label: fig-m1fittedresid
 #| fig-cap: Residuals versus fitted values for model m1
-CairoMakie.activate!(; type="png")
 scatter(fitted(m_prm1), residuals(m_prm1); alpha=0.3)
 ```
 
@@ -422,7 +417,6 @@ The plot of quantiles of model residuals over corresponding quantiles of the nor
 #| code-fold: true
 #| label: fig-qqnormm1
 #| fig-cap: Quantile-quantile plot of the residuals for model m1 versus a standard normal
-CairoMakie.activate!(; type="png")
 qqnorm(
   residuals(m_prm1);
   qqline=:none,
@@ -441,7 +435,6 @@ Overall, it does not look too bad.
 #| code-fold: true
 #| label: fig-stdresidm1dens
 #| fig-cap: '  Kernel density plot of the standardized residuals for model m1 versus a  standard normal'
-CairoMakie.activate!(; type="svg")
 let
   n = nrow(dat)
   dat_rz = (;
