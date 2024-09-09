@@ -36,9 +36,7 @@ using MixedModelsMakie
 using Random
 using SMLP2024: dataset
 
-CairoMakie.activate!(; type="svg")
-import ProgressMeter
-ProgressMeter.ijulia_behavior(:clear)
+const progress=false
 ```
 
 Load the data and define the contrasts so that the coefficients for each of the experimental variables, `load`, `spkr` and `prec`, are positive.
@@ -59,7 +57,7 @@ Thus the response being modeled is the speed measured in responses per second.
 ```{julia}
 pr01 = let f = @formula 1000 / rt_raw ~
     1 + load + spkr + prec + (1 + prec | item) + (1 | subj)
-  profile(fit(MixedModel, f, kb07; contrasts))
+  profile(fit(MixedModel, f, kb07; contrasts, progress))
 end
 println(pr01.m) # model is a property of the profile object
 ```

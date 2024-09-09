@@ -192,16 +192,13 @@ combine(groupby(last(gdf), :Sex), nrow => :nchild)
 There are Arrow implementations for R (the `arrow` package) and for Python (`pyarrow`).
 
 ```{python}
-#| eval: false
 import pyarrow.feather: read_table
 read_table("./data/fggk21.arrow")
 ```
 
-```{R}
-#| eval: false
-library("arrow")
-fggk21 <- read_feather("./data/fggk21.arrow")
-nrow(fggk21)
+```{r}
+fggk21 <- arrow::read_ipc_file("./data/fggk21.arrow")
+tibble::glimpse(fggk21)
 ```
 
 

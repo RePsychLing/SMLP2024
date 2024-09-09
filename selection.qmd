@@ -9,7 +9,6 @@ julia:
 using Arrow
 using CairoMakie
 using DataFrames
-CairoMakie.activate!(; type="svg") # use SVG (other options include PNG)
 ```
 
 ```{julia}

@@ -19,9 +19,7 @@ using MixedModelsSim
 using ProgressMeter
 using Random
 
-CairoMakie.activate!(; type="svg")
-
-ProgressMeter.ijulia_behavior(:clear)
+const progress=false
 ```
 
 ```{julia}
@@ -46,7 +44,7 @@ m0 = let contrasts, form
     contrasts = Dict(:frequency => HelmertCoding(base="high"))
     form = @formula(dv ~ 1 + frequency +
                     (1 + frequency | subj))
-    fit(MixedModel, form, design; contrasts)
+    fit(MixedModel, form, design; contrasts, progress)
 end
 ```
 
@@ -111,7 +109,7 @@ m1 = let contrasts, form
     contrasts = Dict(:frequency => HelmertCoding(base="high"))
     form = @formula(dv ~ 1 + frequency +
                     (1 + frequency | subj))
-    fit(MixedModel, form, design_partial; contrasts)
+    fit(MixedModel, form, design_partial; contrasts, progress)
 end
 ```
 
