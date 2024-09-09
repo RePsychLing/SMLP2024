@@ -59,9 +59,6 @@ describe(dat)
 contrasts = Dict(
   :Test => SeqDiffCoding(),
   :Sex => HelmertCoding(),
-  :School => Grouping(),
-  :Child => Grouping(),
-  :Cohort => Grouping(),
 );
 ```
 

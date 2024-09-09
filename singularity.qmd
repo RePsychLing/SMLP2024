@@ -6,7 +6,7 @@ julia:
   exeflags: ["--project", "--threads=auto"]
 ---
 
-## What does it mean for a converged model to be singular?
+# What does it mean for a converged model to be singular?
 
 Add the packages to be used
 
@@ -18,17 +18,15 @@ using DataFrames
 using LinearAlgebra
 using MixedModels
 using MixedModelsMakie
-using ProgressMeter
 
-ProgressMeter.ijulia_behavior(:clear)
-CairoMakie.activate!(; type="svg")
+const progress=false
 ```
 
 Fit a model for reaction time in the sleepstudy example, preserving information on the estimation progress (the `thin=1` optional argument)
 
 ```{julia}
 m01 = let f = @formula reaction ~ 1 + days + (1 + days|subj)
-  fit(MixedModel, f, MixedModels.dataset(:sleepstudy); thin=1)
+  fit(MixedModel, f, MixedModels.dataset(:sleepstudy); thin=1, progress)
 end
 print(m01)
 ```
@@ -72,7 +70,7 @@ and multiply by the standard deviations
 ρ * sqrt(first(Σ) * last(Σ))
 ```
 
-## The factor is generated from a parameter vector
+# The factor is generated from a parameter vector
 
 In practice we optimize the log-likelihood with respect to a parameter vector called $\theta$ that generates $\lambda$.
 
@@ -89,7 +87,7 @@ m01.lowerbd
 
 That is, the first and third elements of $\theta$, corresponding to diagonal elements of $\lambda$, must be non-negative, whereas the second component is unconstrained (has a lower bound of $-\infty$).
 
-## Progress of the iterations
+# Progress of the iterations
 
 The `optsum.fitlog` property of the model is a vector of tuples where each tuple contains the value of the $\theta$ vector and the value of the objective at that $\theta$.
 The `fitlog` always contains the first and the last evaluation.

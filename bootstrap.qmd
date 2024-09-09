@@ -41,10 +41,7 @@ using Random
 using SMLP2024: dataset
 
 using AlgebraOfGraphics: AlgebraOfGraphics as AoG
-CairoMakie.activate!(; type="svg") # use SVG (other options include PNG)
-
-import ProgressMeter
-ProgressMeter.ijulia_behavior(:clear);
+const progress=false
 ```
 
 Note that the precise stream of random numbers generated for a given seed can change between Julia versions.
@@ -72,8 +69,7 @@ The experimental factors; `spkr`, `prec`, and `load`, are two-level factors.
 contrasts = Dict(:spkr => EffectsCoding(),
                  :prec => EffectsCoding(),
                  :load => EffectsCoding(),
-                 :subj => Grouping(),
-                 :item => Grouping())
+)
 ```
 
 The `EffectsCoding` contrast is used with these to create a ±1 encoding.
@@ -89,7 +85,7 @@ We can look at an initial fit of moderate complexity:
 form = @formula(rt_trunc ~ 1 + spkr * prec * load +
                           (1 + spkr + prec + load | subj) +
                           (1 + spkr + prec + load | item))
-m0 = fit(MixedModel, form, kb07; contrasts)
+m0 = fit(MixedModel, form, kb07; contrasts, progress)
 ```
 
 The default display in Quarto uses the [pretty MIME show method](https://juliastats.org/MixedModels.jl/v4.7.1/mime/) for the model and omits the estimated correlations of the random effects.
@@ -107,7 +103,7 @@ In the random-effects terms only the scalar random effects and the `prec` random
 # formula f4 from https://doi.org/10.33016/nextjournal.100002
 form = @formula(rt_trunc ~ 1 + spkr * prec * load + (1 | subj) + (1 + prec | item))
 
-m1 = fit(MixedModel, form, kb07; contrasts)
+m1 = fit(MixedModel, form, kb07; contrasts, progress)
 ```
 
 ```{julia}

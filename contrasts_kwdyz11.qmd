@@ -14,8 +14,7 @@ using SMLP2024: dataset
 using StatsBase
 using StatsModels
 
-import ProgressMeter
-ProgressMeter.ijulia_behavior(:clear);
+const progress=false
 ```
 
 # A word of caution {#sec-caution}
@@ -79,15 +78,13 @@ Controlling the ordering of levels for contrasts:
 ## SeqDiffCoding
 
 The `SeqDiffCoding` contrast corresponds to `MASS::contr.sdif()` in R.
-The assignment of random factors such as `Subj` to `Grouping()` is necessary when the sample size is very large. We recommend to include it always, but in this tutorial we do so only in the first example.
 
 ```{julia}
 m1 = let levels = ["val", "sod", "dos", "dod"]
   contrasts = Dict(
     :CTR => SeqDiffCoding(; levels),
-    :Subj => Grouping()
   )
-  fit(MixedModel, form, dat1; contrasts)
+  fit(MixedModel, form, dat1; contrasts, progress)
 end
 ```
 
@@ -108,7 +105,7 @@ m1b = let levels = ["val", "sod", "dos", "dod"]
       labels=["spt", "obj", "grv"],
     ),
   )
-  fit(MixedModel, form, dat1; contrasts)
+  fit(MixedModel, form, dat1; contrasts, progress)
 end
 ```
 
@@ -121,7 +118,7 @@ This contrast corresponds to `contr.treatment()` in R
 ```{julia}
 m2 = let
   contrasts = Dict(:CTR => DummyCoding(; base="val"))
-  fit(MixedModel, form, dat1; contrasts)
+  fit(MixedModel, form, dat1; contrasts, progress)
 end
 ```
 
@@ -145,7 +142,7 @@ m2b = let levels = ["val", "sod", "dos", "dod"]
       labels=levels[2:end],
     )
   )
-  fit(MixedModel, form, dat1; contrasts)
+  fit(MixedModel, form, dat1; contrasts, progress)
 end
 ```
 
@@ -164,7 +161,7 @@ m2c = let levels = ["val", "sod", "dos", "dod"]
       labels=levels[2:end],
     )
   )
-  fit(MixedModel, form, dat1; contrasts)
+  fit(MixedModel, form, dat1; contrasts, progress)
 end
 ```
 
@@ -178,7 +175,7 @@ This contrast corresponds almost to `contr.sum()` in R.
 ```{julia}
 m3 = let
   contrasts = Dict(:CTR => EffectsCoding(; base="dod"))
-  fit(MixedModel, form, dat1; contrasts)
+  fit(MixedModel, form, dat1; contrasts, progress)
 end
 ```
 
@@ -197,7 +194,7 @@ m3b = let levels = [ "dod", "val", "sod", "dos"]
       labels=levels[2:end],
     )
   )
-  fit(MixedModel, form, dat1; contrasts)
+  fit(MixedModel, form, dat1; contrasts, progress)
 end
 ```
 
@@ -214,7 +211,7 @@ m3c = let levels = [ "dod", "val", "sod", "dos"]
       labels=levels[2:end],
     )
   )
-  fit(MixedModel, form, dat1; contrasts)
+  fit(MixedModel, form, dat1; contrasts, progress)
 end
 ```
 
@@ -226,7 +223,7 @@ end
 ```{julia}
 m4 = let
   contrasts = Dict(:CTR => HelmertCoding())
-  fit(MixedModel, form, dat1; contrasts)
+  fit(MixedModel, form, dat1; contrasts, progress)
 end
 ```
 
@@ -243,7 +240,7 @@ end
 ```{julia}
 m4b = let levels = reverse(StatsModels.levels(dat1.CTR))
   contrasts = Dict(:CTR => HelmertCoding(; levels))
-  fit(MixedModel, form, dat1; contrasts)
+  fit(MixedModel, form, dat1; contrasts, progress)
 end
 ```
 
@@ -278,7 +275,7 @@ m5 = let levels = ["val", "sod", "dos", "dod"]
       labels=["A", "B", "AxB"],
     ),
   )
-  fit(MixedModel, form, dat1; contrasts)
+  fit(MixedModel, form, dat1; contrasts, progress)
 end
 ```
 
@@ -328,7 +325,7 @@ m8 = let levels = ["val", "sod", "dos", "dod"]
       labels=["do_so", "spt", "grv"],
     ),
   )
-  fit(MixedModel, form, dat1; contrasts)
+  fit(MixedModel, form, dat1; contrasts, progress)
 end
 ```
 

@@ -31,14 +31,12 @@ using DataFrames
 using MixedModels
 using MixedModelsMakie
 using MixedModelsMakie: simplelinreg
-using ProgressMeter
 using Random
 using Statistics
 using StatsBase
 using SMLP2024: dataset
 
-ProgressMeter.ijulia_behavior(:clear)
-CairoMakie.activate!(; type="svg")
+const progress=false
 ```
 
 # Readme
@@ -258,10 +256,7 @@ recode!(
   "PowerLOW" => "SLJ",
   "PowerUP" => "BMT",
 )
-contrasts = merge(
-  Dict(nm => SeqDiffCoding() for nm in (:Test, :Sex)),
-  Dict(nm => Grouping() for nm in (:Child, :School, :Cohort)),
-);
+contrasts = Dict{Symbol,Any}(nm => SeqDiffCoding() for nm in (:Test, :Sex))
 ```
 
 The statistical disadvantage of _SeqDiffCoding_ is that the contrasts are not orthogonal,
@@ -294,7 +289,7 @@ It is well known that such a simple RES is likely to be anti-conservative with r
 ```{julia}
 m_ovi = let
   f = @formula zScore ~ 1 + Test * Sex * a1 + (1 | School)
-  fit(MixedModel, f, dat; contrasts)
+  fit(MixedModel, f, dat; contrasts, progress)
 end
 ```
 
@@ -319,7 +314,7 @@ m_zcp = let
     zScore ~
       1 + Test * Sex * a1 + zerocorr(1 + Test + Sex + a1 | School)
   )
-  fit(MixedModel, f, dat; contrasts)
+  fit(MixedModel, f, dat; contrasts, progress)
 end
 ```
 
@@ -338,7 +333,7 @@ m_cpx = let
   f = @formula(
     zScore ~ 1 + Test * Sex * a1 + (1 + Test + Sex + a1 | School)
   )
-  fit(MixedModel, f, dat; contrasts)
+  fit(MixedModel, f, dat; contrasts, progress)
 end
 ```
 
@@ -445,7 +440,7 @@ As there are only nine cohorts in the data, we may be asking too much to estimat
 ```{julia}
 m_cpxCohort = let
   f = @formula zScore ~ 1 + Test * a1 * Sex + (1 + Test | Cohort)
-  fit(MixedModel, f, dat; contrasts)
+  fit(MixedModel, f, dat; contrasts, progress)
 end
 ```
 
@@ -465,7 +460,7 @@ m_zcpCohort = let
   f = @formula(
     zScore ~ 1 + Test * a1 * Sex + zerocorr(1 + Test | Cohort)
   )
-  fit(MixedModel, f, dat; contrasts)
+  fit(MixedModel, f, dat; contrasts, progress)
 end
 ```
 
@@ -479,7 +474,7 @@ This raises the possibility that LMM `m_oviCohort`  might fit as well as LMM `m_
 ```{julia}
 m_oviCohort = let
   f = @formula zScore ~ 1 + Test * a1 * Sex + (1 | Cohort)
-  fit(MixedModel, f, dat; contrasts)
+  fit(MixedModel, f, dat; contrasts, progress)
 end
 ```
 
@@ -542,7 +537,7 @@ m1 = let
       (1 + Test | Child) +
       zerocorr(1 + Test | Cohort)
   )
-  fit(MixedModel, f, dat; contrasts)
+  fit(MixedModel, f, dat; contrasts, progress)
 end
 ```
 
@@ -568,7 +563,7 @@ m2 = let
       (0 + Test | Child) +
       zerocorr(0 + Test | Cohort)
   )
-  fit(MixedModel, f, dat; contrasts)
+  fit(MixedModel, f, dat; contrasts, progress)
 end
 ```
 
@@ -658,7 +653,7 @@ m2_nested = let
       (0 + Test | Child) +
       zerocorr(0 + Test | Cohort)
   )
-  fit(MixedModel, f, dat; contrasts)
+  fit(MixedModel, f, dat; contrasts, progress)
 end
 ```
 

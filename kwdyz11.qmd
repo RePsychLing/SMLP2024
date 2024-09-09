@@ -44,11 +44,6 @@ using MixedModelsMakie
 using Random
 using SMLP2024: dataset
 using StatsBase
-
-CairoMakie.activate!(; type="svg")
-
-import ProgressMeter
-ProgressMeter.ijulia_behavior(:clear)
 ```
 
 # Read data, compute and plot densities and means
@@ -136,7 +131,6 @@ A better alternative to the boxplot is a dotplot. It also displays subjects' con
 ```{julia}
 contrasts = Dict(
   :CTR => SeqDiffCoding(; levels=["val", "sod", "dos", "dod"]),
-  :Subj => Grouping(),
 )
 m1 = let
   form = @formula(log(rt) ~ 1 + CTR + (1 + CTR | Subj))
@@ -175,7 +169,6 @@ The slant in residuals show a lower and upper boundary of reaction times, that i
 #| code-fold: true
 #| fig-cap: "Residuals versus the fitted values for model m1 of the log response time."
 #| label: fig-resvsfittedm1
-CairoMakie.activate!(; type="png")
 set_aog_theme!()
 draw(
   data((; f=fitted(m1), r=residuals(m1))) *
@@ -191,7 +184,6 @@ Contour plots or heatmaps may be an alternative.
 #| code-fold: true
 #| fig-cap: Heatmap of residuals versus fitted values for model m1
 #| label: fig-resvsfittedhm
-CairoMakie.activate!(; type="png")
 draw(
   data((; f=fitted(m1), r=residuals(m1))) *
   mapping(
