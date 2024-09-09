@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
-<meta name="dcterms.date" content="2024-06-27">
+<meta name="dcterms.date" content="2024-09-09">
 
 <title>Partially-within subjects designs – SMLP2024: Advanced Frequentist Track</title>
 <style>
@@ -369,7 +369,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024-06-27</p>
+      <p class="date">2024-09-09</p>
     </div>
   </div>
   
@@ -394,9 +394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>CairoMakie.<span class="fu">activate!</span>(; <span class="kw">type</span><span class="op">=</span><span class="st">"svg"</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> progress<span class="op">=</span><span class="cn">false</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div id="4" class="cell" data-execution_count="1">
@@ -665,14 +663,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>frequency <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(base<span class="op">=</span><span class="st">"high"</span>))</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    form <span class="op">=</span> <span class="pp">@formula</span>(dv <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> frequency <span class="op">+</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                    (<span class="fl">1</span> <span class="op">+</span> frequency <span class="op">|</span> subj))</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(MixedModel, form, design; contrasts)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(MixedModel, form, design; contrasts, progress)</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Minimizing 2    Time: 0:00:00 (51.69 ms/it)
-  objective:  371.21379414917635
-Minimizing 73    Time: 0:00:00 (10.94 ms/it)</code></pre>
-</div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -723,10 +716,10 @@ Minimizing 73    Time: 0:00:00 (10.94 ms/it)</code></pre>
 <div id="10" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>corrmat <span class="op">=</span> [ <span class="fl">1</span>    <span class="fl">0.1</span> <span class="op">-</span><span class="fl">0.2</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>            <span class="fl">0.1</span>  <span class="fl">1</span>    <span class="fl">0.1</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>           <span class="op">-</span><span class="fl">0.2</span>  <span class="fl">0.1</span>  <span class="fl">1</span> ]</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>re_subj <span class="op">=</span> <span class="fu">create_re</span>(<span class="fl">1.2</span>, <span class="fl">1.5</span>, <span class="fl">1.5</span>; corrmat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>corrmat <span class="op">=</span> [ <span class="fl">1</span>    <span class="fl">0.1</span> <span class="op">-</span><span class="fl">0.2</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>            <span class="fl">0.1</span>  <span class="fl">1</span>    <span class="fl">0.1</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>           <span class="op">-</span><span class="fl">0.2</span>  <span class="fl">0.1</span>  <span class="fl">1</span> ]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>re_subj <span class="op">=</span> <span class="fu">create_re</span>(<span class="fl">1.2</span>, <span class="fl">1.5</span>, <span class="fl">1.5</span>; corrmat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>3×3 LinearAlgebra.LowerTriangular{Float64, Matrix{Float64}}:
@@ -738,7 +731,7 @@ Minimizing 73    Time: 0:00:00 (10.94 ms/it)</code></pre>
 <div id="12" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>θ <span class="op">=</span> <span class="fu">createθ</span>(m0; subj<span class="op">=</span>re_subj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>θ <span class="op">=</span> <span class="fu">createθ</span>(m0; subj<span class="op">=</span>re_subj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>6-element Vector{Float64}:
@@ -753,14 +746,14 @@ Minimizing 73    Time: 0:00:00 (10.94 ms/it)</code></pre>
 <div id="14" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>σ <span class="op">=</span> <span class="fl">1</span>;</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>β <span class="op">=</span> [<span class="fl">1.0</span>, <span class="op">-</span><span class="fl">3</span>, <span class="op">-</span><span class="fl">2</span>];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>σ <span class="op">=</span> <span class="fl">1</span>;</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>β <span class="op">=</span> [<span class="fl">1.0</span>, <span class="op">-</span><span class="fl">3</span>, <span class="op">-</span><span class="fl">2</span>];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div id="16" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fit!</span>(<span class="fu">simulate!</span>(m0; θ, β, σ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fit!</span>(<span class="fu">simulate!</span>(m0; θ, β, σ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
@@ -775,31 +768,31 @@ Minimizing 73    Time: 0:00:00 (10.94 ms/it)</code></pre>
 </tr>
 <tr class="even">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.8038</td>
-<td style="text-align: right;">0.2304</td>
-<td style="text-align: right;">3.49</td>
-<td style="text-align: right;">0.0005</td>
-<td style="text-align: right;">1.3017</td>
+<td style="text-align: right;">1.2420</td>
+<td style="text-align: right;">0.1784</td>
+<td style="text-align: right;">6.96</td>
+<td style="text-align: right;">&lt;1e-11</td>
+<td style="text-align: right;">0.9455</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">frequency: low</td>
-<td style="text-align: right;">-2.5930</td>
-<td style="text-align: right;">0.2305</td>
-<td style="text-align: right;">-11.25</td>
-<td style="text-align: right;">&lt;1e-28</td>
-<td style="text-align: right;">1.2174</td>
+<td style="text-align: right;">-2.9944</td>
+<td style="text-align: right;">0.2697</td>
+<td style="text-align: right;">-11.10</td>
+<td style="text-align: right;">&lt;1e-27</td>
+<td style="text-align: right;">1.5300</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">frequency: medium</td>
-<td style="text-align: right;">-1.8718</td>
-<td style="text-align: right;">0.2432</td>
-<td style="text-align: right;">-7.70</td>
-<td style="text-align: right;">&lt;1e-13</td>
-<td style="text-align: right;">1.4665</td>
+<td style="text-align: right;">-2.2717</td>
+<td style="text-align: right;">0.2413</td>
+<td style="text-align: right;">-9.41</td>
+<td style="text-align: right;">&lt;1e-20</td>
+<td style="text-align: right;">1.4629</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
-<td style="text-align: right;">1.1348</td>
+<td style="text-align: right;">1.0667</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -812,7 +805,7 @@ Minimizing 73    Time: 0:00:00 (10.94 ms/it)</code></pre>
 <div id="18" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shrinkageplot</span>(m0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shrinkageplot</span>(m0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
@@ -825,7 +818,7 @@ Minimizing 73    Time: 0:00:00 (10.94 ms/it)</code></pre>
 <div id="20" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">caterpillar</span>(m0; orderby<span class="op">=</span><span class="cn">nothing</span>, vline_at_zero<span class="op">=</span><span class="cn">true</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">caterpillar</span>(m0; orderby<span class="op">=</span><span class="cn">nothing</span>, vline_at_zero<span class="op">=</span><span class="cn">true</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
@@ -838,44 +831,44 @@ Minimizing 73    Time: 0:00:00 (10.94 ms/it)</code></pre>
 <div id="22" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>design[!, <span class="op">:</span>dv] <span class="op">.=</span> <span class="fu">response</span>(m0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>design[!, <span class="op">:</span>dv] <span class="op">.=</span> <span class="fu">response</span>(m0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>120-element Vector{Float64}:
-  6.883722540985653
-  2.988215442601446
-  5.0149867939124535
-  7.696005149925335
-  4.165122231414619
-  1.9287904715146027
-  1.9847167277540647
-  3.5280642428919373
-  3.869243914107243
-  5.400556938747629
+  4.264965593072877
+  5.4999288931880415
+  5.864385886973292
+  8.265345611823037
+  2.061665594954505
+  6.58352484539653
+  1.4948902756933764
+  7.701454430278976
+ 10.93884547815939
+  7.058537950257523
   ⋮
-  1.176865998121957
-  2.1812526143622217
-  1.5264071482251236
- -3.653359704196407
-  5.873185042587701
- -6.224021346362484
-  3.808782117392812
- -1.616751028117699
- -1.3086543930663872</code></pre>
+  2.5771850996984433
+ -0.16963539923783388
+ -3.415699480952159
+ -3.7947775594053894
+  0.5366171617835596
+  4.266560120491959
+  0.16440176154366726
+ -0.6462206182227788
+  0.05731825876157126</code></pre>
 </div>
 </div>
 <div id="24" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>design_partial <span class="op">=</span> <span class="fu">filter</span>(design) <span class="cf">do</span> row</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    subj <span class="op">=</span> <span class="fu">parse</span>(<span class="dt">Int</span>, row.subj[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>])</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    item <span class="op">=</span> <span class="fu">parse</span>(<span class="dt">Int</span>, row.item[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>])</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for even-numbered subjects, we keep all conditions</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for odd-numbered subjects, we keep only the two "odd" items,</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># i.e. the first and last conditions</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">iseven</span>(subj) <span class="op">||</span> <span class="fu">isodd</span>(item)</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sort!</span>(<span class="fu">unique!</span>(<span class="fu">select</span>(design_partial, <span class="op">:</span>subj, <span class="op">:</span>frequency)), <span class="op">:</span>subj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>design_partial <span class="op">=</span> <span class="fu">filter</span>(design) <span class="cf">do</span> row</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    subj <span class="op">=</span> <span class="fu">parse</span>(<span class="dt">Int</span>, row.subj[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>])</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    item <span class="op">=</span> <span class="fu">parse</span>(<span class="dt">Int</span>, row.item[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>])</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for even-numbered subjects, we keep all conditions</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for odd-numbered subjects, we keep only the two "odd" items,</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># i.e. the first and last conditions</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">iseven</span>(subj) <span class="op">||</span> <span class="fu">isodd</span>(item)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sort!</span>(<span class="fu">unique!</span>(<span class="fu">select</span>(design_partial, <span class="op">:</span>subj, <span class="op">:</span>frequency)), <span class="op">:</span>subj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div><div style="float: left;"><span>100×2 DataFrame</span></div><div style="float: right;"><span style="font-style: italic;">75 rows omitted</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
@@ -1031,12 +1024,12 @@ Minimizing 73    Time: 0:00:00 (10.94 ms/it)</code></pre>
 <div id="26" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="kw">let</span> contrasts, form</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>frequency <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(base<span class="op">=</span><span class="st">"high"</span>))</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    form <span class="op">=</span> <span class="pp">@formula</span>(dv <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> frequency <span class="op">+</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                    (<span class="fl">1</span> <span class="op">+</span> frequency <span class="op">|</span> subj))</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(MixedModel, form, design_partial; contrasts)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="kw">let</span> contrasts, form</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>frequency <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(base<span class="op">=</span><span class="st">"high"</span>))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    form <span class="op">=</span> <span class="pp">@formula</span>(dv <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> frequency <span class="op">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                    (<span class="fl">1</span> <span class="op">+</span> frequency <span class="op">|</span> subj))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(MixedModel, form, design_partial; contrasts, progress)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
@@ -1051,31 +1044,31 @@ Minimizing 73    Time: 0:00:00 (10.94 ms/it)</code></pre>
 </tr>
 <tr class="even">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.7000</td>
-<td style="text-align: right;">0.2786</td>
-<td style="text-align: right;">2.51</td>
-<td style="text-align: right;">0.0120</td>
-<td style="text-align: right;">1.3000</td>
+<td style="text-align: right;">1.2324</td>
+<td style="text-align: right;">0.2289</td>
+<td style="text-align: right;">5.38</td>
+<td style="text-align: right;">&lt;1e-07</td>
+<td style="text-align: right;">0.8690</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">frequency: low</td>
-<td style="text-align: right;">-2.5930</td>
-<td style="text-align: right;">0.2305</td>
-<td style="text-align: right;">-11.25</td>
-<td style="text-align: right;">&lt;1e-28</td>
-<td style="text-align: right;">1.1604</td>
+<td style="text-align: right;">-2.9944</td>
+<td style="text-align: right;">0.2697</td>
+<td style="text-align: right;">-11.10</td>
+<td style="text-align: right;">&lt;1e-27</td>
+<td style="text-align: right;">1.4798</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">frequency: medium</td>
-<td style="text-align: right;">-1.9756</td>
-<td style="text-align: right;">0.2934</td>
-<td style="text-align: right;">-6.73</td>
-<td style="text-align: right;">&lt;1e-10</td>
-<td style="text-align: right;">1.5125</td>
+<td style="text-align: right;">-2.2813</td>
+<td style="text-align: right;">0.2986</td>
+<td style="text-align: right;">-7.64</td>
+<td style="text-align: right;">&lt;1e-13</td>
+<td style="text-align: right;">1.5707</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
-<td style="text-align: right;">1.2485</td>
+<td style="text-align: right;">1.2000</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -1088,7 +1081,7 @@ Minimizing 73    Time: 0:00:00 (10.94 ms/it)</code></pre>
 <div id="28" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shrinkageplot</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shrinkageplot</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
@@ -1101,7 +1094,7 @@ Minimizing 73    Time: 0:00:00 (10.94 ms/it)</code></pre>
 <div id="30" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">caterpillar</span>(m1; orderby<span class="op">=</span><span class="cn">nothing</span>, vline_at_zero<span class="op">=</span><span class="cn">true</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">caterpillar</span>(m1; orderby<span class="op">=</span><span class="cn">nothing</span>, vline_at_zero<span class="op">=</span><span class="cn">true</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>

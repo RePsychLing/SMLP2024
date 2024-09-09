@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Douglas Bates">
-<meta name="dcterms.date" content="2024-06-27">
+<meta name="dcterms.date" content="2024-09-09">
 
 <title>Convergence, singularity and all that – SMLP2024: Advanced Frequentist Track</title>
 <style>
@@ -375,14 +375,14 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#what-does-it-mean-for-a-converged-model-to-be-singular" id="toc-what-does-it-mean-for-a-converged-model-to-be-singular" class="nav-link active" data-scroll-target="#what-does-it-mean-for-a-converged-model-to-be-singular"><span class="header-section-number">0.1</span> What does it mean for a converged model to be singular?</a></li>
-  <li><a href="#the-factor-is-generated-from-a-parameter-vector" id="toc-the-factor-is-generated-from-a-parameter-vector" class="nav-link" data-scroll-target="#the-factor-is-generated-from-a-parameter-vector"><span class="header-section-number">0.2</span> The factor is generated from a parameter vector</a></li>
-  <li><a href="#progress-of-the-iterations" id="toc-progress-of-the-iterations" class="nav-link" data-scroll-target="#progress-of-the-iterations"><span class="header-section-number">0.3</span> Progress of the iterations</a></li>
-  <li><a href="#a-model-that-converges-to-a-degenerate-distribution" id="toc-a-model-that-converges-to-a-degenerate-distribution" class="nav-link" data-scroll-target="#a-model-that-converges-to-a-degenerate-distribution"><span class="header-section-number">1</span> A model that converges to a degenerate distribution</a></li>
-  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix"><span class="header-section-number">2</span> Appendix</a>
+  <li><a href="#what-does-it-mean-for-a-converged-model-to-be-singular" id="toc-what-does-it-mean-for-a-converged-model-to-be-singular" class="nav-link active" data-scroll-target="#what-does-it-mean-for-a-converged-model-to-be-singular"><span class="header-section-number">1</span> What does it mean for a converged model to be singular?</a></li>
+  <li><a href="#the-factor-is-generated-from-a-parameter-vector" id="toc-the-factor-is-generated-from-a-parameter-vector" class="nav-link" data-scroll-target="#the-factor-is-generated-from-a-parameter-vector"><span class="header-section-number">2</span> The factor is generated from a parameter vector</a></li>
+  <li><a href="#progress-of-the-iterations" id="toc-progress-of-the-iterations" class="nav-link" data-scroll-target="#progress-of-the-iterations"><span class="header-section-number">3</span> Progress of the iterations</a></li>
+  <li><a href="#a-model-that-converges-to-a-degenerate-distribution" id="toc-a-model-that-converges-to-a-degenerate-distribution" class="nav-link" data-scroll-target="#a-model-that-converges-to-a-degenerate-distribution"><span class="header-section-number">4</span> A model that converges to a degenerate distribution</a></li>
+  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix"><span class="header-section-number">5</span> Appendix</a>
   <ul class="collapse">
-  <li><a href="#evaluating-the-random-effects-correlation-from-theta" id="toc-evaluating-the-random-effects-correlation-from-theta" class="nav-link" data-scroll-target="#evaluating-the-random-effects-correlation-from-theta"><span class="header-section-number">2.1</span> Evaluating the random effects correlation from <span class="math inline">\(\theta\)</span></a></li>
-  <li><a href="#optimizing-with-a-fixed-correlation" id="toc-optimizing-with-a-fixed-correlation" class="nav-link" data-scroll-target="#optimizing-with-a-fixed-correlation"><span class="header-section-number">2.2</span> Optimizing with a fixed correlation</a></li>
+  <li><a href="#evaluating-the-random-effects-correlation-from-theta" id="toc-evaluating-the-random-effects-correlation-from-theta" class="nav-link" data-scroll-target="#evaluating-the-random-effects-correlation-from-theta"><span class="header-section-number">5.1</span> Evaluating the random effects correlation from <span class="math inline">\(\theta\)</span></a></li>
+  <li><a href="#optimizing-with-a-fixed-correlation" id="toc-optimizing-with-a-fixed-correlation" class="nav-link" data-scroll-target="#optimizing-with-a-fixed-correlation"><span class="header-section-number">5.2</span> Optimizing with a fixed correlation</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/RePsychLing/SMLP2024/edit/main/singularity.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RePsychLing/SMLP2024/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -409,7 +409,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024-06-27</p>
+      <p class="date">2024-09-09</p>
     </div>
   </div>
   
@@ -421,8 +421,8 @@ window.Quarto = {
 </header>
 
 
-<section id="what-does-it-mean-for-a-converged-model-to-be-singular" class="level2" data-number="0.1">
-<h2 data-number="0.1" class="anchored" data-anchor-id="what-does-it-mean-for-a-converged-model-to-be-singular"><span class="header-section-number">0.1</span> What does it mean for a converged model to be singular?</h2>
+<section id="what-does-it-mean-for-a-converged-model-to-be-singular" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> What does it mean for a converged model to be singular?</h1>
 <p>Add the packages to be used</p>
 <div id="2" class="cell" data-execution_count="1">
 <details class="code-fold">
@@ -432,16 +432,14 @@ window.Quarto = {
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>CairoMakie.<span class="fu">activate!</span>(; <span class="kw">type</span><span class="op">=</span><span class="st">"svg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> progress<span class="op">=</span><span class="cn">false</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Fit a model for reaction time in the sleepstudy example, preserving information on the estimation progress (the <code>thin=1</code> optional argument)</p>
 <div id="4" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>m01 <span class="op">=</span> <span class="kw">let</span> f <span class="op">=</span> <span class="pp">@formula</span> reaction <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> days <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> days<span class="op">|</span>subj)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, f, MixedModels.<span class="fu">dataset</span>(<span class="op">:</span>sleepstudy); thin<span class="op">=</span><span class="fl">1</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, f, MixedModels.<span class="fu">dataset</span>(<span class="op">:</span>sleepstudy); thin<span class="op">=</span><span class="fl">1</span>, progress)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(m01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -515,8 +513,8 @@ days          10.4673     1.50224   6.97    &lt;1e-11
 </div>
 </div>
 </section>
-<section id="the-factor-is-generated-from-a-parameter-vector" class="level2" data-number="0.2">
-<h2 data-number="0.2" class="anchored" data-anchor-id="the-factor-is-generated-from-a-parameter-vector"><span class="header-section-number">0.2</span> The factor is generated from a parameter vector</h2>
+<section id="the-factor-is-generated-from-a-parameter-vector" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> The factor is generated from a parameter vector</h1>
 <p>In practice we optimize the log-likelihood with respect to a parameter vector called <span class="math inline">\(\theta\)</span> that generates <span class="math inline">\(\lambda\)</span>.</p>
 <div id="16" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>m01.θ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -539,8 +537,8 @@ days          10.4673     1.50224   6.97    &lt;1e-11
 </div>
 <p>That is, the first and third elements of <span class="math inline">\(\theta\)</span>, corresponding to diagonal elements of <span class="math inline">\(\lambda\)</span>, must be non-negative, whereas the second component is unconstrained (has a lower bound of <span class="math inline">\(-\infty\)</span>).</p>
 </section>
-<section id="progress-of-the-iterations" class="level2" data-number="0.3">
-<h2 data-number="0.3" class="anchored" data-anchor-id="progress-of-the-iterations"><span class="header-section-number">0.3</span> Progress of the iterations</h2>
+<section id="progress-of-the-iterations" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Progress of the iterations</h1>
 <p>The <code>optsum.fitlog</code> property of the model is a vector of tuples where each tuple contains the value of the <span class="math inline">\(\theta\)</span> vector and the value of the objective at that <span class="math inline">\(\theta\)</span>. The <code>fitlog</code> always contains the first and the last evaluation. When the <code>thin</code> named argument is set, this property has a row for every thin’th evaluation.</p>
 <div id="20" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>m01.optsum.fitlog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -570,17 +568,17 @@ days          10.4673     1.50224   6.97    &lt;1e-11
 </div>
 <p>There were 57 evaluations of the objective before convergence was declared, according to rather stringent convergence criteria. We can see that the last 10 evaluations only produced changes in the fourth decimal place of the objective or even smaller. That is, effective convergence occurred after about 40 or 45 evaluations.</p>
 </section>
-<section id="a-model-that-converges-to-a-degenerate-distribution" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> A model that converges to a degenerate distribution</h1>
+<section id="a-model-that-converges-to-a-degenerate-distribution" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> A model that converges to a degenerate distribution</h1>
 <p>When the iterations converge to a value of <span class="math inline">\(\theta\)</span> that is on the boundary, which means that one of the diagonal elements of <span class="math inline">\(\lambda\)</span> is exactly zero, we say that <span class="math inline">\(\lambda\)</span> is <em>singular</em>, in the sense that its inverse does not exist.</p>
 <p>Another, more evocative characterization, is that the distribution of the random effects is a <em>degenerate distribution</em>, in the sense that the values of the random effects are constrained to a plane (technically, a linear subspace) in the space of all possible random effects.</p>
 <p>This is shown in section 3.5.3 of <a href="https://www.embraceuncertaintybook.com">Embrace Uncertainty</a>, especially <a href="https://www.embraceuncertaintybook.com/longitudinal.html#fig-bxm03plane">Figure 3.13</a>.</p>
 </section>
-<section id="appendix" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Appendix</h1>
+<section id="appendix" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Appendix</h1>
 <p>These are some appendices, mostly so that I can keep track of them</p>
-<section id="evaluating-the-random-effects-correlation-from-theta" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="evaluating-the-random-effects-correlation-from-theta"><span class="header-section-number">2.1</span> Evaluating the random effects correlation from <span class="math inline">\(\theta\)</span></h2>
+<section id="evaluating-the-random-effects-correlation-from-theta" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="evaluating-the-random-effects-correlation-from-theta"><span class="header-section-number">5.1</span> Evaluating the random effects correlation from <span class="math inline">\(\theta\)</span></h2>
 <p>There is a short-cut for evaluating the correlation which is to “normalize” the second row of <span class="math inline">\(\lambda\)</span>, in the sense that the row is scaled so that it has unit length.</p>
 <div id="22" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>normed <span class="op">=</span> <span class="fu">normalize!</span>(λ[<span class="fl">2</span>, <span class="op">:</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -598,8 +596,8 @@ days          10.4673     1.50224   6.97    &lt;1e-11
 </div>
 </div>
 </section>
-<section id="optimizing-with-a-fixed-correlation" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="optimizing-with-a-fixed-correlation"><span class="header-section-number">2.2</span> Optimizing with a fixed correlation</h2>
+<section id="optimizing-with-a-fixed-correlation" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="optimizing-with-a-fixed-correlation"><span class="header-section-number">5.2</span> Optimizing with a fixed correlation</h2>
 <p>To profile the correlation we need optimize the objective while fixing a value of the correlation. The way we will do this is to determine <span class="math inline">\(\theta_2\)</span> as a function of the fixed <span class="math inline">\(\rho\)</span> and <span class="math inline">\(\theta_3\)</span>.</p>
 <p>We need to solve <span class="math display">\[
 \rho = \frac{\theta_2}{\sqrt{\theta_2^2 + \theta_3^2}}

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
-<meta name="dcterms.date" content="2024-06-27">
+<meta name="dcterms.date" content="2024-09-09">
 
 <title>More on shrinkage plots – SMLP2024: Advanced Frequentist Track</title>
 <style>
@@ -378,7 +378,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024-06-27</p>
+      <p class="date">2024-09-09</p>
     </div>
   </div>
   
@@ -408,12 +408,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> progress<span class="op">=</span><span class="cn">false</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>false</code></pre>
+</div>
 </div>
 <p>Load the kb07 data set (don’t tell Reinhold that I used these data).</p>
 <div id="4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>kb07 <span class="op">=</span> MixedModels.<span class="fu">dataset</span>(<span class="op">:</span>kb07)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>kb07 <span class="op">=</span> MixedModels.<span class="fu">dataset</span>(<span class="op">:</span>kb07)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Arrow.Table with 1789 rows, 7 columns, and schema:
  :subj      String
@@ -426,31 +429,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>subj <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>item <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>spkr <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>prec <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>load <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    rt_trunc <span class="op">~</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>      spkr <span class="op">*</span> prec <span class="op">*</span> load <span class="op">+</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>      (<span class="fl">1</span> <span class="op">+</span> spkr <span class="op">+</span> prec <span class="op">+</span> load <span class="op">|</span> subj) <span class="op">+</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>      (<span class="fl">1</span> <span class="op">+</span> spkr <span class="op">+</span> prec <span class="op">+</span> load <span class="op">|</span> item)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Minimizing 2    Time: 0:00:01 ( 0.53  s/it)
-  objective:  29353.753287212847
-Minimizing 724    Time: 0:00:02 ( 2.95 ms/it)
-
-Minimizing 725    Time: 0:00:02 ( 2.97 ms/it)
-  objective:  28637.12386355983</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>subj <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>item <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>spkr <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>prec <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>load <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    rt_trunc <span class="op">~</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      spkr <span class="op">*</span> prec <span class="op">*</span> load <span class="op">+</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      (<span class="fl">1</span> <span class="op">+</span> spkr <span class="op">+</span> prec <span class="op">+</span> load <span class="op">|</span> subj) <span class="op">+</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      (<span class="fl">1</span> <span class="op">+</span> spkr <span class="op">+</span> prec <span class="op">+</span> load <span class="op">|</span> item)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts, progress)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -826,7 +821,7 @@ Figure&nbsp;1: Shrinkage plot of model m1
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    rt_trunc <span class="op">~</span></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span> prec <span class="op">*</span> spkr <span class="op">*</span> load <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> subj) <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> prec <span class="op">|</span> item)</span>
 <span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts, progress)</span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
@@ -993,7 +988,7 @@ Figure&nbsp;2: Shrinkage plot of model m2
 <span id="m1def-3"><a href="#m1def-3" aria-hidden="true" tabindex="-1"></a>    rt_trunc <span class="op">~</span></span>
 <span id="m1def-4"><a href="#m1def-4" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span> prec <span class="op">+</span> spkr <span class="op">+</span> load <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> subj) <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> prec <span class="op">|</span> item)</span>
 <span id="m1def-5"><a href="#m1def-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="m1def-6"><a href="#m1def-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span>
+<span id="m1def-6"><a href="#m1def-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts, progress)</span>
 <span id="m1def-7"><a href="#m1def-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
@@ -1135,72 +1130,72 @@ Figure&nbsp;2: Shrinkage plot of model m2
 <td style="text-align: left;">β</td>
 <td style="text-align: left; font-style: italic;">missing</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">2023.71</td>
-<td style="text-align: right;">2328.86</td>
+<td style="text-align: right;">2031.68</td>
+<td style="text-align: right;">2333.96</td>
 </tr>
 <tr class="even">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
 <td style="text-align: left;">β</td>
 <td style="text-align: left; font-style: italic;">missing</td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">-427.367</td>
-<td style="text-align: right;">-245.602</td>
+<td style="text-align: right;">-419.589</td>
+<td style="text-align: right;">-235.966</td>
 </tr>
 <tr class="odd">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
 <td style="text-align: left;">β</td>
 <td style="text-align: left; font-style: italic;">missing</td>
 <td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">35.3563</td>
-<td style="text-align: right;">95.2433</td>
+<td style="text-align: right;">35.4184</td>
+<td style="text-align: right;">98.2909</td>
 </tr>
 <tr class="even">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">4</td>
 <td style="text-align: left;">β</td>
 <td style="text-align: left; font-style: italic;">missing</td>
 <td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">45.3787</td>
-<td style="text-align: right;">109.377</td>
+<td style="text-align: right;">48.0044</td>
+<td style="text-align: right;">111.989</td>
 </tr>
 <tr class="odd">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">5</td>
 <td style="text-align: left;">σ</td>
 <td style="text-align: left;">item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">260.333</td>
-<td style="text-align: right;">445.813</td>
+<td style="text-align: right;">267.057</td>
+<td style="text-align: right;">451.017</td>
 </tr>
 <tr class="even">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">6</td>
 <td style="text-align: left;">σ</td>
 <td style="text-align: left;">item</td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">174.789</td>
-<td style="text-align: right;">311.611</td>
+<td style="text-align: right;">175.881</td>
+<td style="text-align: right;">309.732</td>
 </tr>
 <tr class="odd">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">7</td>
 <td style="text-align: left;">ρ</td>
 <td style="text-align: left;">item</td>
 <td style="text-align: left;">(Intercept), prec: maintain</td>
-<td style="text-align: right;">-0.91238</td>
-<td style="text-align: right;">-0.475282</td>
+<td style="text-align: right;">-0.893052</td>
+<td style="text-align: right;">-0.456606</td>
 </tr>
 <tr class="even">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">8</td>
 <td style="text-align: left;">σ</td>
 <td style="text-align: left;">subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">235.388</td>
-<td style="text-align: right;">364.803</td>
+<td style="text-align: right;">231.16</td>
+<td style="text-align: right;">365.448</td>
 </tr>
 <tr class="odd">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">9</td>
 <td style="text-align: left;">σ</td>
 <td style="text-align: left;">residual</td>
 <td style="text-align: left; font-style: italic;">missing</td>
-<td style="text-align: right;">656.797</td>
-<td style="text-align: right;">702.209</td>
+<td style="text-align: right;">657.048</td>
+<td style="text-align: right;">702.927</td>
 </tr>
 </tbody>
 </table>
@@ -1243,7 +1238,7 @@ Figure&nbsp;4: Ridge plot of the fixed-effects coefficients from the bootstrap s
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    rt_trunc <span class="op">~</span></span>
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span> prec <span class="op">+</span> spkr <span class="op">+</span> load <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> prec <span class="op">|</span> item) <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> subj)</span>
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts, progress)</span>
 <span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
@@ -1348,72 +1343,72 @@ Figure&nbsp;4: Ridge plot of the fixed-effects coefficients from the bootstrap s
 <td style="text-align: left;">β</td>
 <td style="text-align: left; font-style: italic;">missing</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">2025.41</td>
-<td style="text-align: right;">2321.59</td>
+<td style="text-align: right;">2036.69</td>
+<td style="text-align: right;">2329.78</td>
 </tr>
 <tr class="even">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
 <td style="text-align: left;">β</td>
 <td style="text-align: left; font-style: italic;">missing</td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">-419.11</td>
-<td style="text-align: right;">-241.424</td>
+<td style="text-align: right;">-427.621</td>
+<td style="text-align: right;">-242.268</td>
 </tr>
 <tr class="odd">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
 <td style="text-align: left;">β</td>
 <td style="text-align: left; font-style: italic;">missing</td>
 <td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">38.9774</td>
-<td style="text-align: right;">101.281</td>
+<td style="text-align: right;">37.9448</td>
+<td style="text-align: right;">100.866</td>
 </tr>
 <tr class="even">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">4</td>
 <td style="text-align: left;">β</td>
 <td style="text-align: left; font-style: italic;">missing</td>
 <td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">48.4182</td>
-<td style="text-align: right;">109.199</td>
+<td style="text-align: right;">45.875</td>
+<td style="text-align: right;">109.477</td>
 </tr>
 <tr class="odd">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">5</td>
 <td style="text-align: left;">σ</td>
 <td style="text-align: left;">item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">266.806</td>
-<td style="text-align: right;">454.127</td>
+<td style="text-align: right;">259.165</td>
+<td style="text-align: right;">445.928</td>
 </tr>
 <tr class="even">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">6</td>
 <td style="text-align: left;">σ</td>
 <td style="text-align: left;">item</td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">176.192</td>
-<td style="text-align: right;">315.218</td>
+<td style="text-align: right;">178.948</td>
+<td style="text-align: right;">317.097</td>
 </tr>
 <tr class="odd">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">7</td>
 <td style="text-align: left;">ρ</td>
 <td style="text-align: left;">item</td>
 <td style="text-align: left;">(Intercept), prec: maintain</td>
-<td style="text-align: right;">-0.893521</td>
-<td style="text-align: right;">-0.443468</td>
+<td style="text-align: right;">-0.895678</td>
+<td style="text-align: right;">-0.454285</td>
 </tr>
 <tr class="even">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">8</td>
 <td style="text-align: left;">σ</td>
 <td style="text-align: left;">subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">231.473</td>
-<td style="text-align: right;">357.503</td>
+<td style="text-align: right;">234.33</td>
+<td style="text-align: right;">362.663</td>
 </tr>
 <tr class="odd">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">9</td>
 <td style="text-align: left;">σ</td>
 <td style="text-align: left;">residual</td>
 <td style="text-align: left; font-style: italic;">missing</td>
-<td style="text-align: right;">658.356</td>
-<td style="text-align: right;">703.593</td>
+<td style="text-align: right;">658.821</td>
+<td style="text-align: right;">704.333</td>
 </tr>
 </tbody>
 </table>

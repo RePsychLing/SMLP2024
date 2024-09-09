@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
-<meta name="dcterms.date" content="2024-06-27">
+<meta name="dcterms.date" content="2024-09-09">
 
 <title>The sleepstudy: Speed - for a change … – SMLP2024: Advanced Frequentist Track</title>
 <style>
@@ -414,7 +414,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024-06-27</p>
+      <p class="date">2024-09-09</p>
     </div>
   </div>
   
@@ -459,11 +459,7 @@ div.csl-indent {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie</span>   <span class="co"># plots specific to mixed-effects models using Makie</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>CairoMakie.<span class="fu">activate!</span>(; <span class="kw">type</span><span class="op">=</span><span class="st">"svg"</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">SMLP2024</span>: dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -476,7 +472,7 @@ div.csl-indent {
 <li>Create a <code>GroupedDataFrame</code> by levels of <code>Subj</code> (the original dataframe is available as <code>gdf.parent</code>, which we name <code>df</code>)</li>
 </ul>
 <div id="4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>gdf <span class="op">=</span> <span class="pp">@chain</span> MixedModels.<span class="fu">dataset</span>(<span class="op">:</span>sleepstudy) <span class="cf">begin</span></span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>gdf <span class="op">=</span> <span class="pp">@chain</span> <span class="fu">dataset</span>(<span class="op">:</span>sleepstudy) <span class="cf">begin</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  DataFrame</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename!</span>(<span class="op">:</span>subj <span class="op">=&gt;</span> <span class="op">:</span>Subj, <span class="op">:</span>days <span class="op">=&gt;</span> <span class="op">:</span>day)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@transform</span>!(<span class="op">:</span>speed <span class="op">=</span> <span class="fl">1000</span> <span class="op">/</span> <span class="op">:</span>reaction)</span>
@@ -890,10 +886,10 @@ div.csl-indent {
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>┌ Warning: Found `resolution` in the theme when creating a `Scene`. The `resolution` keyword for `Scene`s and `Figure`s has been deprecated. Use `Figure(; size = ...` or `Scene(; size = ...)` instead, which better reflects that this is a unitless size and not a pixel resolution. The key could also come from `set_theme!` calls or related theming functions.
-└ @ Makie ~/.julia/packages/Makie/qMluh/src/scenes.jl:227
+└ @ Makie ~/.julia/packages/Makie/8h0bl/src/scenes.jl:227
 ┌ Warning: abline! is deprecated and will be removed in the future. Use ablines / ablines! instead.
-│   caller = top-level scope at sleepstudy_speed.qmd:136
-└ @ Core ~/Work/SMLP2024/sleepstudy_speed.qmd:136</code></pre>
+│   caller = top-level scope at sleepstudy_speed.qmd:132
+└ @ Core ~/Work/SMLP2024/sleepstudy_speed.qmd:132</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div id="fig-xyplotsleepspeed" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -913,11 +909,10 @@ Figure&nbsp;1: Reaction speed (s⁻¹) versus days of sleep deprivation by subje
 <section id="basic-lmm" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Basic LMM</h1>
 <div id="14" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>Subj <span class="op">=&gt;</span> <span class="fu">Grouping</span>())</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span> speed <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> day <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> day <span class="op">|</span> Subj)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, df; contrasts)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span> speed <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> day <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> day <span class="op">|</span> Subj)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, df)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -967,7 +962,7 @@ Figure&nbsp;1: Reaction speed (s⁻¹) versus days of sleep deprivation by subje
 <div id="16" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="op">=</span> <span class="kw">let</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span> speed <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> day <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> day <span class="op">|</span> Subj)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, df; contrasts)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, df)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
@@ -1138,7 +1133,7 @@ Figure&nbsp;2: Prediction intervals on the random effects in model m2
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>┌ Warning: Found `resolution` in the theme when creating a `Scene`. The `resolution` keyword for `Scene`s and `Figure`s has been deprecated. Use `Figure(; size = ...` or `Scene(; size = ...)` instead, which better reflects that this is a unitless size and not a pixel resolution. The key could also come from `set_theme!` calls or related theming functions.
-└ @ Makie ~/.julia/packages/Makie/qMluh/src/scenes.jl:227</code></pre>
+└ @ Makie ~/.julia/packages/Makie/8h0bl/src/scenes.jl:227</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div id="fig-shrinkagem2" class="quarto-float quarto-figure quarto-figure-center anchored">
