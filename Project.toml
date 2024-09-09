@@ -44,7 +44,7 @@ TypedTables = "9d95f2ec-7b3d-5a63-8d20-e2491e220bb9"
 ZipFile = "a5390f91-8eb1-5f08-bee0-b1d1ffed6cea"
 
 [compat]
-AlgebraOfGraphics = "0.6"
+AlgebraOfGraphics = "0.8"
 Arrow = "2"
 BoxCox = "0.3"
 CSV = "0.10"
