@@ -169,7 +169,7 @@ While it is relatively easy to re-formulate hypothesis about reaction time into 
 For example, a log transformation of the response changes the hypotheses on the original scale from _additive_ effects to _multiplicative effects_. 
 As a very simple example, consider two observations `y1 = 100` and `y2 = 1000`.
 On the original scale, there `y2 = 10 * y1`. 
-But on the $log_{10}$ scale, `log10(y2) = 1 + log10(y1)`.
+But on the $\log_{10}$ scale, `log10(y2) = 1 + log10(y1)`.
 In other words: I recommend keeping interpretability of the model in mind before blindly chasing perfectly fulfilling all model assumptions.
 
 There are two other little tricks that `BoxCox.jl` has to offer.
@@ -187,11 +187,11 @@ One such proposal from @YeoJohnson2000 is also implemented in BoxCox.jl.
 The definition of the transformation is:
 
 $$
-\\begin{cases} ((x_i+1)^\\lambda-1)/\\lambda                      &  \\text{if }\\lambda \\neq 0, y \\geq 0 \\\\
-               \\log(y_i + 1)                                     &  \\text{if }\\lambda =     0, y \\geq 0 \\\\
-               -((-x_i + 1)^{(2-\\lambda)} - 1) / (2 - \\lambda)  &  \\text{if }\\lambda \\neq 2, y <     0 \\\\
-               -\\log(-x_i + 1)                                   &  \\text{if }\\lambda =     2, y <     0
-\\end{cases}
+\begin{cases} ((x_i+1)^\lambda-1)/\lambda                      & \text{if }\lambda \neq 0, y \geq 0 \\
+               \log(y_i + 1)                                   & \text{if }\lambda =     0, y \geq 0 \\
+               -((-x_i + 1)^{(2-\lambda)} - 1) / (2 - \lambda) &  \text{if }\lambda \neq 2, y <     0 \\
+               -\log(-x_i + 1)                                 &  \text{if }\lambda =     2, y <     0
+\end{cases}
 $$
 
 and we can fit it in BoxCox.jl with
