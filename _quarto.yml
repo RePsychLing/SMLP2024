@@ -37,7 +37,7 @@ project:
   - singularity.qmd
   - sleepstudy.qmd
   - sleepstudy_speed.qmd
-  - transformations.qmd
+  - transformation.qmd
   - useful_packages.qmd
 
 # editor_options:
@@ -98,7 +98,7 @@ website:
         contents:
         - contrasts_fggk21.qmd
         - contrasts_kwdyz11.qmd
-        - transformations.qmd
+        - transformation.qmd
       - glmm.qmd
       - section: "Bootstrap and profiling"
         contents:
