@@ -22,8 +22,8 @@ The procedure is to simulate `n` response vectors from `m` using the estimated p
 and refit `m` to these responses in turn, accumulating the statistics of interest at each iteration.
 
 The parameters of a `LinearMixedModel` object are the fixed-effects
-parameters, `β`, the standard deviation, `σ`, of the per-observation noise, and the covariance
-parameter, `θ`, that defines the variance-covariance matrices of the random effects.
+parameters (`β`), the standard deviation (`σ`), of the per-observation noise, and the covariance
+parameter (`θ`), that defines the variance-covariance matrices of the random effects.
 A technical description of the covariance parameter can be found in the [MixedModels.jl docs](https://juliastats.org/MixedModels.jl/v4.7.1/optimization/).
 Lisa Schwetlick and Daniel Backhaus have provided a more beginner-friendly description of the covariance parameter in the [documentation for MixedModelsSim.jl](https://repsychling.github.io/MixedModelsSim.jl/v0.2.6/simulation_tutorial/).
 For today's purposes -- looking at the uncertainty in the estimates from a fitted model -- we can simply use values from the fitted model, but we will revisit the parametric bootstrap as a convenient way to simulate new data, potentially with different parameter values, for power analysis.
@@ -73,11 +73,6 @@ contrasts = Dict(:spkr => EffectsCoding(),
 ```
 
 The `EffectsCoding` contrast is used with these to create a ±1 encoding.
-Furthermore, `Grouping` contrasts are assigned to the `subj` and `item` factors.
-This is not a contrast per-se but an indication that these factors will be used as grouping factors for random effects and, therefore, there is no need to create a contrast matrix.
-For large numbers of levels in a grouping factor, an attempt to create a contrast matrix may cause memory overflow.
-
-It is not important in these cases but a good practice in any case.
 
 We can look at an initial fit of moderate complexity:
 
@@ -145,11 +140,11 @@ draw(plt; figure=(;supertitle="Parametric bootstrap estimates of variance compon
 
 The bootstrap sample can be used to generate intervals that cover a certain percentage of the bootstrapped values.
 We refer to these as "coverage intervals", similar to a confidence interval.
-The shortest such intervals, obtained with the `shortestcovint` extractor, correspond to a highest posterior density interval in Bayesian inference.
+The shortest such intervals, obtained with the `confint` extractor, correspond to a highest posterior density interval in Bayesian inference.
 
 We generate these for all random and fixed effects:
 ```{julia}
-confint(samp)
+confint(samp; method=:shortest)
 ```
 
 ```{julia}
