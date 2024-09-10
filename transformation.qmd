@@ -15,7 +15,7 @@ For example, in a model with `age` (in years) as a predictor, the untransformed 
 For a typical experiment with young adult participants, this presents a few challenges in interpretation:
 
 - newborns are widely outside the range of the observed data, so it seems problematic *prima facie* to interpret the estimated results for a value so far outside the range of the observed data
-- we *know* that newborns and young adults are widely different and that the effect of age across childhood on most psychological and biological phenemona is not linear. For example, children do not grow at a constant rate from birth until adulthood.
+- we *know* that newborns and young adults are widely different and that the effect of age across childhood on most psychological and biological phenomena is not linear. For example, children do not grow at a constant rate from birth until adulthood.
 
 Beyond _centering_ a variable so that the center reflects an interpretable hypothesis, we may also want to _scale_ a variable to move towards more easily interpretable units. For example, it is common to express things in terms of standard deviations instead of raw units -- combined with centering, this yields _$z$-scoring_ .
 
