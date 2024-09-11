@@ -58,9 +58,10 @@ let f = Figure(; size=(800,400))
 
   # order of grid positions to plot the facets in
   gridpos = Dict{String, NTuple{2,Int}}()
-  for (subj, pos) in zip(reg.subj, Iterators.product(1:2, 1:9))
-    gridpos[subj] = pos
+  for (i, subj) in enumerate(reg.subj)
+    gridpos[subj] = fldmod1(i, 9)
   end
+  gridpos
 
    axes = Axis[]
 
