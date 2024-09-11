@@ -1,0 +1,210 @@
+---
+title: "Transformations of the predictors and the response"
+engine: julia
+author: Phillip Alday
+julia:
+  exeflags: ["--project", "--threads=auto"]
+---
+
+## Predictors
+
+When dealing with categorical variables, the choice of contrast coding impacts the interpretation of the coefficients of the fitted model but does not impact the predictions made by the model nor its general goodness of it. 
+If we apply _linear_ transformations to our predictors, then we see a similar pattern for continuous variables.
+
+For example, in a model with `age` (in years) as a predictor, the untransformed variable yields a model where the intercept corresponds to `age = 0`, i.e. a newborn. 
+For a typical experiment with young adult participants, this presents a few challenges in interpretation:
+
+- newborns are widely outside the range of the observed data, so it seems problematic *prima facie* to interpret the estimated results for a value so far outside the range of the observed data
+- we *know* that newborns and young adults are widely different and that the effect of age across childhood on most psychological and biological phenomena is not linear. For example, children do not grow at a constant rate from birth until adulthood.
+
+Beyond _centering_ a variable so that the center reflects an interpretable hypothesis, we may also want to _scale_ a variable to move towards more easily interpretable units. For example, it is common to express things in terms of standard deviations instead of raw units -- combined with centering, this yields _$z$-scoring_ .
+
+In addition to placing some variables on a more interpretable scale, $z$-scoring can be used across all continuous predictors to place them all on a single, common scale. 
+The advantage to shared scale across all continuous predictors is that the magnitude of coefficient estimates are directly comparable.
+The disadvantage is that the natural units are lost, especially when the natural units are directly interpretable (e.g. milliseconds, grams, etc.).
+
+::: {.callout-note collapse="true" title="Nonlinear transformations"}
+There are also other possible nonlinear transformation, such as the logarithm or various polynomials, but we will leave this alone. Nonlinear transformation change the predictions of the model (in addition to changing the interpretation of the associated coefficients) and should be appropriately motivated by the data and theory.
+:::
+
+In other words, from an interpretability standpoint, many continuous variables require just as much attention to their "coding" as categorical variables do.
+
+::: {.callout-note collapse="true" title="Scaling can also help numerical aspects of model fitting"}
+
+From a practical perspective, linear transformations of the predicots may also make model fitting easier.
+In an abstract mathematical sense, the scale of the variables does not matter, but computers and hence our software exist in a less idealized realm. 
+In an intuitive sense, we can think of rounding error -- if we are dealing with quantities on widely different scales, then the quantities on the larger scale will tend to dominate the quantities on the smaller scale. 
+This is why many guides on how to deal with convergence issues suggest scaling your variables.
+
+:::
+
+In Julia, the package [`StandardizedPredictors.jl`](https://beacon-biosignals.github.io/StandardizedPredictors.jl/v1/) takes advantage of this parallel between linear transformations and contrast coding and allows you to specify centering, scaling and $z$-transformations as part of the contrast specification.
+
+We'll also be using the [`Effects.jl`](https://beacon-biosignals.github.io/Effects.jl/v1.3/) package to demonstrate that these transformation do not change the model predictions.
+
+```{julia}
+using DataFrames
+using Effects
+using MixedModels
+using StandardizedPredictors
+using SMLP2024: dataset
+```
+
+```{julia}
+slp = fit(MixedModel, 
+          @formula(reaction ~ 1 + days + (1 + days |subj)),
+          dataset(:sleepstudy))
+```
+
+```{julia}
+days_centered = fit(MixedModel, 
+                    @formula(reaction ~ 1 + days + (1 + days |subj)),
+                    dataset(:sleepstudy);
+                    contrasts=Dict(:days => Center()))
+```
+
+If we look at the log-likelihood, AIC, BIC, etc. of these two models, we see that they are the same:
+
+```{julia}
+mods = [slp, days_centered]
+DataFrame(; model=["original", "centered"], 
+          AIC=aic.(mods),
+          AICc=aicc.(mods),
+          BIC=bic.(mods), 
+          logLik=loglikelihood.(mods))
+```
+
+
+We can also see that models make identical predictions. 
+The Effects package will compute predictions and estimated errors at a predefined grid. 
+For more complicated models, we can also use the package to compute "typical" values, such as the mean, median or mode, for variables that we wish to ignore. 
+We don't need to worry about that right now, since we only have one non-intercept predictor.
+
+```{julia}
+# a fully crossed grid is computed from the elements of `design`.
+# this is similar to how `expand.grid` works in R.
+design = Dict(:days => [1, 4, 9])
+effects(design, slp; level=0.95)
+```
+
+```{julia}
+effects(design, days_centered; level=0.95)
+```
+
+If this sounds like `effects` or `emmeans` in R, that's because there is a large overlap. 
+
+## Response
+
+In addition to transforming the predictors, we can also consider transforming the response (dependent variable). 
+There are many different common possibilities -- the log, the inverse/reciprocal, or even the square root -- and it can be difficult to choose an appropriate one.
+For non-negative response (e.g., reaction time in many experiences), @Box1964 figured out a generalization that subsumes all of these possibilities:
+
+$$
+\begin{cases}
+\frac{y^{\lambda} - 1}{\lambda} &\quad \lambda \neq 0 \\
+\log y &\quad \lambda = 0
+\end{cases}
+$$
+
+Our task is thus finding the appropriate $\lambda$ such that the _conditional distribution_ is as normal as possible.
+In other words, we need to find $\lambda$ that results in the _residuals_ are as normal as possible.
+I've emphasized _conditional distribution_ and _residuals_ because that's where the normality assumption actually lies in the linear (mixed) model.
+The assumption is **not** that the response `y`, i.e. the uncondidtional distribution, is normally distributed, but rather that the residuals are normally distributed. 
+In other words, we can only check the quality of a given $\lambda$ by fitting a model to the transformed response.
+Fortunately, [`BoxCox.jl`](https://palday.github.io/BoxCox.jl/v0.3.3/) makes this easy.
+
+The `fit` function takes two arguments:
+- the transformation to be fit (i.e. `BoxCoxTransformation`)
+- the model fit to the original data
+
+```{julia}
+using BoxCox
+bc = fit(BoxCoxTransformation, slp)
+```
+
+:::{callout-note}
+For large models, fitting the `BoxCoxTransformation` can take a while because a mixed model must be repeatedly fit after each intermediate transformation.
+:::
+
+Although we receive a single "best" value (approximately -1.0747) from the fitting process, it is worthwhile to look at the profile likelihood plot for the transformation:
+
+```{julia}
+# we need a plotting backend loaded before we can use plotting functionality
+# from BoxCox.jl
+using CairoMakie
+boxcoxplot(bc; conf_level=0.95)
+```
+
+Here we see that -1 is nearly as good. Moreover, time$^{-1}$ has a natural interpretation as _speed_.
+In other words, we can model reaction speed instead of reaction time.
+Then instead of seeing whether participants take longer to respond with each passing day, we can see whether their speed increases or decreases.
+In both cases, we're looking at whether they respond _faster_ or _slower_ and even the terminology _fast_ and _slow_ suggests that speed is easily interpretable.
+
+If we recall the definition of the Box-Cox transformation from above:
+$$
+\begin{cases}
+\frac{y^{\lambda} - 1}{\lambda} &\quad \lambda \neq 0 \\
+\log y &\quad \lambda = 0
+\end{cases}
+$$
+
+then we see that there is a normalizing denominator that flips the sign when ``\lambda < 0``.
+If we use the full Box-Cox formula, then the sign of the effect in our transformed and untransformed model remains the same.
+While useful at times, speed has a natural interpretation and so we instead use the power relation, which is the actual key component, without normalization.
+
+Because `reaction` is stored in milliseconds, we use `1000 / reaction` instead of `1 / reaction` so that our speed units are responses per second.
+
+```{julia}
+model_bc = fit(MixedModel,
+               @formula(1000 / reaction ~ 1 + days + (1 + days | subj)),
+                dataset(:sleepstudy))
+```
+
+For our original model on the untransformed scale, the intercept was approximately 250, which means that the average response time was about 250 milliseconds.
+For the model on the speed scale, we have an intercept about approximately 4, which means that the average response speed is about 4 responses per second, which implies that the the average response time is 250 milliseconds.
+In other words, our new results are compatible with our previous estimates.
+
+This example also makes something else clear: much like transformations of the predictors, transforming the response **changes the hypothesis being tested**. 
+While it is relatively easy to re-formulate hypothesis about reaction time into hypotheses about speed, it can be harder to re-formulate other hypotheses.
+For example, a log transformation of the response changes the hypotheses on the original scale from _additive_ effects to _multiplicative effects_. 
+As a very simple example, consider two observations `y1 = 100` and `y2 = 1000`.
+On the original scale, there `y2 = 10 * y1`. 
+But on the $\log_{10}$ scale, `log10(y2) = 1 + log10(y1)`.
+In other words: I recommend keeping interpretability of the model in mind before blindly chasing perfectly fulfilling all model assumptions.
+
+There are two other little tricks that `BoxCox.jl` has to offer.
+First, the fitted transformation will work just like a function:
+```{julia}
+bc(1000)
+```
+
+```{julia}
+bc.(response(slp))
+```
+
+Second, the decades since the publication of @Box1964 have seen many proposed extensions to handle that that may not be strictly positive. 
+One such proposal from @YeoJohnson2000 is also implemented in BoxCox.jl.
+The definition of the transformation is:
+
+$$
+\begin{cases} ((y_+1)^\lambda-1)/\lambda                      & \text{if }\lambda \neq 0, y \geq 0 \\
+               \log(y_i + 1)                                   & \text{if }\lambda =     0, y \geq 0 \\
+               -((-y_ + 1)^{(2-\lambda)} - 1) / (2 - \lambda) &  \text{if }\lambda \neq 2, y <     0 \\
+               -\log(-y_ + 1)                                 &  \text{if }\lambda =     2, y <     0
+\end{cases}
+$$
+
+and we can fit it in BoxCox.jl with
+
+```{julia}
+yj = fit(YeoJohnsonTransformation, slp)
+```
+
+```{julia}
+f = boxcoxplot(yj; conf_level=0.95)
+f[0, :] = Label(f, "Yeo-Johnson"; tellwidth=false)
+f
+```
+
+:::{refs}
+:::
