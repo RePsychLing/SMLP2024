@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday">
-<meta name="dcterms.date" content="2024-09-10">
+<meta name="dcterms.date" content="2024-09-11">
 
 <title>Transformations of the predictors and the response – SMLP2024: Advanced Frequentist Track</title>
 <style>
@@ -431,7 +431,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024-09-10</p>
+      <p class="date">2024-09-11</p>
     </div>
   </div>
   
@@ -876,10 +876,10 @@ resultant transformation:
 </div>
 <p>Second, the decades since the publication of <span class="citation" data-cites="Box1964">Box &amp; Cox (<a href="#ref-Box1964" role="doc-biblioref">1964</a>)</span> have seen many proposed extensions to handle that that may not be strictly positive. One such proposal from <span class="citation" data-cites="YeoJohnson2000">Yeo &amp; Johnson (<a href="#ref-YeoJohnson2000" role="doc-biblioref">2000</a>)</span> is also implemented in BoxCox.jl. The definition of the transformation is:</p>
 <p><span class="math display">\[
-\begin{cases} ((x_i+1)^\lambda-1)/\lambda                      &amp; \text{if }\lambda \neq 0, y \geq 0 \\
+\begin{cases} ((y_+1)^\lambda-1)/\lambda                      &amp; \text{if }\lambda \neq 0, y \geq 0 \\
                \log(y_i + 1)                                   &amp; \text{if }\lambda =     0, y \geq 0 \\
-               -((-x_i + 1)^{(2-\lambda)} - 1) / (2 - \lambda) &amp;  \text{if }\lambda \neq 2, y &lt;     0 \\
-               -\log(-x_i + 1)                                 &amp;  \text{if }\lambda =     2, y &lt;     0
+               -((-y_ + 1)^{(2-\lambda)} - 1) / (2 - \lambda) &amp;  \text{if }\lambda \neq 2, y &lt;     0 \\
+               -\log(-y_ + 1)                                 &amp;  \text{if }\lambda =     2, y &lt;     0
 \end{cases}
 \]</span></p>
 <p>and we can fit it in BoxCox.jl with</p>
