@@ -51,7 +51,9 @@ sleepstudy = DataFrame(dataset("sleepstudy"))
 #| fig-cap: Average response time versus days of sleep deprivation by subject
 
 let f = Figure(; size=(800,400))
-
+  yrange = maximum(sleepstudy.reaction) - minimum(sleepstudy.reaction)
+  xrange = maximum(sleepstudy.days) - minimum(sleepstudy.days)
+  
   reg = combine(groupby(sleepstudy, :subj), 
                 [:days, :reaction] => NamedTuple{(:intercept, :slope)} ∘ simplelinreg => AsTable)
   sort!(reg, :intercept)
@@ -68,7 +70,8 @@ let f = Figure(; size=(800,400))
   # set up all the axes and plot the simple regression lines
   for row in eachrow(reg)
     pos = gridpos[row.subj]
-    ax = Axis(f[pos...]; title=row.subj, aspect=1)
+    ax = Axis(f[pos...]; title=row.subj, 
+              autolimitaspect=xrange/yrange)
     if pos[1] == 1
       hidexdecorations!(ax; grid=false, ticks=false)
     end
@@ -85,18 +88,19 @@ let f = Figure(; size=(800,400))
     scatter!(f[pos...], gdf.days, gdf.reaction)
   end
   Label(f[end+1, :], "Days of sleep deprivation"; 
-        tellwidth=false, tellheight=false)
+        tellwidth=false, tellheight=true)
   Label(f[:, 0], "Average reaction time (ms)"; 
-        tellwidth=false, tellheight=false, rotation=pi/2)
+        tellwidth=true, tellheight=false, rotation=pi/2)
   
   linkaxes!(axes...)
 
   # tweak the layout a little
   rowgap!(f.layout, 0)
   colgap!(f.layout, 3)
+  colsize!(f.layout, 0, 25)
   rowsize!(f.layout, 1, 100)
   rowsize!(f.layout, 2, 100)
-  rowsize!(f.layout, 3, 0.1)
+  rowsize!(f.layout, 3, 25)
   f
 end
 
