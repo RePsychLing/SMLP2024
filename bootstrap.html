@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
-<meta name="dcterms.date" content="2024-09-10">
+<meta name="dcterms.date" content="2024-09-11">
 
 <title>Parametric bootstrap for mixed-effects models – SMLP2024: Advanced Frequentist Track</title>
 <style>
@@ -405,7 +405,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024-09-10</p>
+      <p class="date">2024-09-11</p>
     </div>
   </div>
   
@@ -423,7 +423,7 @@ div.csl-indent {
 <h1 data-number="1"><span class="header-section-number">1</span> The parametric bootstrap</h1>
 <p><a href="https://en.wikipedia.org/wiki/Bootstrapping_(statistics)">Bootstrapping</a> is a family of procedures for generating sample values of a statistic, allowing for visualization of the distribution of the statistic or for inference from this sample of values. Bootstrapping also belongs to a larger family of procedures called <a href="https://en.wikipedia.org/wiki/Resampling_(statistics)"><em>resampling</em></a>, which are based on creating new samples of data from an existing one, then computing statistics on the new samples, in order to examine the distribution of the relevant statistics.</p>
 <p>A <em>parametric bootstrap</em> is used with a parametric model, <code>m</code>, that has been fit to data. The procedure is to simulate <code>n</code> response vectors from <code>m</code> using the estimated parameter values and refit <code>m</code> to these responses in turn, accumulating the statistics of interest at each iteration.</p>
-<p>The parameters of a <code>LinearMixedModel</code> object are the fixed-effects parameters, <code>β</code>, the standard deviation, <code>σ</code>, of the per-observation noise, and the covariance parameter, <code>θ</code>, that defines the variance-covariance matrices of the random effects. A technical description of the covariance parameter can be found in the <a href="https://juliastats.org/MixedModels.jl/v4.7.1/optimization/">MixedModels.jl docs</a>. Lisa Schwetlick and Daniel Backhaus have provided a more beginner-friendly description of the covariance parameter in the <a href="https://repsychling.github.io/MixedModelsSim.jl/v0.2.6/simulation_tutorial/">documentation for MixedModelsSim.jl</a>. For today’s purposes – looking at the uncertainty in the estimates from a fitted model – we can simply use values from the fitted model, but we will revisit the parametric bootstrap as a convenient way to simulate new data, potentially with different parameter values, for power analysis.</p>
+<p>The parameters of a <code>LinearMixedModel</code> object are the fixed-effects parameters (<code>β</code>), the standard deviation (<code>σ</code>), of the per-observation noise, and the covariance parameter (<code>θ</code>), that defines the variance-covariance matrices of the random effects. A technical description of the covariance parameter can be found in the <a href="https://juliastats.org/MixedModels.jl/v4.7.1/optimization/">MixedModels.jl docs</a>. Lisa Schwetlick and Daniel Backhaus have provided a more beginner-friendly description of the covariance parameter in the <a href="https://repsychling.github.io/MixedModelsSim.jl/v0.2.6/simulation_tutorial/">documentation for MixedModelsSim.jl</a>. For today’s purposes – looking at the uncertainty in the estimates from a fitted model – we can simply use values from the fitted model, but we will revisit the parametric bootstrap as a convenient way to simulate new data, potentially with different parameter values, for power analysis.</p>
 <p>Attach the packages to be used</p>
 <div id="2" class="cell" data-execution_count="1">
 <details class="code-fold">
@@ -570,8 +570,7 @@ div.csl-indent {
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                 <span class="op">:</span>load <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(),</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <code>EffectsCoding</code> contrast is used with these to create a ±1 encoding. Furthermore, <code>Grouping</code> contrasts are assigned to the <code>subj</code> and <code>item</code> factors. This is not a contrast per-se but an indication that these factors will be used as grouping factors for random effects and, therefore, there is no need to create a contrast matrix. For large numbers of levels in a grouping factor, an attempt to create a contrast matrix may cause memory overflow.</p>
-<p>It is not important in these cases but a good practice in any case.</p>
+<p>The <code>EffectsCoding</code> contrast is used with these to create a ±1 encoding.</p>
 <p>We can look at an initial fit of moderate complexity:</p>
 <div id="10" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>form <span class="op">=</span> <span class="pp">@formula</span>(rt_trunc <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> spkr <span class="op">*</span> prec <span class="op">*</span> load <span class="op">+</span></span>
@@ -1017,10 +1016,10 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>The bootstrap sample can be used to generate intervals that cover a certain percentage of the bootstrapped values. We refer to these as “coverage intervals”, similar to a confidence interval. The shortest such intervals, obtained with the <code>shortestcovint</code> extractor, correspond to a highest posterior density interval in Bayesian inference.</p>
+<p>The bootstrap sample can be used to generate intervals that cover a certain percentage of the bootstrapped values. We refer to these as “coverage intervals”, similar to a confidence interval. The shortest such intervals, obtained with the <code>confint</code> extractor, correspond to a highest posterior density interval in Bayesian inference.</p>
 <p>We generate these for all random and fixed effects:</p>
 <div id="26" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(samp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(samp; method<span class="op">=:</span>shortest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>DictTable with 2 columns and 13 rows:
  par   lower      upper
