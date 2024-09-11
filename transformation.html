@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
-<meta name="dcterms.date" content="2024-09-09">
+<meta name="author" content="Phillip Alday">
+<meta name="dcterms.date" content="2024-09-10">
 
-<title>Bootstrapping a fitted model – SMLP2024: Advanced Frequentist Track</title>
+<title>Transformations of the predictors and the response – SMLP2024: Advanced Frequentist Track</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -86,8 +86,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./singularity.html" rel="next">
-<link href="./profiling.html" rel="prev">
+<link href="./glmm.html" rel="next">
+<link href="./contrasts_kwdyz11.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -199,7 +199,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./bootstrap.html">Bootstrap and profiling</a></li><li class="breadcrumb-item"><a href="./kb07.html">Bootstrapping a fitted model</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./contrasts_fggk21.html">Contrast coding and transformations</a></li><li class="breadcrumb-item"><a href="./transformation.html">Transformations of the predictors and the response</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -303,13 +303,13 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">Contrast coding and transformations</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./contrasts_fggk21.html" class="sidebar-item-text sidebar-link">
@@ -324,7 +324,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./transformation.html" class="sidebar-item-text sidebar-link">
+  <a href="./transformation.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Transformations of the predictors and the response</span></a>
   </div>
 </li>
@@ -338,13 +338,13 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
  <span class="menu-text">Bootstrap and profiling</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./bootstrap.html" class="sidebar-item-text sidebar-link">
@@ -359,7 +359,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./kb07.html" class="sidebar-item-text sidebar-link active">
+  <a href="./kb07.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Bootstrapping a fitted model</span></a>
   </div>
 </li>
@@ -404,18 +404,17 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#data-set-and-model" id="toc-data-set-and-model" class="nav-link active" data-scroll-target="#data-set-and-model"><span class="header-section-number">1</span> Data set and model</a></li>
-  <li><a href="#a-bootstrap-sample" id="toc-a-bootstrap-sample" class="nav-link" data-scroll-target="#a-bootstrap-sample"><span class="header-section-number">2</span> A bootstrap sample</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">3</span> References</a></li>
+  <li><a href="#predictors" id="toc-predictors" class="nav-link active" data-scroll-target="#predictors"><span class="header-section-number">1</span> Predictors</a></li>
+  <li><a href="#response" id="toc-response" class="nav-link" data-scroll-target="#response"><span class="header-section-number">2</span> Response</a></li>
   </ul>
-<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/RePsychLing/SMLP2024/edit/main/kb07.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RePsychLing/SMLP2024/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/RePsychLing/SMLP2024/edit/main/transformation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RePsychLing/SMLP2024/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./bootstrap.html">Bootstrap and profiling</a></li><li class="breadcrumb-item"><a href="./kb07.html">Bootstrapping a fitted model</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./contrasts_fggk21.html">Contrast coding and transformations</a></li><li class="breadcrumb-item"><a href="./transformation.html">Transformations of the predictors and the response</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Bootstrapping a fitted model</h1>
+<h1 class="title">Transformations of the predictors and the response</h1>
 </div>
 
 
@@ -425,14 +424,14 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Phillip Alday, Douglas Bates, and Reinhold Kliegl </p>
+             <p>Phillip Alday </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024-09-09</p>
+      <p class="date">2024-09-10</p>
     </div>
   </div>
   
@@ -444,648 +443,498 @@ window.Quarto = {
 </header>
 
 
-<p>Begin by loading the packages to be used.</p>
+<section id="predictors" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="predictors"><span class="header-section-number">1</span> Predictors</h2>
+<p>When dealing with categorical variables, the choice of contrast coding impacts the interpretation of the coefficients of the fitted model but does not impact the predictions made by the model nor its general goodness of it. If we apply <em>linear</em> transformations to our predictors, then we see a similar pattern for continuous variables.</p>
+<p>For example, in a model with <code>age</code> (in years) as a predictor, the untransformed variable yields a model where the intercept corresponds to <code>age = 0</code>, i.e.&nbsp;a newborn. For a typical experiment with young adult participants, this presents a few challenges in interpretation:</p>
+<ul>
+<li>newborns are widely outside the range of the observed data, so it seems problematic <em>prima facie</em> to interpret the estimated results for a value so far outside the range of the observed data</li>
+<li>we <em>know</em> that newborns and young adults are widely different and that the effect of age across childhood on most psychological and biological phenomena is not linear. For example, children do not grow at a constant rate from birth until adulthood.</li>
+</ul>
+<p>Beyond <em>centering</em> a variable so that the center reflects an interpretable hypothesis, we may also want to <em>scale</em> a variable to move towards more easily interpretable units. For example, it is common to express things in terms of standard deviations instead of raw units – combined with centering, this yields <em><span class="math inline">\(z\)</span>-scoring</em> .</p>
+<p>In addition to placing some variables on a more interpretable scale, <span class="math inline">\(z\)</span>-scoring can be used across all continuous predictors to place them all on a single, common scale. The advantage to shared scale across all continuous predictors is that the magnitude of coefficient estimates are directly comparable. The disadvantage is that the natural units are lost, especially when the natural units are directly interpretable (e.g.&nbsp;milliseconds, grams, etc.).</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Nonlinear transformations">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nonlinear transformations
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>There are also other possible nonlinear transformation, such as the logarithm or various polynomials, but we will leave this alone. Nonlinear transformation change the predictions of the model (in addition to changing the interpretation of the associated coefficients) and should be appropriately motivated by the data and theory.</p>
+</div>
+</div>
+</div>
+<p>In other words, from an interpretability standpoint, many continuous variables require just as much attention to their “coding” as categorical variables do.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Scaling can also help numerical aspects of model fitting">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Scaling can also help numerical aspects of model fitting
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>From a practical perspective, linear transformations of the predicots may also make model fitting easier. In an abstract mathematical sense, the scale of the variables does not matter, but computers and hence our software exist in a less idealized realm. In an intuitive sense, we can think of rounding error – if we are dealing with quantities on widely different scales, then the quantities on the larger scale will tend to dominate the quantities on the smaller scale. This is why many guides on how to deal with convergence issues suggest scaling your variables.</p>
+</div>
+</div>
+</div>
+<p>In Julia, the package <a href="https://beacon-biosignals.github.io/StandardizedPredictors.jl/v1/"><code>StandardizedPredictors.jl</code></a> takes advantage of this parallel between linear transformations and contrast coding and allows you to specify centering, scaling and <span class="math inline">\(z\)</span>-transformations as part of the contrast specification.</p>
+<p>We’ll also be using the <a href="https://beacon-biosignals.github.io/Effects.jl/v1.3/"><code>Effects.jl</code></a> package to demonstrate that these transformation do not change the model predictions.</p>
 <div id="2" class="cell" data-execution_count="1">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">AlgebraOfGraphics</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">SMLP2024</span>: dataset</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> progress<span class="op">=</span><span class="cn">false</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Effects</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StandardizedPredictors</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">SMLP2024</span>: dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="data-set-and-model" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Data set and model</h1>
-<p>The <code>kb07</code> data <span class="citation" data-cites="Kronmueller2007">(<a href="#ref-Kronmueller2007" role="doc-biblioref">Kronmüller &amp; Barr, 2007</a>)</span> are one of the datasets provided by the <code>MixedModels</code> package.</p>
 <div id="4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>kb07 <span class="op">=</span> <span class="fu">dataset</span>(<span class="op">:</span>kb07)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>slp <span class="op">=</span> <span class="fu">fit</span>(MixedModel, </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>          <span class="pp">@formula</span>(reaction <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> days <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> days <span class="op">|</span>subj)),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>          <span class="fu">dataset</span>(<span class="op">:</span>sleepstudy))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>Arrow.Table with 1789 rows, 7 columns, and schema:
- :subj      String
- :item      String
- :spkr      String
- :prec      String
- :load      String
- :rt_trunc  Int16
- :rt_raw    Int16</code></pre>
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_subj</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">251.4051</td>
+<td style="text-align: right;">6.6323</td>
+<td style="text-align: right;">37.91</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">23.7805</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">days</td>
+<td style="text-align: right;">10.4673</td>
+<td style="text-align: right;">1.5022</td>
+<td style="text-align: right;">6.97</td>
+<td style="text-align: right;">&lt;1e-11</td>
+<td style="text-align: right;">5.7168</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">25.5918</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-<p>Convert the table to a DataFrame for summary.</p>
 <div id="6" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(<span class="fu">DataFrame</span>(kb07))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>days_centered <span class="op">=</span> <span class="fu">fit</span>(MixedModel, </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                    <span class="pp">@formula</span>(reaction <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> days <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> days <span class="op">|</span>subj)),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">dataset</span>(<span class="op">:</span>sleepstudy);</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                    contrasts<span class="op">=</span><span class="fu">Dict</span>(<span class="op">:</span>days <span class="op">=&gt;</span> <span class="fu">Center</span>()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<div><div style="float: left;"><span>7×7 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_subj</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">298.5079</td>
+<td style="text-align: right;">8.7950</td>
+<td style="text-align: right;">33.94</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">36.4260</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">days(centered: 4.5)</td>
+<td style="text-align: right;">10.4673</td>
+<td style="text-align: right;">1.5022</td>
+<td style="text-align: right;">6.97</td>
+<td style="text-align: right;">&lt;1e-11</td>
+<td style="text-align: right;">5.7168</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">25.5919</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>If we look at the log-likelihood, AIC, BIC, etc. of these two models, we see that they are the same:</p>
+<div id="8" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mods <span class="op">=</span> [slp, days_centered]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">DataFrame</span>(; model<span class="op">=</span>[<span class="st">"original"</span>, <span class="st">"centered"</span>], </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>          AIC<span class="op">=</span><span class="fu">aic</span>.(mods),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>          AICc<span class="op">=</span><span class="fu">aicc</span>.(mods),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>          BIC<span class="op">=</span><span class="fu">bic</span>.(mods), </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>          logLik<span class="op">=</span><span class="fu">loglikelihood</span>.(mods))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div><div style="float: left;"><span>2×5 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
 <table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">variable</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">mean</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">min</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">median</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">max</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">nmissing</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">eltype</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">AIC</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">AICc</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">BIC</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">logLik</th>
 </tr>
 <tr class="odd subheader headerLastRow">
 <th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Symbol">Symbol</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Union{Nothing, Float64}">Union…</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Any">Any</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Union{Nothing, Float64}">Union…</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Any">Any</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="DataType">DataType</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="String">String</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
-<td style="text-align: left;">subj</td>
-<td style="text-align: left; font-style: italic;"></td>
-<td style="text-align: left;">S030</td>
-<td style="text-align: left; font-style: italic;"></td>
-<td style="text-align: left;">S103</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">String</td>
+<td style="text-align: left;">original</td>
+<td style="text-align: right;">1763.94</td>
+<td style="text-align: right;">1764.42</td>
+<td style="text-align: right;">1783.1</td>
+<td style="text-align: right;">-875.97</td>
 </tr>
 <tr class="even">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
-<td style="text-align: left;">item</td>
-<td style="text-align: left; font-style: italic;"></td>
-<td style="text-align: left;">I01</td>
-<td style="text-align: left; font-style: italic;"></td>
-<td style="text-align: left;">I32</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">String</td>
+<td style="text-align: left;">centered</td>
+<td style="text-align: right;">1763.94</td>
+<td style="text-align: right;">1764.42</td>
+<td style="text-align: right;">1783.1</td>
+<td style="text-align: right;">-875.97</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>We can also see that models make identical predictions. The Effects package will compute predictions and estimated errors at a predefined grid. For more complicated models, we can also use the package to compute “typical” values, such as the mean, median or mode, for variables that we wish to ignore. We don’t need to worry about that right now, since we only have one non-intercept predictor.</p>
+<div id="10" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a fully crossed grid is computed from the elements of `design`.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># this is similar to how `expand.grid` works in R.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>design <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>days <span class="op">=&gt;</span> [<span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">9</span>])</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">effects</span>(design, slp; level<span class="op">=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div><div style="float: left;"><span>3×5 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
+<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">days</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">reaction</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">err</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">lower</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">upper</th>
+</tr>
+<tr class="odd subheader headerLastRow">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">261.872</td>
+<td style="text-align: right;">6.59566</td>
+<td style="text-align: right;">248.945</td>
+<td style="text-align: right;">274.8</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">293.274</td>
+<td style="text-align: right;">8.31451</td>
+<td style="text-align: right;">276.978</td>
+<td style="text-align: right;">309.57</td>
 </tr>
 <tr class="odd">
 <td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
-<td style="text-align: left;">spkr</td>
-<td style="text-align: left; font-style: italic;"></td>
-<td style="text-align: left;">new</td>
-<td style="text-align: left; font-style: italic;"></td>
-<td style="text-align: left;">old</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">String</td>
-</tr>
-<tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">4</td>
-<td style="text-align: left;">prec</td>
-<td style="text-align: left; font-style: italic;"></td>
-<td style="text-align: left;">break</td>
-<td style="text-align: left; font-style: italic;"></td>
-<td style="text-align: left;">maintain</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">String</td>
-</tr>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">5</td>
-<td style="text-align: left;">load</td>
-<td style="text-align: left; font-style: italic;"></td>
-<td style="text-align: left;">no</td>
-<td style="text-align: left; font-style: italic;"></td>
-<td style="text-align: left;">yes</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">String</td>
-</tr>
-<tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">6</td>
-<td style="text-align: left;">rt_trunc</td>
-<td style="text-align: left;">2182.2</td>
-<td style="text-align: left;">579</td>
-<td style="text-align: left;">1940.0</td>
-<td style="text-align: left;">5171</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">Int16</td>
-</tr>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">7</td>
-<td style="text-align: left;">rt_raw</td>
-<td style="text-align: left;">2226.24</td>
-<td style="text-align: left;">579</td>
-<td style="text-align: left;">1940.0</td>
-<td style="text-align: left;">15923</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">Int16</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<p>The experimental factors; <code>spkr</code>, <code>prec</code>, and <code>load</code>, are two-level factors. The <code>EffectsCoding</code> contrast is used with these to create a <span class="math inline">\(\pm1\)</span> encoding.</p>
-<div id="8" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span><span class="dt">{Symbol,Any}</span>(nm <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>() <span class="cf">for</span> nm <span class="kw">in</span> (<span class="op">:</span>spkr, <span class="op">:</span>prec, <span class="op">:</span>load))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>The display of an initial model fit</p>
-<div id="10" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>kbm01 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    rt_trunc <span class="op">~</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      spkr <span class="op">*</span> prec <span class="op">*</span> load <span class="op">+</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      (<span class="fl">1</span> <span class="op">+</span> spkr <span class="op">+</span> prec <span class="op">+</span> load <span class="op">|</span> subj) <span class="op">+</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      (<span class="fl">1</span> <span class="op">+</span> spkr <span class="op">+</span> prec <span class="op">+</span> load <span class="op">|</span> item)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts, progress)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd">
-<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">σ_subj</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">σ_item</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">2181.6729</td>
-<td style="text-align: right;">77.3131</td>
-<td style="text-align: right;">28.22</td>
-<td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">301.6736</td>
-<td style="text-align: right;">362.3182</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">67.7490</td>
-<td style="text-align: right;">18.2747</td>
-<td style="text-align: right;">3.71</td>
-<td style="text-align: right;">0.0002</td>
-<td style="text-align: right;">42.5441</td>
-<td style="text-align: right;">40.7073</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">-333.9206</td>
-<td style="text-align: right;">47.1388</td>
-<td style="text-align: right;">-7.08</td>
-<td style="text-align: right;">&lt;1e-11</td>
-<td style="text-align: right;">61.9978</td>
-<td style="text-align: right;">246.8078</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">78.7702</td>
-<td style="text-align: right;">19.5387</td>
-<td style="text-align: right;">4.03</td>
-<td style="text-align: right;">&lt;1e-04</td>
-<td style="text-align: right;">64.9874</td>
-<td style="text-align: right;">42.5139</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">spkr: old &amp; prec: maintain</td>
-<td style="text-align: right;">-21.9655</td>
-<td style="text-align: right;">15.8070</td>
-<td style="text-align: right;">-1.39</td>
-<td style="text-align: right;">0.1646</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">spkr: old &amp; load: yes</td>
-<td style="text-align: right;">18.3838</td>
-<td style="text-align: right;">15.8070</td>
-<td style="text-align: right;">1.16</td>
-<td style="text-align: right;">0.2448</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">prec: maintain &amp; load: yes</td>
-<td style="text-align: right;">4.5333</td>
-<td style="text-align: right;">15.8070</td>
-<td style="text-align: right;">0.29</td>
-<td style="text-align: right;">0.7743</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">spkr: old &amp; prec: maintain &amp; load: yes</td>
-<td style="text-align: right;">23.6072</td>
-<td style="text-align: right;">15.8070</td>
-<td style="text-align: right;">1.49</td>
-<td style="text-align: right;">0.1353</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Residual</td>
-<td style="text-align: right;">668.5371</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>does not include the estimated correlations of the random effects.</p>
-<p>The <code>VarCorr</code> extractor displays these.</p>
-<div id="12" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(kbm01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd">
-<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
-<td style="text-align: left;" data-quarto-table-cell-role="th">Column</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">Variance</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">Std.Dev</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">Corr.</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th"></td>
-<td style="text-align: right;" data-quarto-table-cell-role="th"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">subj</td>
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">91006.9887</td>
-<td style="text-align: right;">301.6736</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">1810.0012</td>
-<td style="text-align: right;">42.5441</td>
-<td style="text-align: right;">+0.79</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">3843.7268</td>
-<td style="text-align: right;">61.9978</td>
-<td style="text-align: right;">-0.59</td>
-<td style="text-align: right;">+0.02</td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">4223.3647</td>
-<td style="text-align: right;">64.9874</td>
-<td style="text-align: right;">+0.36</td>
-<td style="text-align: right;">+0.85</td>
-<td style="text-align: right;">+0.54</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">item</td>
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">131274.4558</td>
-<td style="text-align: right;">362.3182</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">1657.0830</td>
-<td style="text-align: right;">40.7073</td>
-<td style="text-align: right;">+0.44</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">60914.1141</td>
-<td style="text-align: right;">246.8078</td>
-<td style="text-align: right;">-0.69</td>
-<td style="text-align: right;">+0.35</td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">1807.4303</td>
-<td style="text-align: right;">42.5139</td>
-<td style="text-align: right;">+0.32</td>
-<td style="text-align: right;">+0.15</td>
-<td style="text-align: right;">-0.14</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Residual</td>
-<td style="text-align: left;"></td>
-<td style="text-align: right;">446941.7901</td>
-<td style="text-align: right;">668.5371</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>None of the two-factor or three-factor interaction terms in the fixed-effects are significant. In the random-effects terms only the scalar random effects and the <code>prec</code> random effect for <code>item</code> appear to be warranted, leading to the reduced formula</p>
-<div id="14" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>kbm02 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    rt_trunc <span class="op">~</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span> spkr <span class="op">+</span> prec <span class="op">+</span> load <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> subj) <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> prec <span class="op">|</span> item)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts, progress)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd">
-<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">σ_item</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">σ_subj</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">2181.8526</td>
-<td style="text-align: right;">77.4681</td>
-<td style="text-align: right;">28.16</td>
-<td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">364.7125</td>
-<td style="text-align: right;">298.0259</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">67.8790</td>
-<td style="text-align: right;">16.0785</td>
-<td style="text-align: right;">4.22</td>
-<td style="text-align: right;">&lt;1e-04</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">-333.7906</td>
-<td style="text-align: right;">47.4472</td>
-<td style="text-align: right;">-7.03</td>
-<td style="text-align: right;">&lt;1e-11</td>
-<td style="text-align: right;">252.5212</td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">78.5904</td>
-<td style="text-align: right;">16.0785</td>
-<td style="text-align: right;">4.89</td>
-<td style="text-align: right;">&lt;1e-05</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Residual</td>
-<td style="text-align: right;">680.0319</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="16" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(kbm02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd">
-<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
-<td style="text-align: left;" data-quarto-table-cell-role="th">Column</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">Variance</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">Std.Dev</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">Corr.</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">item</td>
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">133015.242</td>
-<td style="text-align: right;">364.713</td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">63766.937</td>
-<td style="text-align: right;">252.521</td>
-<td style="text-align: right;">-0.70</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">subj</td>
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">88819.438</td>
-<td style="text-align: right;">298.026</td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Residual</td>
-<td style="text-align: left;"></td>
-<td style="text-align: right;">462443.388</td>
-<td style="text-align: right;">680.032</td>
-<td style="text-align: right;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>These two models are nested and can be compared with a likelihood-ratio test.</p>
-<div id="18" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(kbm02, kbm01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd">
-<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">model-dof</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">deviance</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">χ²</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">χ²-dof</td>
-<td style="text-align: left;" data-quarto-table-cell-role="th">P(&gt;χ²)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rt_trunc ~ 1 + spkr + prec + load + (1 | subj) + (1 + prec | item)</td>
 <td style="text-align: right;">9</td>
-<td style="text-align: right;">28664</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rt_trunc ~ 1 + spkr + prec + load + spkr &amp; prec + spkr &amp; load + prec &amp; load + spkr &amp; prec &amp; load + (1 + spkr + prec + load | subj) + (1 + spkr + prec + load | item)</td>
-<td style="text-align: right;">29</td>
-<td style="text-align: right;">28637</td>
-<td style="text-align: right;">27</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: left;">0.1431</td>
+<td style="text-align: right;">345.611</td>
+<td style="text-align: right;">14.2167</td>
+<td style="text-align: right;">317.747</td>
+<td style="text-align: right;">373.475</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>The p-value of approximately 17% leads us to prefer the simpler model, <code>kbm02</code>, to the more complex, <code>kbm01</code>.</p>
+</div>
+<div id="12" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">effects</span>(design, days_centered; level<span class="op">=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div><div style="float: left;"><span>3×5 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
+<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">days</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">reaction</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">err</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">lower</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">upper</th>
+</tr>
+<tr class="odd subheader headerLastRow">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">261.872</td>
+<td style="text-align: right;">6.59563</td>
+<td style="text-align: right;">248.945</td>
+<td style="text-align: right;">274.8</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">293.274</td>
+<td style="text-align: right;">8.31455</td>
+<td style="text-align: right;">276.978</td>
+<td style="text-align: right;">309.57</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">345.611</td>
+<td style="text-align: right;">14.2167</td>
+<td style="text-align: right;">317.746</td>
+<td style="text-align: right;">373.475</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>If this sounds like <code>effects</code> or <code>emmeans</code> in R, that’s because there is a large overlap.</p>
 </section>
-<section id="a-bootstrap-sample" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> A bootstrap sample</h1>
-<p>Create a bootstrap sample of a few thousand parameter estimates from the reduced model. The pseudo-random number generator is initialized to a fixed value for reproducibility.</p>
+<section id="response" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="response"><span class="header-section-number">2</span> Response</h2>
+<p>In addition to transforming the predictors, we can also consider transforming the response (dependent variable). There are many different common possibilities – the log, the inverse/reciprocal, or even the square root – and it can be difficult to choose an appropriate one. For non-negative response (e.g., reaction time in many experiences), <span class="citation" data-cites="Box1964">Box &amp; Cox (<a href="#ref-Box1964" role="doc-biblioref">1964</a>)</span> figured out a generalization that subsumes all of these possibilities:</p>
+<p><span class="math display">\[
+\begin{cases}
+\frac{y^{\lambda} - 1}{\lambda} &amp;\quad \lambda \neq 0 \\
+\log y &amp;\quad \lambda = 0
+\end{cases}
+\]</span></p>
+<p>Our task is thus finding the appropriate <span class="math inline">\(\lambda\)</span> such that the <em>conditional distribution</em> is as normal as possible. In other words, we need to find <span class="math inline">\(\lambda\)</span> that results in the <em>residuals</em> are as normal as possible. I’ve emphasized <em>conditional distribution</em> and <em>residuals</em> because that’s where the normality assumption actually lies in the linear (mixed) model. The assumption is <strong>not</strong> that the response <code>y</code>, i.e.&nbsp;the uncondidtional distribution, is normally distributed, but rather that the residuals are normally distributed. In other words, we can only check the quality of a given <span class="math inline">\(\lambda\)</span> by fitting a model to the transformed response. Fortunately, <a href="https://palday.github.io/BoxCox.jl/v0.3.3/"><code>BoxCox.jl</code></a> makes this easy.</p>
+<p>The <code>fit</code> function takes two arguments: - the transformation to be fit (i.e.&nbsp;<code>BoxCoxTransformation</code>) - the model fit to the original data</p>
+<div id="14" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">BoxCox</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>bc <span class="op">=</span> <span class="fu">fit</span>(BoxCoxTransformation, slp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>Box-Cox transformation
+
+estimated λ: -1.0747
+resultant transformation:
+
+ y^-1.1 - 1
+------------
+    -1.1</code></pre>
+</div>
+</div>
+<div class="{callout-note}">
+<p>For large models, fitting the <code>BoxCoxTransformation</code> can take a while because a mixed model must be repeatedly fit after each intermediate transformation.</p>
+</div>
+<p>Although we receive a single “best” value (approximately -1.0747) from the fitting process, it is worthwhile to look at the profile likelihood plot for the transformation:</p>
+<div id="16" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we need a plotting backend loaded before we can use plotting functionality</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># from BoxCox.jl</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">boxcoxplot</span>(bc; conf_level<span class="op">=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+<figure class="figure">
+<p><img src="transformation_files/figure-html/cell-9-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Here we see that -1 is nearly as good. Moreover, time<span class="math inline">\(^{-1}\)</span> has a natural interpretation as <em>speed</em>. In other words, we can model reaction speed instead of reaction time. Then instead of seeing whether participants take longer to respond with each passing day, we can see whether their speed increases or decreases. In both cases, we’re looking at whether they respond <em>faster</em> or <em>slower</em> and even the terminology <em>fast</em> and <em>slow</em> suggests that speed is easily interpretable.</p>
+<p>If we recall the definition of the Box-Cox transformation from above: <span class="math display">\[
+\begin{cases}
+\frac{y^{\lambda} - 1}{\lambda} &amp;\quad \lambda \neq 0 \\
+\log y &amp;\quad \lambda = 0
+\end{cases}
+\]</span></p>
+<p>then we see that there is a normalizing denominator that flips the sign when <code>\lambda &lt; 0</code>. If we use the full Box-Cox formula, then the sign of the effect in our transformed and untransformed model remains the same. While useful at times, speed has a natural interpretation and so we instead use the power relation, which is the actual key component, without normalization.</p>
+<p>Because <code>reaction</code> is stored in milliseconds, we use <code>1000 / reaction</code> instead of <code>1 / reaction</code> so that our speed units are responses per second.</p>
+<div id="18" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model_bc <span class="op">=</span> <span class="fu">fit</span>(MixedModel,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>               <span class="pp">@formula</span>(<span class="fl">1000</span> <span class="op">/</span> reaction <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> days <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> days <span class="op">|</span> subj)),</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                <span class="fu">dataset</span>(<span class="op">:</span>sleepstudy))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_subj</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">3.9658</td>
+<td style="text-align: right;">0.1056</td>
+<td style="text-align: right;">37.55</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">0.4190</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">days</td>
+<td style="text-align: right;">-0.1110</td>
+<td style="text-align: right;">0.0151</td>
+<td style="text-align: right;">-7.37</td>
+<td style="text-align: right;">&lt;1e-12</td>
+<td style="text-align: right;">0.0566</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">0.2698</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>For our original model on the untransformed scale, the intercept was approximately 250, which means that the average response time was about 250 milliseconds. For the model on the speed scale, we have an intercept about approximately 4, which means that the average response speed is about 4 responses per second, which implies that the the average response time is 250 milliseconds. In other words, our new results are compatible with our previous estimates.</p>
+<p>This example also makes something else clear: much like transformations of the predictors, transforming the response <strong>changes the hypothesis being tested</strong>. While it is relatively easy to re-formulate hypothesis about reaction time into hypotheses about speed, it can be harder to re-formulate other hypotheses. For example, a log transformation of the response changes the hypotheses on the original scale from <em>additive</em> effects to <em>multiplicative effects</em>. As a very simple example, consider two observations <code>y1 = 100</code> and <code>y2 = 1000</code>. On the original scale, there <code>y2 = 10 * y1</code>. But on the <span class="math inline">\(\log_{10}\)</span> scale, <code>log10(y2) = 1 + log10(y1)</code>. In other words: I recommend keeping interpretability of the model in mind before blindly chasing perfectly fulfilling all model assumptions.</p>
+<p>There are two other little tricks that <code>BoxCox.jl</code> has to offer. First, the fitted transformation will work just like a function:</p>
 <div id="20" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">1234321</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>kbm02samp <span class="op">=</span> <span class="fu">parametricbootstrap</span>(<span class="fl">2000</span>, kbm02)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>kbm02tbl <span class="op">=</span> kbm02samp.tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bc</span>(<span class="fl">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>Table with 14 columns and 2000 rows:
-      obj      β1       β2       β3        β4       σ        σ1       σ2       ⋯
-    ┌───────────────────────────────────────────────────────────────────────────
- 1  │ 28769.9  2152.69  60.3921  -359.134  54.1231  702.317  421.683  212.915  ⋯
- 2  │ 28775.3  2221.81  61.7318  -349.417  71.1992  697.028  442.809  278.934  ⋯
- 3  │ 28573.6  2325.31  53.9668  -404.225  81.3407  657.746  364.354  274.392  ⋯
- 4  │ 28682.9  2274.65  52.9438  -384.66   69.6788  682.801  398.9    319.726  ⋯
- 5  │ 28616.1  2191.34  54.7785  -357.919  111.829  673.878  253.248  235.913  ⋯
- 6  │ 28634.1  2176.73  95.9793  -378.383  82.1559  671.685  510.996  309.876  ⋯
- 7  │ 28620.4  2128.07  57.6928  -267.747  60.4621  666.986  396.878  295.009  ⋯
- 8  │ 28665.9  2152.59  55.8208  -274.382  76.5128  684.746  369.091  274.446  ⋯
- 9  │ 28651.2  2088.3   76.4636  -296.14   95.6124  680.282  265.684  186.041  ⋯
- 10 │ 28679.9  2375.23  72.2422  -423.922  94.0833  680.729  425.72   287.686  ⋯
- 11 │ 28686.8  2034.11  59.9149  -224.859  59.5448  682.433  308.675  272.181  ⋯
- 12 │ 28702.2  2130.98  83.3953  -271.61   79.974   689.679  401.974  264.255  ⋯
- 13 │ 28625.0  2055.35  55.3526  -363.937  67.7128  676.817  309.154  265.796  ⋯
- 14 │ 28570.3  2160.73  81.5575  -321.913  108.979  661.524  426.869  259.825  ⋯
- 15 │ 28613.6  2237.73  36.9996  -362.443  82.1812  673.873  312.861  241.595  ⋯
- 16 │ 28681.4  2306.64  43.8801  -429.983  103.082  686.437  360.536  204.514  ⋯
- 17 │ 28577.2  2143.78  66.2959  -373.598  93.157   668.15   321.47   183.119  ⋯
- ⋮  │    ⋮        ⋮        ⋮        ⋮         ⋮        ⋮        ⋮        ⋮     ⋱</code></pre>
+<pre><code>0.9299202243766808</code></pre>
 </div>
 </div>
-<p>One of the uses of such a sample is to form “confidence intervals” on the parameters by obtaining the shortest interval that covers a given proportion (95%, by default) of the sample.</p>
 <div id="22" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(kbm02samp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bc</span>.(<span class="fu">response</span>(slp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>DictTable with 2 columns and 9 rows:
- par   lower      upper
- ────┬─────────────────────
- β1  │ 2028.01    2337.92
- β2  │ 38.431     99.5944
- β3  │ -439.321   -245.864
- β4  │ 46.0262    107.511
- ρ1  │ -0.897984  -0.445598
- σ   │ 655.249    701.497
- σ1  │ 261.196    448.512
- σ2  │ 175.489    312.049
- σ3  │ 228.099    357.789</code></pre>
+<pre><code>180-element Vector{Float64}:
+ 0.9280071533109451
+ 0.9281008004980732
+ 0.9280202732761681
+ 0.9285950348759796
+ 0.9287948232963694
+ 0.9290453817984637
+ 0.9289143340819649
+ 0.9283762261753863
+ 0.9291020425612259
+ 0.9292149261473703
+ ⋮
+ 0.9282383517103107
+ 0.9284326403128913
+ 0.9285246243376963
+ 0.928352836088982
+ 0.9286450699122083
+ 0.9286737217944607
+ 0.9287229751967703
+ 0.9288548849797978
+ 0.9288308689512543</code></pre>
 </div>
 </div>
-<p>A sample like this can be used for more than just creating an interval because it approximates the distribution of the estimator. For the fixed-effects parameters the estimators are close to being normally distributed, <a href="#fig-kbm02fedens" class="quarto-xref">Figure&nbsp;1</a>.</p>
-<div id="cell-fig-kbm02fedens" class="cell" data-execution_count="1">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(kbm02samp.β) <span class="op">*</span> <span class="fu">mapping</span>(<span class="op">:</span>β; color<span class="op">=:</span>coefname) <span class="op">*</span> AlgebraOfGraphics.<span class="fu">density</span>();</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  figure<span class="op">=</span>(; resolution<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">450</span>)),</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>┌ Warning: Found `resolution` in the theme when creating a `Scene`. The `resolution` keyword for `Scene`s and `Figure`s has been deprecated. Use `Figure(; size = ...` or `Scene(; size = ...)` instead, which better reflects that this is a unitless size and not a pixel resolution. The key could also come from `set_theme!` calls or related theming functions.
-└ @ Makie ~/.julia/packages/Makie/8h0bl/src/scenes.jl:227</code></pre>
-</div>
+<p>Second, the decades since the publication of <span class="citation" data-cites="Box1964">Box &amp; Cox (<a href="#ref-Box1964" role="doc-biblioref">1964</a>)</span> have seen many proposed extensions to handle that that may not be strictly positive. One such proposal from <span class="citation" data-cites="YeoJohnson2000">Yeo &amp; Johnson (<a href="#ref-YeoJohnson2000" role="doc-biblioref">2000</a>)</span> is also implemented in BoxCox.jl. The definition of the transformation is:</p>
+<p><span class="math display">\[
+\begin{cases} ((x_i+1)^\lambda-1)/\lambda                      &amp; \text{if }\lambda \neq 0, y \geq 0 \\
+               \log(y_i + 1)                                   &amp; \text{if }\lambda =     0, y \geq 0 \\
+               -((-x_i + 1)^{(2-\lambda)} - 1) / (2 - \lambda) &amp;  \text{if }\lambda \neq 2, y &lt;     0 \\
+               -\log(-x_i + 1)                                 &amp;  \text{if }\lambda =     2, y &lt;     0
+\end{cases}
+\]</span></p>
+<p>and we can fit it in BoxCox.jl with</p>
+<div id="24" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>yj <span class="op">=</span> <span class="fu">fit</span>(YeoJohnsonTransformation, slp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<div id="fig-kbm02fedens" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-kbm02fedens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="kb07_files/figure-html/fig-kbm02fedens-output-2.svg" class="img-fluid figure-img">
+<pre><code>Yeo-Johnson transformation
+
+estimated λ: -1.0700
+p-value: &lt;1e-09
+
+resultant transformation:
+
+For y ≥ 0,
+
+ (y + 1)^-1.1 - 1
+------------------
+       -1.1
+
+
+For y &lt; 0:
+
+ -((-y + 1)^(2 - -1.1) - 1)
+----------------------------
+         (2 - -1.1)</code></pre>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kbm02fedens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Comparative densities of the fixed-effects coefficients in kbm02samp
-</figcaption>
+</div>
+<div id="26" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="fu">boxcoxplot</span>(yj; conf_level<span class="op">=</span><span class="fl">0.95</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>f[<span class="fl">0</span>, <span class="op">:</span>] <span class="op">=</span> <span class="fu">Label</span>(f, <span class="st">"Yeo-Johnson"</span>; tellwidth<span class="op">=</span><span class="cn">false</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>f</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+<figure class="figure">
+<p><img src="transformation_files/figure-html/cell-14-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="cell-fig-kbm02sampsigmadens" class="cell" data-execution_count="1">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> pars <span class="op">=</span> [<span class="st">"σ1"</span>, <span class="st">"σ2"</span>, <span class="st">"σ3"</span>]</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">draw</span>(</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data</span>(kbm02tbl) <span class="op">*</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mapping</span>(pars <span class="op">.=&gt;</span> <span class="st">"σ"</span>; color<span class="op">=</span><span class="fu">dims</span>(<span class="fl">1</span>) <span class="op">=&gt;</span> <span class="fu">renamer</span>(pars)) <span class="op">*</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    AlgebraOfGraphics.<span class="fu">density</span>();</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    figure<span class="op">=</span>(; resolution<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">450</span>)),</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>┌ Warning: Found `resolution` in the theme when creating a `Scene`. The `resolution` keyword for `Scene`s and `Figure`s has been deprecated. Use `Figure(; size = ...` or `Scene(; size = ...)` instead, which better reflects that this is a unitless size and not a pixel resolution. The key could also come from `set_theme!` calls or related theming functions.
-└ @ Makie ~/.julia/packages/Makie/8h0bl/src/scenes.jl:227</code></pre>
+<div class="{refs}">
+
 </div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<div id="fig-kbm02sampsigmadens" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-kbm02sampsigmadens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="kb07_files/figure-html/fig-kbm02sampsigmadens-output-2.svg" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kbm02sampsigmadens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Density plot of bootstrap samples standard deviation of random effects
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div id="cell-fig-kbm02sampcorrdens" class="cell" data-execution_count="1">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(kbm02tbl) <span class="op">*</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mapping</span>(<span class="op">:</span>ρ<span class="fl">1</span> <span class="op">=&gt;</span> <span class="st">"Correlation"</span>) <span class="op">*</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  AlgebraOfGraphics.<span class="fu">density</span>();</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  figure<span class="op">=</span>(; resolution<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">450</span>)),</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>┌ Warning: Found `resolution` in the theme when creating a `Scene`. The `resolution` keyword for `Scene`s and `Figure`s has been deprecated. Use `Figure(; size = ...` or `Scene(; size = ...)` instead, which better reflects that this is a unitless size and not a pixel resolution. The key could also come from `set_theme!` calls or related theming functions.
-└ @ Makie ~/.julia/packages/Makie/8h0bl/src/scenes.jl:227</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<div id="fig-kbm02sampcorrdens" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-kbm02sampcorrdens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="kb07_files/figure-html/fig-kbm02sampcorrdens-output-2.svg" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kbm02sampcorrdens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Density plot of correlation parameters in bootstrap sample from model kbm02
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="references" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> References</h1>
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
-<div id="ref-Kronmueller2007" class="csl-entry" role="listitem">
-Kronmüller, E., &amp; Barr, D. J. (2007). Perspective-free pragmatics: Broken precedents and the recovery-from-preemption hypothesis<span></span>. <em>Journal of Memory and Language</em>, <em>56</em>(3), 436–455. <a href="https://doi.org/10.1016/j.jml.2006.05.002">https://doi.org/10.1016/j.jml.2006.05.002</a>
-</div>
-</div>
+
 
 
 </section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-Box1964" class="csl-entry" role="listitem">
+Box, G. E. P., &amp; Cox, D. R. (1964). An analysis of transformations. <em>Journal of the Royal Statistical Society: Series B (Methodological)</em>, <em>26</em>(2), 211–243. <a href="https://doi.org/10.1111/j.2517-6161.1964.tb00553.x">https://doi.org/10.1111/j.2517-6161.1964.tb00553.x</a>
+</div>
+<div id="ref-YeoJohnson2000" class="csl-entry" role="listitem">
+Yeo, I.-K., &amp; Johnson, R. A. (2000). A new family of power transformations to improve normality or symmetry. <em>Biometrika</em>, <em>87</em>(4), 954–959. <a href="https://doi.org/10.1093/biomet/87.4.954">https://doi.org/10.1093/biomet/87.4.954</a>
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1652,13 +1501,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./profiling.html" class="pagination-link" aria-label="Confidence intervals from profiled objective">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Confidence intervals from profiled objective</span>
+      <a href="./contrasts_kwdyz11.html" class="pagination-link" aria-label="Contrast Coding of Visual Attention Effects">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Contrast Coding of Visual Attention Effects</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./singularity.html" class="pagination-link" aria-label="Convergence, singularity and all that">
-        <span class="nav-page-text">Convergence, singularity and all that</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./glmm.html" class="pagination-link" aria-label="Generalized linear mixed models">
+        <span class="nav-page-text">Generalized linear mixed models</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1667,4 +1516,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/RePsychLing/SMLP2024/edit/main/kb07.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RePsychLing/SMLP2024/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/RePsychLing/SMLP2024/edit/main/transformation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RePsychLing/SMLP2024/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
