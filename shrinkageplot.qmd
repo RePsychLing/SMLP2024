@@ -21,7 +21,7 @@ using MixedModelsMakie
 using Random
 using ProgressMeter
 
-const progress=false
+const progress = false
 ```
 
 Load the kb07 data set (don't tell Reinhold that I used these data).
@@ -32,8 +32,6 @@ kb07 = MixedModels.dataset(:kb07)
 
 ```{julia}
 contrasts = Dict(
-  :subj => Grouping(),
-  :item => Grouping(),
   :spkr => HelmertCoding(),
   :prec => HelmertCoding(),
   :load => HelmertCoding(),
@@ -116,7 +114,7 @@ X1 * X1'
 
 ## How to interpret a shrinkage plot
 
-  - Extreme shrinkage (shrunk to a line or to a point) is easy to interpret - the term is not providing benefit and can be removed.
+  - Extreme shrinkage (shrunk to a line or to a point) is easy to interpret -- the term is not providing benefit and can be removed.
   - When the range of the blue dots (shrunk values) is comparable to those of the red dots (unshrunk) it indicates that the term after shrinkage is about as strong as without shrinkage.
   - By itself, this doesn't mean that the term is important.  In some ways you need to get a feeling for the absolute magnitude of the random effects in addition to the relative magnitude.
   - Small magnitude and small relative magnitude indicate you can drop that term
