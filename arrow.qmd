@@ -57,7 +57,7 @@ fn = Downloads.download("https://osf.io/xawdb/download?version=2");
 ```
 
 ```{julia}
-dfrm = rcopy(R"readRDS($fn)")
+dfrm = rcopy(reval("""readRDS("$(fn)")"""))
 ```
 
 Now write this file as a Arrow file and read it back in.
@@ -192,13 +192,15 @@ combine(groupby(last(gdf), :Sex), nrow => :nchild)
 There are Arrow implementations for R (the `arrow` package) and for Python (`pyarrow`).
 
 ```{python}
+#| eval: false
 import pyarrow.feather: read_table
 read_table("./data/fggk21.arrow")
 ```
 
 ```{r}
-fggk21 <- arrow::read_ipc_file("./data/fggk21.arrow")
-tibble::glimpse(fggk21)
+#| eval: false
+library(arrow)
+read_ipc_file("./data/fggk21.arrow")
 ```
 
 
