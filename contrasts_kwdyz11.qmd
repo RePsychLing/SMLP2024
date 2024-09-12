@@ -246,7 +246,7 @@ end
 
 ## HelmertCoding
 
-`HelmertCoding` codes each level as the difference from the average of the lower levels. With the default order of `CTR` levels we get the following test statistics. These contrasts are othogonal.
+`HelmertCoding` codes each level as the difference from the average of the lower levels. With the default order of `CTR` levels we get the following test statistics. These contrasts are orthogonal.
 
 ```{julia}
 m4 = let levels = ["val", "sod", "dos",  "dod"]
