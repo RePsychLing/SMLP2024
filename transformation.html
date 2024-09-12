@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.53">
+<meta name="generator" content="quarto-1.5.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday">
-<meta name="dcterms.date" content="2024-09-11">
+<meta name="dcterms.date" content="2024-09-12">
 
 <title>Transformations of the predictors and the response – SMLP2024: Advanced Frequentist Track</title>
 <style>
@@ -431,7 +431,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024-09-11</p>
+      <p class="date">2024-09-12</p>
     </div>
   </div>
   
@@ -845,33 +845,33 @@ resultant transformation:
 <div id="20" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bc</span>(<span class="fl">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>0.9299202243766808</code></pre>
+<pre><code>0.9299198605942831</code></pre>
 </div>
 </div>
 <div id="22" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bc</span>.(<span class="fu">response</span>(slp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>180-element Vector{Float64}:
- 0.9280071533109451
- 0.9281008004980732
- 0.9280202732761681
- 0.9285950348759796
- 0.9287948232963694
- 0.9290453817984637
- 0.9289143340819649
- 0.9283762261753863
- 0.9291020425612259
- 0.9292149261473703
+ 0.9280067944140518
+ 0.9281004413821845
+ 0.9280199143486788
+ 0.9285946745787587
+ 0.9287944625077672
+ 0.9290450203802451
+ 0.9289139729950278
+ 0.9283758664067702
+ 0.9291016809983348
+ 0.9292145642934748
  ⋮
- 0.9282383517103107
- 0.9284326403128913
- 0.9285246243376963
- 0.928352836088982
- 0.9286450699122083
- 0.9286737217944607
- 0.9287229751967703
- 0.9288548849797978
- 0.9288308689512543</code></pre>
+ 0.928237992270108
+ 0.9284322804088853
+ 0.9285242642116144
+ 0.9283524763763249
+ 0.9286447094927455
+ 0.9286733613047565
+ 0.9287226145858993
+ 0.9288545240416965
+ 0.9288305080730344</code></pre>
 </div>
 </div>
 <p>Second, the decades since the publication of <span class="citation" data-cites="Box1964">Box &amp; Cox (<a href="#ref-Box1964" role="doc-biblioref">1964</a>)</span> have seen many proposed extensions to handle that that may not be strictly positive. One such proposal from <span class="citation" data-cites="YeoJohnson2000">Yeo &amp; Johnson (<a href="#ref-YeoJohnson2000" role="doc-biblioref">2000</a>)</span> is also implemented in BoxCox.jl. The definition of the transformation is:</p>
@@ -888,7 +888,7 @@ resultant transformation:
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Yeo-Johnson transformation
 
-estimated λ: -1.0700
+estimated λ: -1.0829
 p-value: &lt;1e-09
 
 resultant transformation:
