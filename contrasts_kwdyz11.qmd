@@ -110,7 +110,7 @@ Grand Mean is mean of condition means.
 
 ## HypothesisCoding
 
-`HypothesisCoding` is the most general option available. We can implement all "canned" contrasts ourselves. The next example reproduces the test statistcs from `SeqDiffCoding` - with a minor modification illustrating the flexibility of going beyond the default version.
+`HypothesisCoding` is the most general option available. We can implement all "canned" contrasts ourselves. The next example reproduces the test statistics from `SeqDiffCoding` - with a minor modification illustrating the flexibility of going beyond the default version.
 
 ```{julia}
 m1b = let levels = ["val", "sod", "dos", "dod"]
