@@ -15,7 +15,7 @@ We specify three contrasts for the four-level factor CTR that are derived from s
 
 This comparison is of interest because a few years after the publication of @Kliegl2011, the theoretically critical correlation parameter (CP) between the spatial effect and the attraction effect was determined as the source of a non-singular LMM in that paper. The present study served the purpose to estimate this parameter with a larger sample and a wider variety of experimental conditions.
 
-Here we also include two additional experimental manipulations of target size and orientation of cue rectangle. A similar analysis was reported in the parsimonious mixed-model paper [@Bates2015]; it was also used in a paper of GAMMs [@Baayen2017]. Data and R scripts of those analyses are also available in [R-package RePsychLing](https://github.com/dmbates/RePsychLing/tree/master/data/).
+Here we also include two additional experimental manipulations of target size and orientation of cue rectangle. A similar analysis was reported in the parsimonious mixed-model paper [@Bates2015]; it was also used in a paper of GAMEMs [@Baayen2017]. Data and R scripts of those analyses are also available in [R-package RePsychLing](https://github.com/dmbates/RePsychLing/tree/master/data/).
 
 The analysis is based on reaction times `rt` to maintain compatibility with @Kliegl2011.
 
