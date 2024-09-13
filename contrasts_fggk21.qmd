@@ -179,9 +179,9 @@ m_ovi_SeqDiff_2 = let
 end
 ```
 
-The difference between older and younger childrend is larger for `Star_r` than for `Run` (0.2473).  `S20_r` did not differ significantly from `Star_r` (-0.0377) and `SLJ` (-0.0113) The largest difference in developmental gain was between `BPT` and `SLJ` (0.3355).
+The difference between older and younger children is larger for `Star_r` than for `Run` (0.2473).  `S20_r` did not differ significantly from `Star_r` (-0.0377) and `SLJ` (-0.0113) The largest difference in developmental gain was between `BPT` and `SLJ` (0.3355).
 
-P**lease note that standard errors of this LMM are anti-conservative because the LMM is missing a lot of information in the RES (e..g., contrast-related VCs snd CPs for `Child`, `School`, and `Cohort`.**
+**Please note that standard errors of this LMM are anti-conservative because the LMM is missing a lot of information in the RES (e..g., contrast-related VCs snd CPs for `Child`, `School`, and `Cohort`.**
 
 Next we add the main effect of `Sex` and its interaction with the four test contrasts.
 
@@ -268,9 +268,9 @@ contr3 = Dict(
   :Test => HypothesisCoding(
     [
       -1 -1 -1 -1 +4
-      -1 +1 0 0 0
-       0 -1 +1 0 0
-       0 0 -1 +1 0
+      -1 +1  0  0  0
+       0 -1 +1  0  0
+       0  0 -1 +1  0
     ];
     levels=["Run", "Star_r", "S20_r", "SLJ", "BPT"],
     labels=["BPT-other", "Star-End", "S20-Star", "SLJ-S20"],
@@ -294,10 +294,10 @@ contr1b = Dict(
   :Sex => EffectsCoding(; levels=["Girls", "Boys"]),
   :Test => HypothesisCoding(
     [
-      -1 +1 0 0 0
-      0 -1 +1 0 0
-      0 0 -1 +1 0
-      0 0 0 -1 +1
+      -1 +1  0  0  0
+       0 -1 +1  0  0
+       0  0 -1 +1  0
+       0  0  0 -1 +1
     ];
     levels=["Run", "Star_r", "S20_r", "SLJ", "BPT"],
     labels=["Star-Run", "S20-Star", "SLJ-S20", "BPT-SLJ"],
@@ -375,10 +375,10 @@ contr4 = Dict(
   :Sex => EffectsCoding(; levels=["Girls", "Boys"]),
   :Test => HypothesisCoding(
     [
-      -1 0 0 0 +1
+      -1  0  0  0 +1
       -3 +2 +2 +2 -3
-      0 +2 -1 -1 0
-      0 0 +1 -1 0
+       0 +2 -1 -1  0
+       0  0 +1 -1  0
     ];
     levels=["Run", "Star_r", "S20_r", "SLJ", "BPT"],
     labels=["c5.1", "c234.15", "c2.34", "c3.4"],
@@ -407,10 +407,10 @@ contr4b = merge(
     :Sex => EffectsCoding(; levels=["Girls", "Boys"]),
     :Test => HypothesisCoding(
       [
-        0.49 -0.04 0.20 0.03 -0.85
-        0.70 -0.56 -0.21 -0.13 0.37
-        0.31 0.68 -0.56 -0.35 0.00
-        0.04 0.08 0.61 -0.78 0.13
+        0.49 -0.04  0.20  0.03 -0.85
+        0.70 -0.56 -0.21 -0.13  0.37
+        0.31  0.68 -0.56 -0.35  0.00
+        0.04  0.08  0.61 -0.78  0.13
       ];
       levels=["Run", "Star_r", "S20_r", "SLJ", "BPT"],
       labels=["c5.1", "c234.15", "c12.34", "c3.4"],
