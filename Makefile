@@ -8,6 +8,7 @@ cleanup:
 clean: cleanup
 	rm -rf .quarto/_freeze
 	rm -rf _freeze/
+	rm -rf _build/
 
 publish:
 	quarto publish gh-pages

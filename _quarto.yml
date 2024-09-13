@@ -37,6 +37,7 @@ project:
   - singularity.qmd
   - sleepstudy.qmd
   - sleepstudy_speed.qmd
+  - transformation.qmd
   - useful_packages.qmd
 
 # editor_options:
@@ -93,10 +94,11 @@ website:
         - largescaledesigned.qmd
         - mrk17.qmd
         - partial_within.qmd
-      - section: "Contrast coding"
+      - section: "Contrast coding and transformations"
         contents:
         - contrasts_fggk21.qmd
         - contrasts_kwdyz11.qmd
+        - transformation.qmd
       - glmm.qmd
       - section: "Bootstrap and profiling"
         contents:
