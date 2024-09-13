@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.5.53">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -456,7 +456,7 @@ window.Quarto = {
 
 Variance components:
             Column    Variance Std.Dev.   Corr.
-subj     (Intercept)  565.51067 23.78047
+subj     (Intercept)  565.51065 23.78047
          days          32.68212  5.71683 +0.08
 Residual              654.94145 25.59182
  Number of obs: 180; levels of grouping factors: 18
@@ -508,14 +508,14 @@ days          10.4673     1.50224   6.97    &lt;1e-11
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># there is exactly one.</span></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>ρ <span class="op">=</span> <span class="fu">only</span>(m01.σρs.subj.ρ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>0.08133216865276134</code></pre>
+<pre><code>0.08133207057637286</code></pre>
 </div>
 </div>
 <p>and multiply by the standard deviations</p>
 <div id="14" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ρ <span class="op">*</span> <span class="fu">sqrt</span>(<span class="fu">first</span>(Σ) <span class="op">*</span> <span class="fu">last</span>(Σ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>11.057014395926759</code></pre>
+<pre><code>11.057001356158839</code></pre>
 </div>
 </div>
 </section>
@@ -526,9 +526,9 @@ days          10.4673     1.50224   6.97    &lt;1e-11
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>m01.θ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>3-element Vector{Float64}:
- 0.9292213162629417
- 0.018168381188609965
- 0.22264487194620683</code></pre>
+ 0.9292213025841999
+ 0.018168360086059557
+ 0.22264488361408383</code></pre>
 </div>
 </div>
 <p>The elements of this parameter vector are subject to constraints. In particular, two of the three elements have a lower bound of zero.</p>
@@ -551,25 +551,25 @@ days          10.4673     1.50224   6.97    &lt;1e-11
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>57-element Vector{Tuple{Vector{Float64}, Float64}}:
  ([1.0, 0.0, 1.0], 1784.642296192471)
- ([1.75, 0.0, 1.0], 1790.1256369894638)
- ([1.0, 1.0, 1.0], 1798.999624496596)
+ ([1.75, 0.0, 1.0], 1790.1256369894543)
+ ([1.0, 1.0, 1.0], 1798.9996244965923)
  ([1.0, 0.0, 1.75], 1803.8532002844106)
- ([0.25, 0.0, 1.0], 1800.6139807455515)
- ([1.0, -1.0, 1.0], 1798.6046308389316)
- ([1.0, 0.0, 0.25], 1752.2607369909213)
- ([1.1832612965367613, -0.0086618879582246, 0.0], 1797.5876920199157)
+ ([0.25, 0.0, 1.0], 1800.6139807455502)
+ ([1.0, -1.0, 1.0], 1798.604630838934)
+ ([1.0, 0.0, 0.25], 1752.260736990923)
+ ([1.183261296536999, -0.008661887958093657, 0.0], 1797.5876920198689)
  ([1.075, 0.0, 0.32499999999999996], 1754.9541095798672)
- ([0.8166315695343094, 0.011167254457244754, 0.28823768689703533], 1753.6956816568222)
+ ([0.8166315695342867, 0.011167254457072654, 0.2882376868969547], 1753.6956816567917)
  ⋮
- ([0.9291127454088746, 0.018179125358629283, 0.22262388947635725], 1751.93934482972)
- ([0.9291905933031118, 0.01816575364337781, 0.22264320511885913], 1751.9393444890322)
- ([0.9292542992836834, 0.018209269923966702, 0.22262081403728648], 1751.939345033819)
- ([0.9291892253327142, 0.018129789358969268, 0.22257323673727916], 1751.9393475284328)
- ([0.9292535836333305, 0.018167625568569275, 0.22264990501164184], 1751.939344490385)
- ([0.9292145039962464, 0.018171738990225547, 0.22264674302334211], 1751.9393444744132)
- ([0.9292083869346267, 0.01817147759030398, 0.22264619530985152], 1751.9393444750235)
- ([0.9292092974286392, 0.018172966192038814, 0.22265206228222742], 1751.939344506555)
- ([0.9292213162629417, 0.018168381188609965, 0.22264487194620683], 1751.9393444646903)</code></pre>
+ ([0.9291127633248187, 0.01817912561844548, 0.2226238911359928], 1751.9393448296237)
+ ([0.9291906182323698, 0.018165755902121737, 0.22264320605365046], 1751.9393444889747)
+ ([0.9292543240491686, 0.018209272433728267, 0.22262081478053403], 1751.9393450339103)
+ ([0.9291892460042255, 0.018129799335130696, 0.22257323552438513], 1751.9393475281765)
+ ([0.9292535558524085, 0.01816762580193835, 0.222649902950036], 1751.93934449035)
+ ([0.9292144925824933, 0.018171738311380272, 0.22264674221522512], 1751.9393444743948)
+ ([0.9292083593644681, 0.018171474488212557, 0.22264619390491133], 1751.9393444750347)
+ ([0.9292092859184301, 0.018172965475813475, 0.2226520613845471], 1751.9393445065461)
+ ([0.9292213025841999, 0.018168360086059557, 0.22264488361408383], 1751.9393444646894)</code></pre>
 </div>
 </div>
 <p>There were 57 evaluations of the objective before convergence was declared, according to rather stringent convergence criteria. We can see that the last 10 evaluations only produced changes in the fourth decimal place of the objective or even smaller. That is, effective convergence occurred after about 40 or 45 evaluations.</p>
@@ -590,15 +590,15 @@ days          10.4673     1.50224   6.97    &lt;1e-11
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>normed <span class="op">=</span> <span class="fu">normalize!</span>(λ[<span class="fl">2</span>, <span class="op">:</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>2-element Vector{Float64}:
- 0.08133216865276136
- 0.996687051356763</code></pre>
+ 0.08133207057637286
+ 0.996687059360038</code></pre>
 </div>
 </div>
 <p>providing the correlation as</p>
 <div id="24" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">first</span>(normed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>0.08133216865276136</code></pre>
+<pre><code>0.08133207057637286</code></pre>
 </div>
 </div>
 </section>

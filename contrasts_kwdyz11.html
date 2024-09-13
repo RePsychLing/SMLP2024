@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.5.53">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
-<meta name="dcterms.date" content="2024-09-09">
+<meta name="dcterms.date" content="2024-09-13">
 
 <title>Contrast Coding of Visual Attention Effects – SMLP2024: Advanced Frequentist Track</title>
 <style>
@@ -387,15 +387,18 @@ div.csl-indent {
   <li><a href="#effectscoding" id="toc-effectscoding" class="nav-link" data-scroll-target="#effectscoding"><span class="header-section-number">4.5</span> EffectsCoding</a></li>
   <li><a href="#helmertcoding" id="toc-helmertcoding" class="nav-link" data-scroll-target="#helmertcoding"><span class="header-section-number">4.6</span> HelmertCoding</a></li>
   <li><a href="#reverse-helmertcoding" id="toc-reverse-helmertcoding" class="nav-link" data-scroll-target="#reverse-helmertcoding"><span class="header-section-number">4.7</span> Reverse HelmertCoding</a></li>
-  <li><a href="#anova-coding" id="toc-anova-coding" class="nav-link" data-scroll-target="#anova-coding"><span class="header-section-number">4.8</span> Anova Coding</a></li>
-  <li><a href="#nested-coding" id="toc-nested-coding" class="nav-link" data-scroll-target="#nested-coding"><span class="header-section-number">4.9</span> Nested coding</a></li>
   </ul></li>
-  <li><a href="#other-orthogonal-contrasts" id="toc-other-orthogonal-contrasts" class="nav-link" data-scroll-target="#other-orthogonal-contrasts"><span class="header-section-number">5</span> Other orthogonal contrasts</a></li>
-  <li><a href="#appendix-summary-dave-kleinschmidt" id="toc-appendix-summary-dave-kleinschmidt" class="nav-link" data-scroll-target="#appendix-summary-dave-kleinschmidt"><span class="header-section-number">6</span> Appendix: Summary (Dave Kleinschmidt)</a>
+  <li><a href="#other-orthogonal-contrasts" id="toc-other-orthogonal-contrasts" class="nav-link" data-scroll-target="#other-orthogonal-contrasts"><span class="header-section-number">5</span> Other orthogonal contrasts</a>
   <ul class="collapse">
-  <li><a href="#standard-contrasts" id="toc-standard-contrasts" class="nav-link" data-scroll-target="#standard-contrasts"><span class="header-section-number">6.1</span> Standard contrasts</a></li>
-  <li><a href="#exotic-contrasts-rk-well" id="toc-exotic-contrasts-rk-well" class="nav-link" data-scroll-target="#exotic-contrasts-rk-well"><span class="header-section-number">6.2</span> “Exotic” contrasts (rk: well …)</a></li>
-  <li><a href="#manual-contrasts" id="toc-manual-contrasts" class="nav-link" data-scroll-target="#manual-contrasts"><span class="header-section-number">6.3</span> Manual contrasts</a></li>
+  <li><a href="#anova-coding" id="toc-anova-coding" class="nav-link" data-scroll-target="#anova-coding"><span class="header-section-number">5.1</span> Anova Coding</a></li>
+  <li><a href="#nested-coding" id="toc-nested-coding" class="nav-link" data-scroll-target="#nested-coding"><span class="header-section-number">5.2</span> Nested coding</a></li>
+  </ul></li>
+  <li><a href="#an-example-for-a-complex-example-group2-x-a2-x-b2" id="toc-an-example-for-a-complex-example-group2-x-a2-x-b2" class="nav-link" data-scroll-target="#an-example-for-a-complex-example-group2-x-a2-x-b2"><span class="header-section-number">6</span> An Example for a complex example: Group(2) x A(2) x B(2)</a></li>
+  <li><a href="#appendix-summary-dave-kleinschmidt" id="toc-appendix-summary-dave-kleinschmidt" class="nav-link" data-scroll-target="#appendix-summary-dave-kleinschmidt"><span class="header-section-number">7</span> Appendix: Summary (Dave Kleinschmidt)</a>
+  <ul class="collapse">
+  <li><a href="#standard-contrasts" id="toc-standard-contrasts" class="nav-link" data-scroll-target="#standard-contrasts"><span class="header-section-number">7.1</span> Standard contrasts</a></li>
+  <li><a href="#exotic-contrasts-rk-well" id="toc-exotic-contrasts-rk-well" class="nav-link" data-scroll-target="#exotic-contrasts-rk-well"><span class="header-section-number">7.2</span> “Exotic” contrasts (rk: well …)</a></li>
+  <li><a href="#manual-contrasts" id="toc-manual-contrasts" class="nav-link" data-scroll-target="#manual-contrasts"><span class="header-section-number">7.3</span> Manual contrasts</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/RePsychLing/SMLP2024/edit/main/contrasts_kwdyz11.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RePsychLing/SMLP2024/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -422,7 +425,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024-09-09</p>
+      <p class="date">2024-09-13</p>
     </div>
   </div>
   
@@ -437,14 +440,18 @@ div.csl-indent {
 <div id="2" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Chain</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">SMLP2024</span>: dataset</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsModels</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> progress<span class="op">=</span><span class="cn">false</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">AlgebraOfGraphics</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Chain</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">SMLP2024</span>: dataset</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsModels</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>CairoMakie.<span class="fu">activate!</span>(; <span class="kw">type</span><span class="op">=</span><span class="st">"png"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>progress <span class="op">=</span> <span class="cn">false</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>false</code></pre>
@@ -452,6 +459,7 @@ div.csl-indent {
 </div>
 <section id="sec-caution" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> A word of caution</h1>
+<p>Many researchers have pointed out that contrasts should be “tested instead of, rather than as a supplement to, the ordinary ‘omnibus’ F test” (Hays, 1973, p.&nbsp;601).</p>
 <p>For a (quasi-)experimental set of data, there is (or should be) a clear <em>a priori</em> theoretical commitment to specific hypotheses about differences between factor levels and how these differences enter in interactions with other factors. This specification should be used in the first LMM and reported, irrespective of the outcome. If alternative theories lead to alternative <em>a priori</em> contrast specifications, both analyses are justified. If the observed means render the specification completely irrelevant, the comparisons originally planned could still be reported in a Supplement).</p>
 <p>In this script, we are working through a large number of different contrasts for the same data. The purpose is to introduce both the preprogrammed (“canned”) and the general options to specify hypotheses about main effects and interactions. Obviously, we do not endorse generating a plot of the means and specifying the contrasts accordingly. This is known as the <a href="https://www.bayesianspectacles.org/origin-of-the-texas-sharpshooter/">Texas sharpshooter</a> fallacy. The link leads to an illustration and brief historical account by Wagenmakers (2018).</p>
 <p>Irrespective of how results turn out, there is nothing wrong with specifying a set of post-hoc contrasts to gain a better understanding of what the data are trying to tell us. Of course, in an article or report about the study, the <em>a priori</em> and post-hoc nature of contrast specifications must be made clear. Some kind of alpha-level adjustment (e.g., Bonferroni) may be called for, too. And, of course, there are grey zones.</p>
@@ -555,7 +563,7 @@ div.csl-indent {
 </ol>
 <section id="seqdiffcoding" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="seqdiffcoding"><span class="header-section-number">4.1</span> SeqDiffCoding</h2>
-<p>The <code>SeqDiffCoding</code> contrast corresponds to <code>MASS::contr.sdif()</code> in R.</p>
+<p>The <code>SeqDiffCoding</code> contrast corresponds to <code>MASS::contr.sdif()</code> in R. The assignment of random factors such as <code>Subj</code> to <code>Grouping()</code> is necessary when the sample size is very large. We recommend to include it always, but in this tutorial we do so only in the first example.</p>
 <div id="10" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>, <span class="st">"dod"</span>]</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
@@ -577,165 +585,10 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0906</td>
-<td style="text-align: right;">54.97</td>
-<td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.1938</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">33.7817</td>
-<td style="text-align: right;">3.2869</td>
-<td style="text-align: right;">10.28</td>
-<td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.2439</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">13.9852</td>
-<td style="text-align: right;">2.3051</td>
-<td style="text-align: right;">6.07</td>
-<td style="text-align: right;">&lt;1e-08</td>
-<td style="text-align: right;">10.7456</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">-2.7469</td>
-<td style="text-align: right;">2.2140</td>
-<td style="text-align: right;">-1.24</td>
-<td style="text-align: right;">0.2147</td>
-<td style="text-align: right;">9.5064</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Residual</td>
-<td style="text-align: right;">69.8349</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section>
-<section id="hypothesiscoding" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="hypothesiscoding"><span class="header-section-number">4.2</span> HypothesisCoding</h2>
-<p><code>HypothesisCoding</code> is the most general option available. We can implement all “canned” contrasts ourselves. The next example reproduces the test statistcs from <code>SeqDiffCoding</code> - with a minor modification illustrating the flexibility of going beyond the default version.</p>
-<div id="12" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>m1b <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>, <span class="st">"dod"</span>]</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      [</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span>  <span class="fl">1</span> <span class="fl">0</span>  <span class="fl">0</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span> <span class="fl">1</span>  <span class="fl">0</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span>  <span class="fl">0</span> <span class="fl">1</span> <span class="op">-</span><span class="fl">1</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      levels,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>[<span class="st">"spt"</span>, <span class="st">"obj"</span>, <span class="st">"grv"</span>],</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd">
-<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">σ_Subj</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0910</td>
+<td style="text-align: right;">7.0913</td>
 <td style="text-align: right;">54.96</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.1969</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CTR: spt</td>
-<td style="text-align: right;">33.7817</td>
-<td style="text-align: right;">3.2875</td>
-<td style="text-align: right;">10.28</td>
-<td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.2490</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: obj</td>
-<td style="text-align: right;">13.9852</td>
-<td style="text-align: right;">2.3054</td>
-<td style="text-align: right;">6.07</td>
-<td style="text-align: right;">&lt;1e-08</td>
-<td style="text-align: right;">10.7491</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CTR: grv</td>
-<td style="text-align: right;">2.7470</td>
-<td style="text-align: right;">2.2139</td>
-<td style="text-align: right;">1.24</td>
-<td style="text-align: right;">0.2147</td>
-<td style="text-align: right;">9.5049</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Residual</td>
-<td style="text-align: right;">69.8349</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>The difference to the preprogrammed <code>SeqDiffCoding</code> is that for the third contrast we changed the direction of the contrast such that the sign of the effect is positive when the result is in agreement with theoretical expectation, that is we subtract the fourth level from the third, not the third level from the fourth.</p>
-</section>
-<section id="dummycoding" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="dummycoding"><span class="header-section-number">4.3</span> DummyCoding</h2>
-<p>This contrast corresponds to <code>contr.treatment()</code> in R</p>
-<div id="14" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">DummyCoding</span>(; base<span class="op">=</span><span class="st">"val"</span>))</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd">
-<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
-<td style="text-align: right;" data-quarto-table-cell-role="th">σ_Subj</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">358.0914</td>
-<td style="text-align: right;">6.1540</td>
-<td style="text-align: right;">58.19</td>
-<td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">47.9101</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">45.0200</td>
-<td style="text-align: right;">4.3634</td>
-<td style="text-align: right;">10.32</td>
-<td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">32.2899</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">47.7669</td>
-<td style="text-align: right;">3.5565</td>
-<td style="text-align: right;">13.43</td>
-<td style="text-align: right;">&lt;1e-40</td>
-<td style="text-align: right;">25.5361</td>
+<td style="text-align: right;">55.1998</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: sod</td>
@@ -743,7 +596,23 @@ div.csl-indent {
 <td style="text-align: right;">3.2874</td>
 <td style="text-align: right;">10.28</td>
 <td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.2483</td>
+<td style="text-align: right;">23.2486</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">13.9852</td>
+<td style="text-align: right;">2.3057</td>
+<td style="text-align: right;">6.07</td>
+<td style="text-align: right;">&lt;1e-08</td>
+<td style="text-align: right;">10.7538</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: dod</td>
+<td style="text-align: right;">-2.7470</td>
+<td style="text-align: right;">2.2143</td>
+<td style="text-align: right;">-1.24</td>
+<td style="text-align: right;">0.2148</td>
+<td style="text-align: right;">9.5110</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Residual</td>
@@ -757,23 +626,31 @@ div.csl-indent {
 </table>
 </div>
 </div>
-<p>The <code>DummyCoding</code> contrast has the disadvantage that the intercept returns the mean of the level specified as <code>base</code>, default is the first level, not the GM.</p>
+<p>What does the intercept represent?</p>
+<div id="12" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(dat1.rt)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(cellmeans.rt_mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>389.18622f0</code></pre>
+</div>
+</div>
+<p>Grand Mean is mean of condition means.</p>
 </section>
-<section id="ychycaeitcoding" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="ychycaeitcoding"><span class="header-section-number">4.4</span> YchycaeitCoding</h2>
-<p>The contrasts returned by <code>DummyCoding</code> may be exactly what we want. Can’t we have them, but also have the intercept estimate the GM, rather than the mean of the base level? Yes, we can! We call this “You can have your cake and it eat, too”-Coding (YchycaeitCoding). And we use <code>HypothesisCoding</code> to achieve this outcome.</p>
-<div id="16" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m2b <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>, <span class="st">"dod"</span>]</span>
+<section id="hypothesiscoding" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="hypothesiscoding"><span class="header-section-number">4.2</span> HypothesisCoding</h2>
+<p><code>HypothesisCoding</code> is the most general option available. We can implement all “canned” contrasts ourselves. The next example reproduces the test statistics from <code>SeqDiffCoding</code> - with a minor modification illustrating the flexibility of going beyond the default version.</p>
+<div id="14" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m1b <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>, <span class="st">"dod"</span>]</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      [</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">0</span> <span class="fl">1</span> <span class="fl">0</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">1</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span>  <span class="fl">1</span> <span class="fl">0</span>  <span class="fl">0</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span> <span class="fl">1</span>  <span class="fl">0</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span>  <span class="fl">0</span> <span class="fl">1</span> <span class="op">-</span><span class="fl">1</span></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>      levels,</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>levels[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>],</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>[<span class="st">"spt"</span>, <span class="st">"obj"</span>, <span class="st">"grv"</span>],</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -794,31 +671,31 @@ div.csl-indent {
 <td style="text-align: right;">7.0911</td>
 <td style="text-align: right;">54.96</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.1983</td>
+<td style="text-align: right;">55.1984</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CTR: sod</td>
+<td style="text-align: left;">CTR: spt</td>
 <td style="text-align: right;">33.7817</td>
-<td style="text-align: right;">3.2874</td>
+<td style="text-align: right;">3.2876</td>
 <td style="text-align: right;">10.28</td>
 <td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.2487</td>
+<td style="text-align: right;">23.2501</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">47.7669</td>
-<td style="text-align: right;">3.5568</td>
-<td style="text-align: right;">13.43</td>
-<td style="text-align: right;">&lt;1e-40</td>
-<td style="text-align: right;">25.5386</td>
+<td style="text-align: left;">CTR: obj</td>
+<td style="text-align: right;">13.9852</td>
+<td style="text-align: right;">2.3060</td>
+<td style="text-align: right;">6.06</td>
+<td style="text-align: right;">&lt;1e-08</td>
+<td style="text-align: right;">10.7572</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">45.0200</td>
-<td style="text-align: right;">4.3635</td>
-<td style="text-align: right;">10.32</td>
-<td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">32.2906</td>
+<td style="text-align: left;">CTR: grv</td>
+<td style="text-align: right;">2.7469</td>
+<td style="text-align: right;">2.2146</td>
+<td style="text-align: right;">1.24</td>
+<td style="text-align: right;">0.2148</td>
+<td style="text-align: right;">9.5151</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Residual</td>
@@ -832,22 +709,16 @@ div.csl-indent {
 </table>
 </div>
 </div>
-<p>We can simply relevel the factor or move the column with -1s for a different base.</p>
-<div id="18" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m2c <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>, <span class="st">"dod"</span>]</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      [</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span>   <span class="fl">0</span>   <span class="fl">0</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>   <span class="fl">0</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span>   <span class="fl">0</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>   <span class="fl">0</span>   <span class="fl">0</span>  <span class="fl">1</span><span class="op">/</span><span class="fl">2</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>      levels,</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>levels[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>],</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The difference to the preprogrammed <code>SeqDiffCoding</code> is that for the third contrast we changed the direction of the contrast such that the sign of the effect is positive when the result is in agreement with theoretical expectation, that is we subtract the fourth level from the third, not the third level from the fourth.</p>
+</section>
+<section id="dummycoding" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="dummycoding"><span class="header-section-number">4.3</span> DummyCoding</h2>
+<p>This contrast corresponds to <code>contr.treatment()</code> in R</p>
+<div id="16" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">DummyCoding</span>(; base<span class="op">=</span><span class="st">"val"</span>))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -861,35 +732,35 @@ div.csl-indent {
 </tr>
 <tr class="even">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0930</td>
-<td style="text-align: right;">54.95</td>
+<td style="text-align: right;">358.0914</td>
+<td style="text-align: right;">6.1534</td>
+<td style="text-align: right;">58.19</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.2127</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">16.8909</td>
-<td style="text-align: right;">1.6437</td>
-<td style="text-align: right;">10.28</td>
-<td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">11.6245</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">23.8835</td>
-<td style="text-align: right;">1.7781</td>
-<td style="text-align: right;">13.43</td>
-<td style="text-align: right;">&lt;1e-40</td>
-<td style="text-align: right;">12.7664</td>
+<td style="text-align: right;">47.9055</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">22.5100</td>
-<td style="text-align: right;">2.1818</td>
+<td style="text-align: right;">45.0200</td>
+<td style="text-align: right;">4.3625</td>
 <td style="text-align: right;">10.32</td>
 <td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">16.1459</td>
+<td style="text-align: right;">32.2821</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">47.7669</td>
+<td style="text-align: right;">3.5560</td>
+<td style="text-align: right;">13.43</td>
+<td style="text-align: right;">&lt;1e-40</td>
+<td style="text-align: right;">25.5314</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: sod</td>
+<td style="text-align: right;">33.7817</td>
+<td style="text-align: right;">3.2868</td>
+<td style="text-align: right;">10.28</td>
+<td style="text-align: right;">&lt;1e-24</td>
+<td style="text-align: right;">23.2436</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Residual</td>
@@ -903,16 +774,26 @@ div.csl-indent {
 </table>
 </div>
 </div>
-<p>We can simply relevel the factor or move the column with -1s for a different base.</p>
+<p>The <code>DummyCoding</code> contrast has the disadvantage that the intercept returns the mean of the level specified as <code>base</code>, default is the first level, not the GM.</p>
 </section>
-<section id="effectscoding" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="effectscoding"><span class="header-section-number">4.5</span> EffectsCoding</h2>
-<p>This contrast corresponds almost to <code>contr.sum()</code> in R.</p>
-<div id="20" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>m3 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(; base<span class="op">=</span><span class="st">"dod"</span>))</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="ychycaeitcoding" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="ychycaeitcoding"><span class="header-section-number">4.4</span> YchycaeitCoding</h2>
+<p>The contrasts returned by <code>DummyCoding</code> may be exactly what we want. Can’t we have them, but also have the intercept estimate the GM, rather than the mean of the base level? Yes, we can! We call this “You can have your cake and it eat, too”-Coding (YchycaeitCoding). And we use <code>HypothesisCoding</code> to achieve this outcome.</p>
+<div id="18" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>m2b <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>, <span class="st">"dod"</span>]</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      [</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">0</span> <span class="fl">1</span> <span class="fl">0</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">1</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>      levels,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>levels[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>],</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -927,38 +808,38 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0906</td>
+<td style="text-align: right;">7.0911</td>
 <td style="text-align: right;">54.96</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.1943</td>
+<td style="text-align: right;">55.1978</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">16.1248</td>
-<td style="text-align: right;">1.4403</td>
-<td style="text-align: right;">11.20</td>
-<td style="text-align: right;">&lt;1e-28</td>
-<td style="text-align: right;">7.3306</td>
+<td style="text-align: left;">CTR: sod</td>
+<td style="text-align: right;">33.7817</td>
+<td style="text-align: right;">3.2873</td>
+<td style="text-align: right;">10.28</td>
+<td style="text-align: right;">&lt;1e-24</td>
+<td style="text-align: right;">23.2477</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">2.1396</td>
-<td style="text-align: right;">1.3337</td>
-<td style="text-align: right;">1.60</td>
-<td style="text-align: right;">0.1087</td>
-<td style="text-align: right;">6.0065</td>
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">47.7669</td>
+<td style="text-align: right;">3.5566</td>
+<td style="text-align: right;">13.43</td>
+<td style="text-align: right;">&lt;1e-40</td>
+<td style="text-align: right;">25.5370</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CTR: val</td>
-<td style="text-align: right;">-31.6422</td>
-<td style="text-align: right;">2.6421</td>
-<td style="text-align: right;">-11.98</td>
-<td style="text-align: right;">&lt;1e-32</td>
-<td style="text-align: right;">19.9491</td>
+<td style="text-align: left;">CTR: dod</td>
+<td style="text-align: right;">45.0200</td>
+<td style="text-align: right;">4.3634</td>
+<td style="text-align: right;">10.32</td>
+<td style="text-align: right;">&lt;1e-24</td>
+<td style="text-align: right;">32.2893</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Residual</td>
-<td style="text-align: right;">69.8349</td>
+<td style="text-align: right;">69.8348</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -968,18 +849,18 @@ div.csl-indent {
 </table>
 </div>
 </div>
-<p>The “almost” qualification refers to the fact that <code>contr.sum()</code> uses the last factor levels as default base level; <code>EffectsCoding</code> uses the first level.</p>
-<div id="22" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>m3b <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [ <span class="st">"dod"</span>, <span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>]</span>
+<p>We can simply move the column with -1s for a different base.</p>
+<div id="20" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>m2c <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>, <span class="st">"dod"</span>]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>      [</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>         <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span>   <span class="fl">3</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span>  <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>         <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span>  <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span>  <span class="fl">3</span><span class="op">/</span><span class="fl">4</span>  <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>         <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span>  <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span>   <span class="fl">3</span><span class="op">/</span><span class="fl">4</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>       <span class="fl">1</span> <span class="op">-</span><span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">0</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>       <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span>  <span class="fl">1</span>  <span class="fl">0</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>       <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">1</span></span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>      levels,</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>levels[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>],</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>[<span class="st">"val"</span>, <span class="st">"dos"</span>, <span class="st">"dod"</span>],</span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
@@ -998,38 +879,38 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0910</td>
+<td style="text-align: right;">7.0907</td>
 <td style="text-align: right;">54.96</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.1975</td>
+<td style="text-align: right;">55.1949</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: val</td>
-<td style="text-align: right;">-31.6422</td>
-<td style="text-align: right;">2.6421</td>
-<td style="text-align: right;">-11.98</td>
-<td style="text-align: right;">&lt;1e-32</td>
-<td style="text-align: right;">19.9493</td>
+<td style="text-align: right;">-33.7818</td>
+<td style="text-align: right;">3.2884</td>
+<td style="text-align: right;">-10.27</td>
+<td style="text-align: right;">&lt;1e-24</td>
+<td style="text-align: right;">23.2574</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">2.1396</td>
-<td style="text-align: right;">1.3338</td>
-<td style="text-align: right;">1.60</td>
-<td style="text-align: right;">0.1087</td>
-<td style="text-align: right;">6.0076</td>
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">13.9852</td>
+<td style="text-align: right;">2.3041</td>
+<td style="text-align: right;">6.07</td>
+<td style="text-align: right;">&lt;1e-08</td>
+<td style="text-align: right;">10.7332</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">16.1248</td>
-<td style="text-align: right;">1.4404</td>
-<td style="text-align: right;">11.19</td>
-<td style="text-align: right;">&lt;1e-28</td>
-<td style="text-align: right;">7.3317</td>
+<td style="text-align: left;">CTR: dod</td>
+<td style="text-align: right;">11.2382</td>
+<td style="text-align: right;">2.3562</td>
+<td style="text-align: right;">4.77</td>
+<td style="text-align: right;">&lt;1e-05</td>
+<td style="text-align: right;">11.4364</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Residual</td>
-<td style="text-align: right;">69.8348</td>
+<td style="text-align: right;">69.8349</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -1039,20 +920,21 @@ div.csl-indent {
 </table>
 </div>
 </div>
-<div id="24" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>m3c <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [ <span class="st">"dod"</span>, <span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>]</span>
+<p>We can simply relevel the factor with a different base.</p>
+<div id="22" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>m2d <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"sod"</span>, <span class="st">"val"</span>, <span class="st">"dos"</span>, <span class="st">"dod"</span>]</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      [</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>         <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>   <span class="fl">3</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>  <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>         <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>  <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>  <span class="fl">3</span><span class="op">/</span><span class="fl">2</span>  <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>         <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>  <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>   <span class="fl">3</span><span class="op">/</span><span class="fl">2</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">0</span> <span class="fl">1</span> <span class="fl">0</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">1</span></span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>      levels,</span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>levels[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>],</span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
@@ -1068,38 +950,38 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0908</td>
+<td style="text-align: right;">7.0915</td>
 <td style="text-align: right;">54.96</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.1959</td>
+<td style="text-align: right;">55.2013</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: val</td>
-<td style="text-align: right;">-63.2843</td>
-<td style="text-align: right;">5.2842</td>
-<td style="text-align: right;">-11.98</td>
-<td style="text-align: right;">&lt;1e-32</td>
-<td style="text-align: right;">39.8982</td>
+<td style="text-align: right;">-33.7817</td>
+<td style="text-align: right;">3.2874</td>
+<td style="text-align: right;">-10.28</td>
+<td style="text-align: right;">&lt;1e-24</td>
+<td style="text-align: right;">23.2483</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">4.2791</td>
-<td style="text-align: right;">2.6676</td>
-<td style="text-align: right;">1.60</td>
-<td style="text-align: right;">0.1087</td>
-<td style="text-align: right;">12.0152</td>
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">13.9852</td>
+<td style="text-align: right;">2.3057</td>
+<td style="text-align: right;">6.07</td>
+<td style="text-align: right;">&lt;1e-08</td>
+<td style="text-align: right;">10.7534</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">32.2495</td>
-<td style="text-align: right;">2.8808</td>
-<td style="text-align: right;">11.19</td>
-<td style="text-align: right;">&lt;1e-28</td>
-<td style="text-align: right;">14.6631</td>
+<td style="text-align: left;">CTR: dod</td>
+<td style="text-align: right;">11.2383</td>
+<td style="text-align: right;">2.3585</td>
+<td style="text-align: right;">4.77</td>
+<td style="text-align: right;">&lt;1e-05</td>
+<td style="text-align: right;">11.4644</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Residual</td>
-<td style="text-align: right;">69.8349</td>
+<td style="text-align: right;">69.8348</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -1110,12 +992,12 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="helmertcoding" class="level2" data-number="4.6">
-<h2 data-number="4.6" class="anchored" data-anchor-id="helmertcoding"><span class="header-section-number">4.6</span> HelmertCoding</h2>
-<p><code>HelmertCoding</code> codes each level as the difference from the average of the lower levels. With the default order of <code>CTR</code> levels we get the following test statistics. These contrasts are othogonal.</p>
-<div id="26" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>m4 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>())</span>
+<section id="effectscoding" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="effectscoding"><span class="header-section-number">4.5</span> EffectsCoding</h2>
+<p><code>EffectsCoding</code> estimates the difference between the Grand Mean and three of the four levels. The difference of the fourth levels can be computed from the Grand Mean and these three differences.</p>
+<div id="24" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>m3 <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>,  <span class="st">"dod"</span>]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(; levels, base<span class="op">=</span><span class="st">"val"</span>))</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -1132,34 +1014,95 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0940</td>
-<td style="text-align: right;">54.94</td>
+<td style="text-align: right;">7.0780</td>
+<td style="text-align: right;">55.06</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.2207</td>
+<td style="text-align: right;">55.0953</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">1.3735</td>
-<td style="text-align: right;">1.1072</td>
-<td style="text-align: right;">1.24</td>
-<td style="text-align: right;">0.2148</td>
-<td style="text-align: right;">4.7558</td>
+<td style="text-align: left;">CTR: sod</td>
+<td style="text-align: right;">2.1396</td>
+<td style="text-align: right;">1.3336</td>
+<td style="text-align: right;">1.60</td>
+<td style="text-align: right;">0.1086</td>
+<td style="text-align: right;">6.0051</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">-4.2039</td>
-<td style="text-align: right;">0.6843</td>
-<td style="text-align: right;">-6.14</td>
-<td style="text-align: right;">&lt;1e-09</td>
-<td style="text-align: right;">3.3493</td>
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">16.1248</td>
+<td style="text-align: right;">1.4401</td>
+<td style="text-align: right;">11.20</td>
+<td style="text-align: right;">&lt;1e-28</td>
+<td style="text-align: right;">7.3284</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: dod</td>
+<td style="text-align: right;">13.3778</td>
+<td style="text-align: right;">1.9331</td>
+<td style="text-align: right;">6.92</td>
+<td style="text-align: right;">&lt;1e-11</td>
+<td style="text-align: right;">12.4701</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">69.8351</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>This contrast corresponds almost to <code>contr.sum()</code> in R. The “almost” qualification refers to the fact that <code>EffectsCoding</code> uses the first level as default base; <code>contr.sum()</code> uses the last factor level.</p>
+<div id="26" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>m3b <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>,  <span class="st">"dod"</span>]</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(; levels, base <span class="op">=</span> <span class="st">"dod"</span>))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_Subj</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">389.7336</td>
+<td style="text-align: right;">7.0913</td>
+<td style="text-align: right;">54.96</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">55.1994</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: val</td>
-<td style="text-align: right;">-10.5474</td>
-<td style="text-align: right;">0.8807</td>
-<td style="text-align: right;">-11.98</td>
+<td style="text-align: right;">-31.6422</td>
+<td style="text-align: right;">2.6425</td>
+<td style="text-align: right;">-11.97</td>
 <td style="text-align: right;">&lt;1e-32</td>
-<td style="text-align: right;">6.6500</td>
+<td style="text-align: right;">19.9522</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: sod</td>
+<td style="text-align: right;">2.1396</td>
+<td style="text-align: right;">1.3337</td>
+<td style="text-align: right;">1.60</td>
+<td style="text-align: right;">0.1087</td>
+<td style="text-align: right;">6.0063</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">16.1248</td>
+<td style="text-align: right;">1.4404</td>
+<td style="text-align: right;">11.19</td>
+<td style="text-align: right;">&lt;1e-28</td>
+<td style="text-align: right;">7.3312</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Residual</td>
@@ -1173,18 +1116,225 @@ div.csl-indent {
 </table>
 </div>
 </div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC1: <span class="er">(</span><span class="ex">2</span> <span class="at">-</span> 1<span class="kw">)</span><span class="ex">/2</span>           <span class="co"># (391 - 358)/2</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC2: <span class="er">(</span><span class="ex">3</span> <span class="at">-</span> <span class="er">(</span><span class="ex">2+1</span><span class="kw">)</span><span class="ex">/2</span><span class="kw">)</span><span class="ex">/3</span>     <span class="co"># (405 - (391 + 358)/2)/3</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC3: <span class="er">(</span><span class="ex">4</span> <span class="at">-</span> <span class="er">(</span><span class="ex">3+2+1</span><span class="kw">)</span><span class="ex">/3</span><span class="kw">)</span><span class="ex">/4</span>   <span class="co"># (402 - (405 + 391 + 358)/3)/4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>How could we achieve the default result with HypothesisCoding?</p>
+<div id="28" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>m3c <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>,  <span class="st">"dod"</span>]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>      [</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>         <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span>   <span class="fl">3</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span>  <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span>   <span class="co"># b - GM = b - (a+b+c+d)/4 =&gt;  -1/4*a + 3/4*b - 1/4*c - 1/4*d</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>         <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span>  <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span>  <span class="fl">3</span><span class="op">/</span><span class="fl">4</span>  <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span>   <span class="co"># c - GM = c - (a+b+c+d)/4 =&gt;  -1/4*a - 1/4*b + 3/4*c - 1/4*d</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>         <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span>  <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span>   <span class="fl">3</span><span class="op">/</span><span class="fl">4</span>   <span class="co"># d - GM = d - (a+b+c+d)/4 =&gt;  -1/4*a - 1/4*b - 1/4*c + 3/4*d</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>      levels,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>levels[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>],</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_Subj</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">389.7336</td>
+<td style="text-align: right;">7.0920</td>
+<td style="text-align: right;">54.95</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">55.2050</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: sod</td>
+<td style="text-align: right;">2.1395</td>
+<td style="text-align: right;">1.3337</td>
+<td style="text-align: right;">1.60</td>
+<td style="text-align: right;">0.1087</td>
+<td style="text-align: right;">6.0067</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">16.1248</td>
+<td style="text-align: right;">1.4405</td>
+<td style="text-align: right;">11.19</td>
+<td style="text-align: right;">&lt;1e-28</td>
+<td style="text-align: right;">7.3330</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: dod</td>
+<td style="text-align: right;">13.3778</td>
+<td style="text-align: right;">1.9324</td>
+<td style="text-align: right;">6.92</td>
+<td style="text-align: right;">&lt;1e-11</td>
+<td style="text-align: right;">12.4640</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">69.8348</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="helmertcoding" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="helmertcoding"><span class="header-section-number">4.6</span> HelmertCoding</h2>
+<p><code>HelmertCoding</code> codes each level as the difference from the average of the lower levels. With the default order of <code>CTR</code> levels we get the following test statistics. These contrasts are orthogonal.</p>
+<div id="30" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>m4 <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>,  <span class="st">"dod"</span>]</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(; levels))</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_Subj</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">389.7336</td>
+<td style="text-align: right;">7.0912</td>
+<td style="text-align: right;">54.96</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">55.1986</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: sod</td>
+<td style="text-align: right;">16.8909</td>
+<td style="text-align: right;">1.6436</td>
+<td style="text-align: right;">10.28</td>
+<td style="text-align: right;">&lt;1e-24</td>
+<td style="text-align: right;">11.6232</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">10.2920</td>
+<td style="text-align: right;">0.8353</td>
+<td style="text-align: right;">12.32</td>
+<td style="text-align: right;">&lt;1e-34</td>
+<td style="text-align: right;">5.2568</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: dod</td>
+<td style="text-align: right;">4.4593</td>
+<td style="text-align: right;">0.6441</td>
+<td style="text-align: right;">6.92</td>
+<td style="text-align: right;">&lt;1e-11</td>
+<td style="text-align: right;">4.1545</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">69.8349</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC1: <span class="er">(</span><span class="ex">b</span> <span class="at">-</span> a<span class="kw">)</span><span class="ex">/2</span>           <span class="co"># (391 - 358)/2 = 16.5</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC2: <span class="er">(</span><span class="ex">c</span> <span class="at">-</span> <span class="er">(</span><span class="ex">b+a</span><span class="kw">)</span><span class="ex">/2</span><span class="kw">)</span><span class="ex">/3</span>     <span class="co"># (405 - (391 + 358)/2)/3 = 10.17 </span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC3: <span class="er">(</span><span class="ex">d</span> <span class="at">-</span> <span class="er">(</span><span class="ex">c+b+a</span><span class="kw">)</span><span class="ex">/3</span><span class="kw">)</span><span class="ex">/4</span>   <span class="co"># (402 - (405 + 391 + 358)/3)/4 = 4.33</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can reconstruct the estimates, but they are scaled by the number of levels involved. With <code>HypothesisCoding</code> we can estimate the “unscaled” differences. Also the labeling of the contrasts is not as informative as they could be.</p>
+<div id="32" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>m4b <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>,  <span class="st">"dod"</span>]</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>      [</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>          <span class="op">-</span><span class="fl">1</span>    <span class="fl">1</span>    <span class="fl">0</span>   <span class="fl">0</span> </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>         <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>   <span class="fl">1</span>   <span class="fl">0</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>         <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span>  <span class="fl">1</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>      ];</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>      levels,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span> [<span class="st">"2-1"</span>, <span class="st">"3-21"</span>, <span class="st">"4-321"</span>]</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_Subj</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">389.7336</td>
+<td style="text-align: right;">7.0886</td>
+<td style="text-align: right;">54.98</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">55.1784</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: 2-1</td>
+<td style="text-align: right;">33.7817</td>
+<td style="text-align: right;">3.2874</td>
+<td style="text-align: right;">10.28</td>
+<td style="text-align: right;">&lt;1e-24</td>
+<td style="text-align: right;">23.2487</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: 3-21</td>
+<td style="text-align: right;">30.8761</td>
+<td style="text-align: right;">2.5065</td>
+<td style="text-align: right;">12.32</td>
+<td style="text-align: right;">&lt;1e-34</td>
+<td style="text-align: right;">15.7751</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: 4-321</td>
+<td style="text-align: right;">17.8371</td>
+<td style="text-align: right;">2.5765</td>
+<td style="text-align: right;">6.92</td>
+<td style="text-align: right;">&lt;1e-11</td>
+<td style="text-align: right;">16.6185</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">69.8349</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
 <section id="reverse-helmertcoding" class="level2" data-number="4.7">
 <h2 data-number="4.7" class="anchored" data-anchor-id="reverse-helmertcoding"><span class="header-section-number">4.7</span> Reverse HelmertCoding</h2>
 <p><code>Reverse HelmertCoding</code> codes each level as the difference from the average of the higher levels. To estimate these effects we simply reverse the order of factor levels. Of course, the contrasts are also orthogonal.</p>
-<div id="28" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>m4b <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> <span class="fu">reverse</span>(StatsModels.<span class="fu">levels</span>(dat1.CTR))</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(; levels))</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="34" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>m4c <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> <span class="fu">reverse</span>(StatsModels.<span class="fu">levels</span>(dat1.CTR))</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(; levels))</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -1199,34 +1349,108 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0940</td>
-<td style="text-align: right;">54.94</td>
+<td style="text-align: right;">7.0930</td>
+<td style="text-align: right;">54.95</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.2207</td>
+<td style="text-align: right;">55.2132</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">1.3735</td>
+<td style="text-align: right;">1.3734</td>
 <td style="text-align: right;">1.1072</td>
 <td style="text-align: right;">1.24</td>
 <td style="text-align: right;">0.2148</td>
-<td style="text-align: right;">4.7558</td>
+<td style="text-align: right;">4.7557</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: sod</td>
 <td style="text-align: right;">-4.2039</td>
-<td style="text-align: right;">0.6843</td>
+<td style="text-align: right;">0.6845</td>
 <td style="text-align: right;">-6.14</td>
 <td style="text-align: right;">&lt;1e-09</td>
-<td style="text-align: right;">3.3493</td>
+<td style="text-align: right;">3.3523</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: val</td>
 <td style="text-align: right;">-10.5474</td>
-<td style="text-align: right;">0.8807</td>
+<td style="text-align: right;">0.8808</td>
+<td style="text-align: right;">-11.97</td>
+<td style="text-align: right;">&lt;1e-32</td>
+<td style="text-align: right;">6.6508</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">69.8347</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC1:<span class="er">(</span><span class="ex">c</span> <span class="at">-</span> d<span class="kw">)</span><span class="ex">/2</span>            <span class="co"># (405 - 402)/2 = 1.5</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC2:<span class="er">(</span><span class="ex">b</span> <span class="at">-</span> <span class="er">(</span><span class="ex">c+d</span><span class="kw">)</span><span class="ex">/2</span><span class="kw">)</span><span class="ex">/3</span>      <span class="co"># (391 - (405 + 402)/2)/3 = -4.17</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC3:<span class="er">(</span><span class="ex">a</span> <span class="at">-</span> <span class="er">(</span><span class="ex">b+c+d</span><span class="kw">)</span><span class="ex">/3/4</span>     <span class="co"># (356  -(391 + 405 + 402)/3)/4 = -10.83</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>… and the unscaled-by-number-of-levels estimates.</p>
+<div id="36" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>m4d <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>,  <span class="st">"dod"</span>]</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>      [</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>        <span class="fl">0</span>    <span class="fl">0</span>     <span class="fl">1</span>   <span class="op">-</span><span class="fl">1</span> </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>        <span class="fl">0</span>    <span class="fl">1</span>   <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>        <span class="fl">1</span>  <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span>  <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>      levels,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span> [<span class="st">"3-4"</span>, <span class="st">"2-34"</span>, <span class="st">"1-234"</span>]</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_Subj</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">389.7336</td>
+<td style="text-align: right;">7.0915</td>
+<td style="text-align: right;">54.96</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">55.2014</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: 3-4</td>
+<td style="text-align: right;">2.7469</td>
+<td style="text-align: right;">2.2143</td>
+<td style="text-align: right;">1.24</td>
+<td style="text-align: right;">0.2148</td>
+<td style="text-align: right;">9.5107</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: 2-34</td>
+<td style="text-align: right;">-12.6117</td>
+<td style="text-align: right;">2.0529</td>
+<td style="text-align: right;">-6.14</td>
+<td style="text-align: right;">&lt;1e-09</td>
+<td style="text-align: right;">10.0486</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: 1-234</td>
+<td style="text-align: right;">-42.1895</td>
+<td style="text-align: right;">3.5231</td>
 <td style="text-align: right;">-11.98</td>
 <td style="text-align: right;">&lt;1e-32</td>
-<td style="text-align: right;">6.6500</td>
+<td style="text-align: right;">26.6007</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Residual</td>
@@ -1240,31 +1464,55 @@ div.csl-indent {
 </table>
 </div>
 </div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC1:<span class="er">(</span><span class="ex">3</span> <span class="at">-</span> 4<span class="kw">)</span><span class="ex">/2</span>            <span class="co"># (405 - 402)/2</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC2:<span class="er">(</span><span class="ex">2</span> <span class="at">-</span> <span class="er">(</span><span class="ex">3+4</span><span class="kw">)</span><span class="ex">/2</span><span class="kw">)</span><span class="ex">/3</span>      <span class="co"># (391 - (405 + 402)/2)/3</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC3:<span class="er">(</span><span class="ex">1</span> <span class="at">-</span> <span class="er">(</span><span class="ex">2+3+4</span><span class="kw">)</span><span class="ex">/3/4</span>     <span class="co"># (356  -(391 + 405 + 402)/3)/4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="anova-coding" class="level2" data-number="4.8">
-<h2 data-number="4.8" class="anchored" data-anchor-id="anova-coding"><span class="header-section-number">4.8</span> Anova Coding</h2>
+</section>
+<section id="other-orthogonal-contrasts" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Other orthogonal contrasts</h1>
+<p>For factors with more than four levels there are many options for specifying orthogonal contrasts as long as one proceeds in a top-down strictly hierarchical fashion.</p>
+<p>Suppose you have a factor with seven levels and let’s ignore shifting columns. In this case, you have six options for the first contrast, that is 6 vs.&nbsp;1, 5 vs.2 , 4 vs.&nbsp;3, 3 vs.&nbsp;4, 2 vs.&nbsp;5, and 1 vs.&nbsp;6 levels. Then, you specify orthogonal contrasts for partitions with more than 2 elements and so on. That is, you don’t specify a contrast that crosses an earlier partition line.</p>
+<p>In the following example, after an initial 4 vs 3 partitioning of levels, we specify <code>AnovaCoding</code> for the left and <code>HelmertCoding</code> for the right partition.</p>
+<div id="38" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>      <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span>   <span class="op">-</span><span class="fl">1</span>   <span class="op">+</span><span class="fl">1</span>    <span class="fl">0</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">1</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    ];</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    levels<span class="op">=</span>[<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"A3"</span>, <span class="st">"A4"</span>, <span class="st">"A5"</span>, <span class="st">"A6"</span>, <span class="st">"A7"</span>],</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>[<span class="st">"c567.1234"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"BxC"</span>, <span class="st">"c6.5"</span>, <span class="st">"c6.56"</span>],</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There are two rules that hold for all orthogonal contrasts:</p>
+<ol type="1">
+<li>The weights within rows sum to zero.</li>
+<li>For all pairs of rows, the sum of the products of weights in the same columns sums to zero.</li>
+</ol>
+<section id="anova-coding" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="anova-coding"><span class="header-section-number">5.1</span> Anova Coding</h2>
 <p>Factorial designs (i.e., lab experiments) are traditionally analyzed with analysis of variance. The test statistics of main effects and interactions are based on an orthogonal set of contrasts. We specify them with <code>HypothesisCoding</code>.</p>
-<section id="a2-x-b2" class="level3" data-number="4.8.1">
-<h3 data-number="4.8.1" class="anchored" data-anchor-id="a2-x-b2"><span class="header-section-number">4.8.1</span> A(2) x B(2)</h3>
+<section id="a2-x-b2" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="a2-x-b2"><span class="header-section-number">5.1.1</span> A(2) x B(2)</h3>
 <p>An A(2) x B(2) design can be recast as an F(4) design with the levels (A1-B1, A1-B2, A2-B1, A2-B2). The following contrast specification returns estimates for the main effect of A, the main effect of B, and the interaction of A and B. In a figure With A on the x-axis and the levels of B shown as two lines, the interaction tests the null hypothesis that the two lines are parallel. A positive coefficient implies overadditivity (diverging lines toward the right) and a negative coefficient underadditivity (converging lines).</p>
-<div id="30" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>m5 <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>, <span class="st">"dod"</span>]</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>      [</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>          <span class="co"># A</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>          <span class="co"># B</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>          <span class="co"># A x B</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>      levels,</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>[<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"AxB"</span>],</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="40" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>m5 <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>, <span class="st">"dod"</span>]</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>      [</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>          <span class="co"># A</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>          <span class="co"># B</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>          <span class="co"># A x B</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>      levels,</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>[<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"AxB"</span>],</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -1279,34 +1527,34 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0924</td>
-<td style="text-align: right;">54.95</td>
+<td style="text-align: right;">7.0913</td>
+<td style="text-align: right;">54.96</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.2085</td>
+<td style="text-align: right;">55.1994</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: A</td>
 <td style="text-align: right;">59.0052</td>
-<td style="text-align: right;">5.1818</td>
+<td style="text-align: right;">5.1822</td>
 <td style="text-align: right;">11.39</td>
 <td style="text-align: right;">&lt;1e-29</td>
-<td style="text-align: right;">36.2007</td>
+<td style="text-align: right;">36.2045</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: B</td>
 <td style="text-align: right;">31.0348</td>
-<td style="text-align: right;">4.6751</td>
+<td style="text-align: right;">4.6748</td>
 <td style="text-align: right;">6.64</td>
 <td style="text-align: right;">&lt;1e-10</td>
-<td style="text-align: right;">31.7147</td>
+<td style="text-align: right;">31.7121</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: AxB</td>
-<td style="text-align: right;">-36.5286</td>
-<td style="text-align: right;">3.0925</td>
+<td style="text-align: right;">-36.5287</td>
+<td style="text-align: right;">3.0926</td>
 <td style="text-align: right;">-11.81</td>
 <td style="text-align: right;">&lt;1e-31</td>
-<td style="text-align: right;">16.0032</td>
+<td style="text-align: right;">16.0038</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Residual</td>
@@ -1326,38 +1574,35 @@ div.csl-indent {
    A2   -1     +1</code></pre>
 <p>Thus, interaction tests whether the difference between main diagonal and minor diagonal is different from zero.</p>
 </section>
-<section id="a2-x-b2-x-c2" class="level3" data-number="4.8.2">
-<h3 data-number="4.8.2" class="anchored" data-anchor-id="a2-x-b2-x-c2"><span class="header-section-number">4.8.2</span> A(2) x B(2) x C(2)</h3>
+<section id="a2-x-b2-x-c2" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="a2-x-b2-x-c2"><span class="header-section-number">5.1.2</span> A(2) x B(2) x C(2)</h3>
 <p>Going beyond the four level factor; it is also helpful to see the corresponding layout of the eight means for the interaction of A and B and C.</p>
 <pre><code>          C1              C2
       B1     B2        B1     B2
  A1   +1     -1   A1   -1     +1
  A2   -1     +1   A2   +1     -1</code></pre>
 </section>
-<section id="a2-x-b2-x-c3" class="level3" data-number="4.8.3">
-<h3 data-number="4.8.3" class="anchored" data-anchor-id="a2-x-b2-x-c3"><span class="header-section-number">4.8.3</span> A(2) x B(2) x C(3)</h3>
-<p>TO BE DONE</p>
 </section>
-</section>
-<section id="nested-coding" class="level2" data-number="4.9">
-<h2 data-number="4.9" class="anchored" data-anchor-id="nested-coding"><span class="header-section-number">4.9</span> Nested coding</h2>
+<section id="nested-coding" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="nested-coding"><span class="header-section-number">5.2</span> Nested coding</h2>
 <p>Nested contrasts are often specified as follow up as post-hoc tests for ANOVA interactions. They are orthogonal. We specify them with <code>HypothesisCoding</code>.</p>
 <p>An A(2) x B(2) design can be recast as an F(4) design with the levels (A1-B1, A1-B2, A2-B1, A2-B2). The following contrast specification returns an estimate for the main effect of A and the effects of B nested in the two levels of A. In a figure With A on the x-axis and the levels of B shown as two lines, the second contrast tests whether A1-B1 is different from A1-B2 and the third contrast tests whether A2-B1 is different from A2-B2.</p>
-<div id="32" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>m8 <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>, <span class="st">"dod"</span>]</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>      [</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">0</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span>  <span class="fl">0</span> <span class="op">+</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>      levels,</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>[<span class="st">"do_so"</span>, <span class="st">"spt"</span>, <span class="st">"grv"</span>],</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="42" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>m6 <span class="op">=</span> <span class="kw">let</span> levels <span class="op">=</span> [<span class="st">"val"</span>, <span class="st">"sod"</span>, <span class="st">"dos"</span>, <span class="st">"dod"</span>]</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>      [</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">0</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span>  <span class="fl">0</span> <span class="op">+</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>      ];</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>      levels,</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>[<span class="st">"do_so"</span>, <span class="st">"spt"</span>, <span class="st">"grv"</span>],</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts, progress)</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -1372,34 +1617,34 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0913</td>
-<td style="text-align: right;">54.96</td>
+<td style="text-align: right;">7.0937</td>
+<td style="text-align: right;">54.94</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.1998</td>
+<td style="text-align: right;">55.2184</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: do_so</td>
 <td style="text-align: right;">59.0052</td>
-<td style="text-align: right;">5.1826</td>
+<td style="text-align: right;">5.1816</td>
 <td style="text-align: right;">11.39</td>
 <td style="text-align: right;">&lt;1e-29</td>
-<td style="text-align: right;">36.2082</td>
+<td style="text-align: right;">36.1992</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: spt</td>
 <td style="text-align: right;">33.7817</td>
-<td style="text-align: right;">3.2874</td>
-<td style="text-align: right;">10.28</td>
+<td style="text-align: right;">3.2883</td>
+<td style="text-align: right;">10.27</td>
 <td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.2481</td>
+<td style="text-align: right;">23.2561</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: grv</td>
-<td style="text-align: right;">2.7470</td>
-<td style="text-align: right;">2.2142</td>
+<td style="text-align: right;">2.7469</td>
+<td style="text-align: right;">2.2146</td>
 <td style="text-align: right;">1.24</td>
 <td style="text-align: right;">0.2148</td>
-<td style="text-align: right;">9.5101</td>
+<td style="text-align: right;">9.5149</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Residual</td>
@@ -1416,47 +1661,216 @@ div.csl-indent {
 <p>The three contrasts for one main effect and two nested contrasts are orthogonal. There is no test of the interaction (parallelism).</p>
 </section>
 </section>
-<section id="other-orthogonal-contrasts" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Other orthogonal contrasts</h1>
-<p>For factors with more than four levels there are many options for specifying orthogonal contrasts as long as one proceeds in a top-down strictly hiearchical fashion.</p>
-<p>Suppose you have a factor with seven levels and let’s ignore shifting columns. In this case, you have six options for the first contrast, that is 6 vs.&nbsp;1, 5 vs.2 , 4 vs.&nbsp;3, 3 vs.&nbsp;4, 2 vs.&nbsp;5, and 1 vs.&nbsp;6 levels. Then, you specify orthogonal contrasts for partitions with more than 2 elements and so on. That is, you don’t specify a contrast that crosses an earlier partition line.</p>
-<p>In the following example, after an initial 4 vs 3 partitioning of levels, we specify <code>AnovaCoding</code> for the left and <code>HelmertCoding</code> for the right partition.</p>
-<div id="34" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    [</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>      <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span>   <span class="op">-</span><span class="fl">1</span>   <span class="op">+</span><span class="fl">1</span>    <span class="fl">0</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">1</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    ];</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    levels<span class="op">=</span>[<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"A3"</span>, <span class="st">"A4"</span>, <span class="st">"A5"</span>, <span class="st">"A6"</span>, <span class="st">"A7"</span>],</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>[<span class="st">"c567.1234"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"BxC"</span>, <span class="st">"c6.5"</span>, <span class="st">"c6.56"</span>],</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="an-example-for-a-complex-example-group2-x-a2-x-b2" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> An Example for a complex example: Group(2) x A(2) x B(2)</h1>
+<p>Three factors:</p>
+<ul>
+<li>G(roup): G1, G2 - between subjects</li>
+<li>A: A1, A2, - within subjects</li>
+<li>B: B1, B2, B3 - within subjects</li>
+</ul>
+<p>2 x 3 = 6 measures / subject</p>
+<div id="44" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>dat2 <span class="op">=</span> <span class="fu">dataset</span>(<span class="op">:</span>exp_2x2x3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>Arrow.Table with 396 rows, 5 columns, and schema:
+ :Subj   String
+ :Group  String
+ :A      String
+ :B      String
+ :dv     Float64</code></pre>
 </div>
-<p>There are two rules that hold for all orthogonal contrasts:</p>
-<ol type="1">
-<li>The weights within rows sum to zero.</li>
-<li>For all pairs of rows, the sum of the products of weights in the same columns sums to zero.</li>
-</ol>
+</div>
+<p>We select an LMM supported by the data.</p>
+<div id="46" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>cntrst2 <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>Group <span class="op">=&gt;</span> <span class="fu">SeqDiffCoding</span>(; levels<span class="op">=</span>[<span class="st">"G1"</span>, <span class="st">"G2"</span>]),</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>A <span class="op">=&gt;</span> <span class="fu">SeqDiffCoding</span>(; levels<span class="op">=</span>[<span class="st">"A1"</span>, <span class="st">"A2"</span>]),</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>B <span class="op">=&gt;</span> <span class="fu">SeqDiffCoding</span>(; levels<span class="op">=</span>[<span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"B3"</span>]),</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>f6_cpx <span class="op">=</span> <span class="pp">@formula</span> dv <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> Group<span class="op">*</span>A<span class="op">*</span>B   <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> A<span class="op">+</span>B <span class="op">|</span> Subj);</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>m6_cpx <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f6_cpx, dat2; contrasts<span class="op">=</span>cntrst2)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">issingular</span>(m6_cpx)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>f6_zcp <span class="op">=</span> <span class="pp">@formula</span> dv <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> Group<span class="op">*</span>A<span class="op">*</span>B   <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> A<span class="op">+</span>B <span class="op">|</span> Subj);</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>m6_zcp <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f6_zcp, dat2; contrasts<span class="op">=</span>cntrst2)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="fu">issingular</span>(m6_zcp)</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>f6_ovi <span class="op">=</span> <span class="pp">@formula</span> dv <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> Group<span class="op">*</span>A<span class="op">*</span>B   <span class="op">+</span>  (<span class="fl">1</span> <span class="op">|</span> Subj);</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>m6_ovi <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f6_ovi, dat2; contrasts<span class="op">=</span>cntrst2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;" data-quarto-table-cell-role="th"></td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">Est.</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">SE</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">z</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">p</td>
+<td style="text-align: right;" data-quarto-table-cell-role="th">σ_Subj</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">29.5404</td>
+<td style="text-align: right;">1.0698</td>
+<td style="text-align: right;">27.61</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">8.5428</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group: G2</td>
+<td style="text-align: right;">-6.3605</td>
+<td style="text-align: right;">2.1395</td>
+<td style="text-align: right;">-2.97</td>
+<td style="text-align: right;">0.0030</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A: A2</td>
+<td style="text-align: right;">-0.0074</td>
+<td style="text-align: right;">0.3879</td>
+<td style="text-align: right;">-0.02</td>
+<td style="text-align: right;">0.9848</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">B: B2</td>
+<td style="text-align: right;">0.1856</td>
+<td style="text-align: right;">0.4751</td>
+<td style="text-align: right;">0.39</td>
+<td style="text-align: right;">0.6960</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">B: B3</td>
+<td style="text-align: right;">-0.9345</td>
+<td style="text-align: right;">0.4751</td>
+<td style="text-align: right;">-1.97</td>
+<td style="text-align: right;">0.0492</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group: G2 &amp; A: A2</td>
+<td style="text-align: right;">0.2392</td>
+<td style="text-align: right;">0.7758</td>
+<td style="text-align: right;">0.31</td>
+<td style="text-align: right;">0.7579</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Group: G2 &amp; B: B2</td>
+<td style="text-align: right;">1.9668</td>
+<td style="text-align: right;">0.9502</td>
+<td style="text-align: right;">2.07</td>
+<td style="text-align: right;">0.0385</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group: G2 &amp; B: B3</td>
+<td style="text-align: right;">0.0872</td>
+<td style="text-align: right;">0.9502</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.9269</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A: A2 &amp; B: B2</td>
+<td style="text-align: right;">3.5336</td>
+<td style="text-align: right;">0.9502</td>
+<td style="text-align: right;">3.72</td>
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">A: A2 &amp; B: B3</td>
+<td style="text-align: right;">0.5232</td>
+<td style="text-align: right;">0.9502</td>
+<td style="text-align: right;">0.55</td>
+<td style="text-align: right;">0.5819</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Group: G2 &amp; A: A2 &amp; B: B2</td>
+<td style="text-align: right;">2.8335</td>
+<td style="text-align: right;">1.9004</td>
+<td style="text-align: right;">1.49</td>
+<td style="text-align: right;">0.1360</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group: G2 &amp; A: A2 &amp; B: B3</td>
+<td style="text-align: right;">-2.3042</td>
+<td style="text-align: right;">1.9004</td>
+<td style="text-align: right;">-1.21</td>
+<td style="text-align: right;">0.2253</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">3.8580</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="48" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(m6_ovi, m6_zcp, m6_cpx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>Likelihood-ratio test: 3 models fitted on 396 observations
+────────────────────────────────────────────────────────
+     DOF  ΔDOF      LogLik   Deviance   Chisq  p(&gt;Chisq)
+────────────────────────────────────────────────────────
+[1]   14        -1209.2528  2418.5057                   
+[2]   17     3  -1208.8128  2417.6256  0.8800     0.8302
+[3]   23     6  -1208.0644  2416.1289  1.4967     0.9597
+────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+<p>There is a significant interaction between A and the first contrast of B (i.e., B2 - B1). The interaction is not significant for A and the second contrast of B (i.e., B3 - B2). This implies that the left pair of lines in the following figure is statistically not parallel and that we do not have sufficient evidence that the right pair of lines is not parallel.</p>
+<pre><code>───────────────────────────────────────────────────────────────────
+                                 Coef.  Std. Error      z  Pr(&gt;|z|)
+───────────────────────────────────────────────────────────────────
+A: A2 &amp; B: B2               3.53363       0.924789   3.82    0.0001
+A: A2 &amp; B: B3               0.523243      0.950202   0.55    0.5819
+───────────────────────────────────────────────────────────────────</code></pre>
+<div id="50" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Chain</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>tbl1 <span class="op">=</span> <span class="pp">@chain</span> <span class="fu">DataFrame</span>(dat2) <span class="cf">begin</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">groupby</span>(_, [<span class="op">:</span>Subj, <span class="op">:</span>A, <span class="op">:</span>B])</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">combine</span>(_, nrow <span class="op">=&gt;</span> <span class="op">:</span>n, <span class="op">:</span>dv <span class="op">=&gt;</span> mean <span class="op">=&gt;</span> <span class="op">:</span>dv)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">groupby</span>(_, [<span class="op">:</span>A, <span class="op">:</span>B])</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">combine</span>(_, </span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>dv <span class="op">=&gt;</span> mean <span class="op">=&gt;</span> <span class="op">:</span>dv_M,</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>dv <span class="op">=&gt;</span> std <span class="op">=&gt;</span> <span class="op">:</span>dv_SD,</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>dv <span class="op">=&gt;</span> sem <span class="op">=&gt;</span> <span class="op">:</span>dv_SE)</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span> </span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>fig1 <span class="op">=</span> <span class="fu">data</span>(tbl1) <span class="op">*</span> <span class="fu">mapping</span>(<span class="op">:</span>B, <span class="op">:</span>dv_M; color<span class="op">=:</span>A) <span class="op">*</span> (<span class="fu">visual</span>(Lines) <span class="op">+</span> <span class="fu">visual</span>(Scatter))</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(fig1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<img width="768" height="576" style="object-fit: contain; height: auto;" src="data:image/png;base64, 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">
+</div>
+</div>
 </section>
-<section id="appendix-summary-dave-kleinschmidt" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Appendix: Summary (Dave Kleinschmidt)</h1>
+<section id="appendix-summary-dave-kleinschmidt" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Appendix: Summary (Dave Kleinschmidt)</h1>
 <p><a href="https://juliastats.org/StatsModels.jl/latest/contrasts/">StatsModels</a></p>
 <p>StatsModels.jl provides a few commonly used contrast coding schemes, some less-commonly used schemes, and structs that allow you to manually specify your own, custom schemes.</p>
-<section id="standard-contrasts" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="standard-contrasts"><span class="header-section-number">6.1</span> Standard contrasts</h2>
+<section id="standard-contrasts" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="standard-contrasts"><span class="header-section-number">7.1</span> Standard contrasts</h2>
 <p>The most commonly used contrasts are <code>DummyCoding</code> and <code>EffectsCoding</code> (which are similar to <code>contr.treatment()</code> and <code>contr.sum()</code> in R, respectively).</p>
 </section>
-<section id="exotic-contrasts-rk-well" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="exotic-contrasts-rk-well"><span class="header-section-number">6.2</span> “Exotic” contrasts (rk: well …)</h2>
+<section id="exotic-contrasts-rk-well" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="exotic-contrasts-rk-well"><span class="header-section-number">7.2</span> “Exotic” contrasts (rk: well …)</h2>
 <p>We also provide <code>HelmertCoding</code> and <code>SeqDiffCoding</code> (corresponding to base R’s <code>contr.helmert()</code> and <code>MASS::contr.sdif()</code>).</p>
 </section>
-<section id="manual-contrasts" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="manual-contrasts"><span class="header-section-number">6.3</span> Manual contrasts</h2>
+<section id="manual-contrasts" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="manual-contrasts"><span class="header-section-number">7.3</span> Manual contrasts</h2>
 <p><strong>ContrastsCoding()</strong></p>
 <p>There are two ways to manually specify contrasts. First, you can specify them <strong>directly</strong> via <code>ContrastsCoding</code>. If you do, it’s good practice to specify the levels corresponding to the rows of the matrix, although they can be omitted in which case they’ll be inferred from the data.</p>
 <p><strong>HypothesisCoding()</strong></p>

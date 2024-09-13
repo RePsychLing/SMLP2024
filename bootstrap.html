@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.5.53">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
-<meta name="dcterms.date" content="2024-09-12">
+<meta name="dcterms.date" content="2024-09-11">
 
 <title>Parametric bootstrap for mixed-effects models – SMLP2024: Advanced Frequentist Track</title>
 <style>
@@ -405,7 +405,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024-09-12</p>
+      <p class="date">2024-09-11</p>
     </div>
   </div>
   
@@ -591,53 +591,53 @@ div.csl-indent {
 </tr>
 <tr class="even">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">2181.6750</td>
-<td style="text-align: right;">77.3029</td>
+<td style="text-align: right;">2181.6729</td>
+<td style="text-align: right;">77.3131</td>
 <td style="text-align: right;">28.22</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">301.8414</td>
-<td style="text-align: right;">362.1701</td>
+<td style="text-align: right;">301.6736</td>
+<td style="text-align: right;">362.3182</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">spkr: old</td>
 <td style="text-align: right;">67.7490</td>
-<td style="text-align: right;">18.2824</td>
+<td style="text-align: right;">18.2747</td>
 <td style="text-align: right;">3.71</td>
 <td style="text-align: right;">0.0002</td>
-<td style="text-align: right;">43.0396</td>
-<td style="text-align: right;">40.5288</td>
+<td style="text-align: right;">42.5441</td>
+<td style="text-align: right;">40.7073</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">prec: maintain</td>
 <td style="text-align: right;">-333.9206</td>
-<td style="text-align: right;">47.1621</td>
+<td style="text-align: right;">47.1388</td>
 <td style="text-align: right;">-7.08</td>
 <td style="text-align: right;">&lt;1e-11</td>
-<td style="text-align: right;">62.1035</td>
-<td style="text-align: right;">246.9365</td>
+<td style="text-align: right;">61.9978</td>
+<td style="text-align: right;">246.8078</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">78.7681</td>
-<td style="text-align: right;">19.5247</td>
+<td style="text-align: right;">78.7702</td>
+<td style="text-align: right;">19.5387</td>
 <td style="text-align: right;">4.03</td>
 <td style="text-align: right;">&lt;1e-04</td>
-<td style="text-align: right;">65.1473</td>
-<td style="text-align: right;">42.1755</td>
+<td style="text-align: right;">64.9874</td>
+<td style="text-align: right;">42.5139</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">spkr: old &amp; prec: maintain</td>
-<td style="text-align: right;">-21.9634</td>
-<td style="text-align: right;">15.8062</td>
+<td style="text-align: right;">-21.9655</td>
+<td style="text-align: right;">15.8070</td>
 <td style="text-align: right;">-1.39</td>
-<td style="text-align: right;">0.1647</td>
+<td style="text-align: right;">0.1646</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">spkr: old &amp; load: yes</td>
 <td style="text-align: right;">18.3838</td>
-<td style="text-align: right;">15.8062</td>
+<td style="text-align: right;">15.8070</td>
 <td style="text-align: right;">1.16</td>
 <td style="text-align: right;">0.2448</td>
 <td style="text-align: right;"></td>
@@ -646,7 +646,7 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;">prec: maintain &amp; load: yes</td>
 <td style="text-align: right;">4.5333</td>
-<td style="text-align: right;">15.8062</td>
+<td style="text-align: right;">15.8070</td>
 <td style="text-align: right;">0.29</td>
 <td style="text-align: right;">0.7743</td>
 <td style="text-align: right;"></td>
@@ -654,8 +654,8 @@ div.csl-indent {
 </tr>
 <tr class="odd">
 <td style="text-align: left;">spkr: old &amp; prec: maintain &amp; load: yes</td>
-<td style="text-align: right;">23.6052</td>
-<td style="text-align: right;">15.8062</td>
+<td style="text-align: right;">23.6072</td>
+<td style="text-align: right;">15.8070</td>
 <td style="text-align: right;">1.49</td>
 <td style="text-align: right;">0.1353</td>
 <td style="text-align: right;"></td>
@@ -663,7 +663,7 @@ div.csl-indent {
 </tr>
 <tr class="even">
 <td style="text-align: left;">Residual</td>
-<td style="text-align: right;">668.5061</td>
+<td style="text-align: right;">668.5371</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -693,8 +693,8 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;">subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">91108.2428</td>
-<td style="text-align: right;">301.8414</td>
+<td style="text-align: right;">91006.9887</td>
+<td style="text-align: right;">301.6736</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -702,17 +702,17 @@ div.csl-indent {
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">1852.4098</td>
-<td style="text-align: right;">43.0396</td>
-<td style="text-align: right;">+0.78</td>
+<td style="text-align: right;">1810.0012</td>
+<td style="text-align: right;">42.5441</td>
+<td style="text-align: right;">+0.79</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">3856.8408</td>
-<td style="text-align: right;">62.1035</td>
+<td style="text-align: right;">3843.7268</td>
+<td style="text-align: right;">61.9978</td>
 <td style="text-align: right;">-0.59</td>
 <td style="text-align: right;">+0.02</td>
 <td style="text-align: right;"></td>
@@ -720,17 +720,17 @@ div.csl-indent {
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">4244.1689</td>
-<td style="text-align: right;">65.1473</td>
+<td style="text-align: right;">4223.3647</td>
+<td style="text-align: right;">64.9874</td>
 <td style="text-align: right;">+0.36</td>
-<td style="text-align: right;">+0.82</td>
-<td style="text-align: right;">+0.53</td>
+<td style="text-align: right;">+0.85</td>
+<td style="text-align: right;">+0.54</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">131167.1572</td>
-<td style="text-align: right;">362.1701</td>
+<td style="text-align: right;">131274.4558</td>
+<td style="text-align: right;">362.3182</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -738,8 +738,8 @@ div.csl-indent {
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">1642.5825</td>
-<td style="text-align: right;">40.5288</td>
+<td style="text-align: right;">1657.0830</td>
+<td style="text-align: right;">40.7073</td>
 <td style="text-align: right;">+0.44</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -747,8 +747,8 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">60977.6107</td>
-<td style="text-align: right;">246.9365</td>
+<td style="text-align: right;">60914.1141</td>
+<td style="text-align: right;">246.8078</td>
 <td style="text-align: right;">-0.69</td>
 <td style="text-align: right;">+0.35</td>
 <td style="text-align: right;"></td>
@@ -756,17 +756,17 @@ div.csl-indent {
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">1778.7763</td>
-<td style="text-align: right;">42.1755</td>
+<td style="text-align: right;">1807.4303</td>
+<td style="text-align: right;">42.5139</td>
 <td style="text-align: right;">+0.32</td>
-<td style="text-align: right;">+0.23</td>
-<td style="text-align: right;">-0.15</td>
+<td style="text-align: right;">+0.15</td>
+<td style="text-align: right;">-0.14</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;">446900.4651</td>
-<td style="text-align: right;">668.5061</td>
+<td style="text-align: right;">446941.7901</td>
+<td style="text-align: right;">668.5371</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -893,21 +893,21 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;">item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">133026.916</td>
+<td style="text-align: right;">133026.918</td>
 <td style="text-align: right;">364.729</td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">63841.497</td>
+<td style="text-align: right;">63841.496</td>
 <td style="text-align: right;">252.669</td>
 <td style="text-align: right;">-0.70</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">88870.081</td>
+<td style="text-align: right;">88870.080</td>
 <td style="text-align: right;">298.111</td>
 <td style="text-align: right;"></td>
 </tr>
@@ -950,7 +950,7 @@ div.csl-indent {
 <td style="text-align: right;">28637</td>
 <td style="text-align: right;">21</td>
 <td style="text-align: right;">16</td>
-<td style="text-align: left;">0.1655</td>
+<td style="text-align: left;">0.1650</td>
 </tr>
 </tbody>
 </table>
@@ -1032,11 +1032,11 @@ div.csl-indent {
  β6  │ -11.3574   51.5299
  β7  │ -27.1799   36.3332
  β8  │ -9.28905   53.5917
- ρ1  │ -0.912786  -0.471123
+ ρ1  │ -0.912778  -0.471128
  σ   │ 654.965    700.928
  σ1  │ 265.276    456.967
- σ2  │ 179.402    321.013
- σ3  │ 232.096    359.745</code></pre>
+ σ2  │ 179.402    321.016
+ σ3  │ 232.096    359.744</code></pre>
 </div>
 </div>
 <div id="28" class="cell" data-execution_count="1">
@@ -1231,22 +1231,22 @@ div.csl-indent {
       obj      β1       β2       σ        σ1       σ2       ρ1          ⋯
     ┌────────────────────────────────────────────────────────────────────
  1  │ 1721.95  252.488  11.0328  22.4544  29.6185  6.33343  0.233383    ⋯
- 2  │ 1760.85  260.763  8.55352  27.3834  20.8073  4.32899  0.914653    ⋯
+ 2  │ 1760.85  260.763  8.55352  27.3833  20.8066  4.32936  0.91467     ⋯
  3  │ 1750.88  246.709  12.4613  25.9951  15.8702  6.33404  0.200358    ⋯
  4  │ 1777.33  247.683  12.9824  27.7966  27.5413  4.9878   0.121411    ⋯
- 5  │ 1738.05  245.649  10.5792  25.3596  21.5208  4.26131  0.052677    ⋯
+ 5  │ 1738.05  245.649  10.5792  25.3596  21.5208  4.26131  0.0526768   ⋯
  6  │ 1751.25  255.669  10.1984  26.1432  22.5389  4.58209  0.225968    ⋯
  7  │ 1727.51  248.986  7.62095  24.6451  19.0858  4.34881  0.212916    ⋯
  8  │ 1754.18  246.075  11.0469  26.9407  19.8341  4.55961  -0.202146   ⋯
  9  │ 1757.47  245.407  13.7475  25.8265  20.0014  7.7647   -0.266385   ⋯
  10 │ 1752.8   253.911  11.4977  25.7077  20.6409  6.27298  0.171494    ⋯
- 11 │ 1707.8   248.887  10.1608  23.9684  10.5921  4.32046  1.0         ⋯
- 12 │ 1773.69  252.542  10.7379  26.8795  27.7956  6.20553  0.156472    ⋯
+ 11 │ 1707.8   248.887  10.1608  23.9684  10.5922  4.32039  1.0         ⋯
+ 12 │ 1773.69  252.542  10.7379  26.8794  27.7966  6.20556  0.156463    ⋯
  13 │ 1761.27  254.712  11.0373  25.7998  23.2005  7.30831  0.368175    ⋯
- 14 │ 1737.0   260.299  10.5659  24.6504  29.0113  4.26877  -0.0785721  ⋯
- 15 │ 1760.12  258.949  10.1464  27.2088  8.03014  7.01905  0.72704     ⋯
+ 14 │ 1737.0   260.299  10.5659  24.6504  29.0113  4.26877  -0.0785722  ⋯
+ 15 │ 1760.12  258.949  10.1464  27.2088  8.02888  7.01928  0.727229    ⋯
  16 │ 1723.7   249.204  11.7868  24.9861  18.6887  3.08433  0.633218    ⋯
- 17 │ 1734.14  262.586  8.96611  24.001   26.7969  5.376    0.297087    ⋯
+ 17 │ 1734.14  262.586  8.96611  24.0011  26.7969  5.37598  0.29709     ⋯
  ⋮  │    ⋮        ⋮        ⋮        ⋮        ⋮        ⋮         ⋮       ⋱</code></pre>
 </div>
 </div>
@@ -1261,7 +1261,7 @@ div.csl-indent {
  β2  │ 7.44545    13.3516
  ρ1  │ -0.409926  1.0
  σ   │ 22.6345    28.5125
- σ1  │ 10.6755    33.3567
+ σ1  │ 10.6764    33.3567
  σ2  │ 3.07053    7.82205</code></pre>
 </div>
 </div>
@@ -1295,7 +1295,7 @@ div.csl-indent {
 <div id="54" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(tblsleep.σ<span class="fl">1</span> <span class="op">.≈</span> <span class="fl">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>6</code></pre>
+<pre><code>7</code></pre>
 </div>
 </div>
 <p>There is a general condition to check for singularity of an estimated covariance matrix or matrices in a bootstrap sample. The parameter optimized in the estimation is <code>θ</code>, the relative covariance parameter. Some of the elements of this parameter vector must be non-negative and, when one of these components is approximately zero, one of the covariance matrices will be singular.</p>
@@ -1304,7 +1304,7 @@ div.csl-indent {
 <div id="56" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(<span class="fu">issingular</span>(sampsleep))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>300</code></pre>
+<pre><code>301</code></pre>
 </div>
 </div>
 </section>

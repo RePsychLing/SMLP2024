@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.5.53">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
-<meta name="dcterms.date" content="2024-09-09">
+<meta name="dcterms.date" content="2024-09-13">
 
 <title>Saving data with Arrow – SMLP2024: Advanced Frequentist Track</title>
 <style>
@@ -408,7 +408,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024-09-09</p>
+      <p class="date">2024-09-13</p>
     </div>
   </div>
   
@@ -459,7 +459,7 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fn <span class="op">=</span> <span class="bu">Downloads</span>.<span class="fu">download</span>(<span class="st">"https://osf.io/xawdb/download?version=2"</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dfrm <span class="op">=</span> <span class="fu">rcopy</span>(R<span class="st">"readRDS(</span><span class="sc">$</span>fn<span class="st">)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dfrm <span class="op">=</span> <span class="fu">rcopy</span>(<span class="fu">reval</span>(<span class="st">"""readRDS("</span><span class="sc">$</span>(fn)<span class="st">")"""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div><div style="float: left;"><span>525126×7 DataFrame</span></div><div style="float: right;"><span style="font-style: italic;">525101 rows omitted</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
 <table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
@@ -3122,312 +3122,12 @@ Note
 <section id="reading-arrow-files-in-other-languages" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span> Reading Arrow files in other languages</h1>
 <p>There are Arrow implementations for R (the <code>arrow</code> package) and for Python (<code>pyarrow</code>).</p>
-<pre class="{python}"><code>import pyarrow.feather: read_table
+<pre class="{python}"><code>#| eval: false
+import pyarrow.feather: read_table
 read_table("./data/fggk21.arrow")</code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>fggk21 <span class="ot">&lt;-</span> arrow<span class="sc">::</span><span class="fu">read_ipc_file</span>(<span class="st">"./data/fggk21.arrow"</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>tibble<span class="sc">::</span><span class="fu">glimpse</span>(fggk21)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="40" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 525,126
-Columns: 7
-$ Cohort &lt;fct&gt; 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 201…
-$ School &lt;fct&gt; S100067, S100067, S100067, S100067, S100067, S100067, S100067, …
-$ Child  &lt;fct&gt; C002352, C002352, C002352, C002352, C002352, C002353, C002353, …
-$ Sex    &lt;fct&gt; male, male, male, male, male, male, male, male, male, male, mal…
-$ age    &lt;dbl&gt; 7.994524, 7.994524, 7.994524, 7.994524, 7.994524, 7.994524, 7.9…
-$ Test   &lt;fct&gt; S20_r, BPT, SLJ, Star_r, Run, S20_r, BPT, SLJ, Star_r, Run, S20…
-$ score  &lt;dbl&gt; 5.263158, 3.700000, 125.000000, 2.471456, 1053.000000, 5.000000…</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<div><div style="float: left;"><span>525126×7 DataFrame</span></div><div style="float: right;"><span style="font-style: italic;">525101 rows omitted</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
-<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Cohort</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">School</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Child</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Sex</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">age</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Test</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">score</th>
-</tr>
-<tr class="odd subheader headerLastRow">
-<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="CategoricalArrays.CategoricalValue{String, UInt32}">Cat…</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="CategoricalArrays.CategoricalValue{String, UInt32}">Cat…</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="CategoricalArrays.CategoricalValue{String, UInt32}">Cat…</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="CategoricalArrays.CategoricalValue{String, UInt32}">Cat…</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="CategoricalArrays.CategoricalValue{String, UInt32}">Cat…</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
-<td style="text-align: left;">2013</td>
-<td style="text-align: left;">S100067</td>
-<td style="text-align: left;">C002352</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">7.99452</td>
-<td style="text-align: left;">S20_r</td>
-<td style="text-align: right;">5.26316</td>
-</tr>
-<tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
-<td style="text-align: left;">2013</td>
-<td style="text-align: left;">S100067</td>
-<td style="text-align: left;">C002352</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">7.99452</td>
-<td style="text-align: left;">BPT</td>
-<td style="text-align: right;">3.7</td>
-</tr>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
-<td style="text-align: left;">2013</td>
-<td style="text-align: left;">S100067</td>
-<td style="text-align: left;">C002352</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">7.99452</td>
-<td style="text-align: left;">SLJ</td>
-<td style="text-align: right;">125.0</td>
-</tr>
-<tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">4</td>
-<td style="text-align: left;">2013</td>
-<td style="text-align: left;">S100067</td>
-<td style="text-align: left;">C002352</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">7.99452</td>
-<td style="text-align: left;">Star_r</td>
-<td style="text-align: right;">2.47146</td>
-</tr>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">5</td>
-<td style="text-align: left;">2013</td>
-<td style="text-align: left;">S100067</td>
-<td style="text-align: left;">C002352</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">7.99452</td>
-<td style="text-align: left;">Run</td>
-<td style="text-align: right;">1053.0</td>
-</tr>
-<tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">6</td>
-<td style="text-align: left;">2013</td>
-<td style="text-align: left;">S100067</td>
-<td style="text-align: left;">C002353</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">7.99452</td>
-<td style="text-align: left;">S20_r</td>
-<td style="text-align: right;">5.0</td>
-</tr>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">7</td>
-<td style="text-align: left;">2013</td>
-<td style="text-align: left;">S100067</td>
-<td style="text-align: left;">C002353</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">7.99452</td>
-<td style="text-align: left;">BPT</td>
-<td style="text-align: right;">4.1</td>
-</tr>
-<tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">8</td>
-<td style="text-align: left;">2013</td>
-<td style="text-align: left;">S100067</td>
-<td style="text-align: left;">C002353</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">7.99452</td>
-<td style="text-align: left;">SLJ</td>
-<td style="text-align: right;">116.0</td>
-</tr>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">9</td>
-<td style="text-align: left;">2013</td>
-<td style="text-align: left;">S100067</td>
-<td style="text-align: left;">C002353</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">7.99452</td>
-<td style="text-align: left;">Star_r</td>
-<td style="text-align: right;">1.76778</td>
-</tr>
-<tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">10</td>
-<td style="text-align: left;">2013</td>
-<td style="text-align: left;">S100067</td>
-<td style="text-align: left;">C002353</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">7.99452</td>
-<td style="text-align: left;">Run</td>
-<td style="text-align: right;">1089.0</td>
-</tr>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">11</td>
-<td style="text-align: left;">2013</td>
-<td style="text-align: left;">S100067</td>
-<td style="text-align: left;">C002354</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">7.99452</td>
-<td style="text-align: left;">S20_r</td>
-<td style="text-align: right;">4.54545</td>
-</tr>
-<tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">12</td>
-<td style="text-align: left;">2013</td>
-<td style="text-align: left;">S100067</td>
-<td style="text-align: left;">C002354</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">7.99452</td>
-<td style="text-align: left;">BPT</td>
-<td style="text-align: right;">3.9</td>
-</tr>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">13</td>
-<td style="text-align: left;">2013</td>
-<td style="text-align: left;">S100067</td>
-<td style="text-align: left;">C002354</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">7.99452</td>
-<td style="text-align: left;">SLJ</td>
-<td style="text-align: right;">111.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">⋮</td>
-<td style="text-align: right;">⋮</td>
-<td style="text-align: right;">⋮</td>
-<td style="text-align: right;">⋮</td>
-<td style="text-align: right;">⋮</td>
-<td style="text-align: right;">⋮</td>
-<td style="text-align: right;">⋮</td>
-<td style="text-align: right;">⋮</td>
-</tr>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">525115</td>
-<td style="text-align: left;">2018</td>
-<td style="text-align: left;">S401470</td>
-<td style="text-align: left;">C117964</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">9.10609</td>
-<td style="text-align: left;">Star_r</td>
-<td style="text-align: right;">1.63704</td>
-</tr>
-<tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">525116</td>
-<td style="text-align: left;">2018</td>
-<td style="text-align: left;">S401470</td>
-<td style="text-align: left;">C117964</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">9.10609</td>
-<td style="text-align: left;">Run</td>
-<td style="text-align: right;">864.0</td>
-</tr>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">525117</td>
-<td style="text-align: left;">2018</td>
-<td style="text-align: left;">S401470</td>
-<td style="text-align: left;">C117965</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">9.10609</td>
-<td style="text-align: left;">S20_r</td>
-<td style="text-align: right;">4.65116</td>
-</tr>
-<tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">525118</td>
-<td style="text-align: left;">2018</td>
-<td style="text-align: left;">S401470</td>
-<td style="text-align: left;">C117965</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">9.10609</td>
-<td style="text-align: left;">BPT</td>
-<td style="text-align: right;">3.8</td>
-</tr>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">525119</td>
-<td style="text-align: left;">2018</td>
-<td style="text-align: left;">S401470</td>
-<td style="text-align: left;">C117965</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">9.10609</td>
-<td style="text-align: left;">SLJ</td>
-<td style="text-align: right;">123.0</td>
-</tr>
-<tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">525120</td>
-<td style="text-align: left;">2018</td>
-<td style="text-align: left;">S401470</td>
-<td style="text-align: left;">C117965</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">9.10609</td>
-<td style="text-align: left;">Star_r</td>
-<td style="text-align: right;">1.52889</td>
-</tr>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">525121</td>
-<td style="text-align: left;">2018</td>
-<td style="text-align: left;">S401470</td>
-<td style="text-align: left;">C117965</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">9.10609</td>
-<td style="text-align: left;">Run</td>
-<td style="text-align: right;">1080.0</td>
-</tr>
-<tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">525122</td>
-<td style="text-align: left;">2018</td>
-<td style="text-align: left;">S800200</td>
-<td style="text-align: left;">C117966</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">9.10609</td>
-<td style="text-align: left;">S20_r</td>
-<td style="text-align: right;">4.54545</td>
-</tr>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">525123</td>
-<td style="text-align: left;">2018</td>
-<td style="text-align: left;">S800200</td>
-<td style="text-align: left;">C117966</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">9.10609</td>
-<td style="text-align: left;">BPT</td>
-<td style="text-align: right;">3.8</td>
-</tr>
-<tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">525124</td>
-<td style="text-align: left;">2018</td>
-<td style="text-align: left;">S800200</td>
-<td style="text-align: left;">C117966</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">9.10609</td>
-<td style="text-align: left;">SLJ</td>
-<td style="text-align: right;">100.0</td>
-</tr>
-<tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">525125</td>
-<td style="text-align: left;">2018</td>
-<td style="text-align: left;">S800200</td>
-<td style="text-align: left;">C117966</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">9.10609</td>
-<td style="text-align: left;">Star_r</td>
-<td style="text-align: right;">2.18506</td>
-</tr>
-<tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">525126</td>
-<td style="text-align: left;">2018</td>
-<td style="text-align: left;">S800200</td>
-<td style="text-align: left;">C117966</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">9.10609</td>
-<td style="text-align: left;">Run</td>
-<td style="text-align: right;">990.0</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<div id="40" class="cell" data-execution_count="0">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">read_ipc_file</span>(<span class="st">"./data/fggk21.arrow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="references" class="level1" data-number="8">
