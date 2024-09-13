@@ -30,13 +30,11 @@ using DataFrames
 using KernelDensity    # density estimation
 using MixedModels
 using MixedModelsMakie # diagnostic plots
-using ProgressMeter
 using Random           # random number generators
 using RCall            # call R from Julia
 using SMLP2024
 using SMLP2024: dataset
 
-ProgressMeter.ijulia_behavior(:clear)
 CairoMakie.activate!(; type="svg")
 ```
 
@@ -73,9 +71,9 @@ There are some deviations from linearity within the panels but the deviations ar
 
 ```{julia}
 #| lst-label: m1
-contrasts = Dict{Symbol,Any}(:subj => Grouping())
+progress = false
 m1 = let f = @formula(reaction ~ 1 + days + (1 + days | subj))
-  fit(MixedModel, f, sleepstudy; contrasts)
+  fit(MixedModel, f, sleepstudy; progress)
 end
 ```
 
@@ -118,7 +116,7 @@ The `zerocorr` function applied to a random-effects term creates uncorrelated ve
 ```{julia}
 #| lst-label: m2
 m2 = let f = @formula reaction ~ 1 + days + zerocorr(1 + days | subj)
-  fit(MixedModel, f, sleepstudy; contrasts)
+  fit(MixedModel, f, sleepstudy; progress)
 end
 ```
 
@@ -132,7 +130,7 @@ This model has a slightly lower log-likelihood than does `m1` and one fewer para
 A likelihood-ratio test can be used to compare these nested models.
 
 ```{julia}
-MixedModels.likelihoodratiotest(m2, m1)
+MixedModels.lrtest(m2, m1)
 ```
 
 Alternatively, the AIC or BIC values can be compared.
@@ -185,7 +183,7 @@ If the BLUPs are strongly shrunk towards zero then the additional complexity in 
 #| code-fold: true
 #| fig-cap: Shrinkage plot of means of the random effects in model m1
 #| label: fig-m1shrinkage
-shrinkageplot!(Figure(; resolution=(500, 500)), m1)
+shrinkageplot!(Figure(; size=(500, 500)), m1)
 ```
 
 ::: {.callout-note}

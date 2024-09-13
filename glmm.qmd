@@ -19,9 +19,6 @@ using MixedModelsMakie
 using SMLP2024: dataset
 
 CairoMakie.activate!(; type="svg")
-
-import ProgressMeter
-ProgressMeter.ijulia_behavior(:clear)
 ```
 
   - A GLMM (Generalized Linear Mixed Model) is used instead of a LMM (Linear Mixed Model) when the response is binary or, perhaps, a count with a low expected count.
@@ -36,9 +33,8 @@ sleepstudy = DataFrame(dataset(:sleepstudy))
 ```
 
 ```{julia}
-contrasts = Dict(:subj => Grouping())
 m1 = let f = @formula reaction ~ 1 + days + (1 + days | subj)
-  fit(MixedModel, f, sleepstudy; contrasts)
+  fit(MixedModel, f, sleepstudy)
 end
 println(m1)
 ```
@@ -236,7 +232,6 @@ draw(
 
 ```{julia}
 contrasts = Dict(
-  :dist => Grouping(),
   :urban => HelmertCoding(),
   :livch => DummyCoding(), # default, but no harm in being explicit
 )

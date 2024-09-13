@@ -39,7 +39,7 @@ StatsModels = "3eaba693-59b7-5ba5-a881-562e759f1c8d"
 ZipFile = "a5390f91-8eb1-5f08-bee0-b1d1ffed6cea"
 
 [compat]
-AlgebraOfGraphics = "0.6"
+AlgebraOfGraphics = "0.6,0.7,0.8"
 Arrow = "2"
 BoxCox = "0.3"
 CSV = "0.10"
