@@ -25,6 +25,7 @@ Activate that package with the SVG (Scalable Vector Graphics) backend.
 ```{julia}
 #| code-fold: true
 #| output: false
+using AlgebraOfGraphics
 using CairoMakie       # graphics back-end
 using DataFrames
 using KernelDensity    # density estimation
@@ -32,31 +33,77 @@ using MixedModels
 using MixedModelsMakie # diagnostic plots
 using Random           # random number generators
 using RCall            # call R from Julia
+using MixedModelsMakie: simplelinreg
 using SMLP2024: dataset
 ```
 
 The `sleepstudy` data are one of the datasets available with the `MixedModels` package.  It is re-exported by the `SMLP2024` package's `dataset` function.
 
 ```{julia}
-sleepstudy = dataset("sleepstudy")
+sleepstudy = DataFrame(dataset("sleepstudy"))
 ```
 
 @fig-reaction_vs_days_by_subject displays the data in a multi-panel plot created with the `lattice` package in `R` [@Sarkar2008], using [RCall.jl](https://github.com/JuliaInterop/RCall.jl).
 
-```{r}
+```{julia}
 #| code-fold: true
 #| label: fig-reaction_vs_days_by_subject
 #| fig-cap: Average response time versus days of sleep deprivation by subject
-print(lattice::xyplot(reaction ~ days | subj,
-  $(DataFrame(sleepstudy)),
-  aspect="xy",
-  layout=c(9,2),
-  type=c("g", "p", "r"),
-  index.cond=function(x,y) coef(lm(y ~ x))[1],
-  xlab = "Days of sleep deprivation",
-  ylab = "Average reaction time (ms)"
-))
-NULL
+
+let f = Figure(; size=(700, 400))
+  yrange = maximum(sleepstudy.reaction) - minimum(sleepstudy.reaction)
+  xrange = maximum(sleepstudy.days) - minimum(sleepstudy.days)
+  
+  reg = combine(groupby(sleepstudy, :subj), 
+                [:days, :reaction] => NamedTuple{(:intercept, :slope)} ∘ simplelinreg => AsTable)
+  sort!(reg, :intercept)
+
+  # order of grid positions to plot the facets in
+  gridpos = Dict{String, NTuple{2,Int}}()
+  for (i, subj) in enumerate(reg.subj)
+    gridpos[subj] = fldmod1(i, 9)
+  end
+  gridpos
+
+   axes = Axis[]
+
+  # set up all the axes and plot the simple regression lines
+  for row in eachrow(reg)
+    pos = gridpos[row.subj]
+    ax = Axis(f[pos...]; title=row.subj, 
+              autolimitaspect=xrange/yrange)
+    if pos[1] == 1
+      hidexdecorations!(ax; grid=false, ticks=false)
+    end
+    if pos[2] != 1
+      hideydecorations!(ax; grid=false, ticks=true)
+    end
+    push!(axes, ax)
+    ablines!(ax, row.intercept, row.slope)
+  end
+
+  # scatter plot in each facet
+  for (grouping, gdf) in pairs(groupby(sleepstudy, :subj))
+    pos = gridpos[grouping.subj]
+    scatter!(f[pos...], gdf.days, gdf.reaction)
+  end
+  Label(f[end+1, :], "Days of sleep deprivation"; 
+        tellwidth=false, tellheight=true)
+  Label(f[:, 0], "Average reaction time (ms)"; 
+        tellwidth=true, tellheight=false, rotation=pi/2)
+  
+  linkaxes!(axes...)
+
+  # tweak the layout a little
+  rowgap!(f.layout, 0)
+  colgap!(f.layout, 3)
+  colsize!(f.layout, 0, 25)
+  rowsize!(f.layout, 1, 100)
+  rowsize!(f.layout, 2, 100)
+  rowsize!(f.layout, 3, 25)
+  f
+end
+
 ```
 
 Each panel shows the data from one subject and a line fit by least squares to that subject's data.
