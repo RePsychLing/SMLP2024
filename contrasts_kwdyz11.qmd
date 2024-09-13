@@ -14,7 +14,7 @@ using CairoMakie
 using Chain
 using DataFrames
 using MixedModels
-using RCall
+using RData: load as rload
 using SMLP2024: dataset
 using StatsBase
 using StatsModels
@@ -30,13 +30,13 @@ Many researchers have pointed out that contrasts should be "tested instead of, r
  
 For a (quasi-)experimental set of data, there is (or should be) a clear _a priori_ theoretical commitment to specific hypotheses about differences between factor levels and how these differences enter in interactions with other factors. This specification should be used in the first LMM and reported, irrespective of the outcome. If alternative theories lead to alternative _a priori_ contrast specifications, both analyses are justified. If the observed means render the specification completely irrelevant, the comparisons originally planned could still be reported in a Supplement).
 
-In this script, we are working through a large number of different contrasts for the same data. The purpose is to introduce both the preprogrammed (“canned”) and the general options to specify hypotheses about main effects and interactions. Obviously, we do not endorse generating a plot of the means and specifying the contrasts accordingly. This is known as the [Texas sharpshooter](https://www.bayesianspectacles.org/origin-of-the-texas-sharpshooter/) fallacy. The link leads to an illustration and brief historical account by Wagenmakers (2018).
+In this script, we are working through a large number of different contrasts for the same data. The purpose is to introduce both the preprogrammed ("canned") and the general options to specify hypotheses about main effects and interactions. Obviously, we do not endorse generating a plot of the means and specifying the contrasts accordingly. This is known as the [Texas sharpshooter](https://www.bayesianspectacles.org/origin-of-the-texas-sharpshooter/) fallacy. The link leads to an illustration and brief historical account by Wagenmakers (2018).
 
 Irrespective of how results turn out, there is nothing wrong with specifying a set of post-hoc contrasts to gain a better understanding of what the data are trying to tell us. Of course, in an article or report about the study, the _a priori_ and post-hoc nature of contrast specifications must be made clear. Some kind of alpha-level adjustment (e.g., Bonferroni) may be called for, too. And, of course, there are grey zones.
 
-There is quite a bit of statistical literature on contrasts. Two “local” references are @Brehm2022 and @Schad2020.
+There is quite a bit of statistical literature on contrasts. Two "local" references are @Brehm2022 and @Schad2020.
 
-For further readings see “Further Readings” in @Schad2020.
+For further readings see "Further Readings" in @Schad2020.
 
 # Example data {#sec-data}
 
@@ -439,10 +439,7 @@ Three factors:
 2 x 3 = 6 measures / subject
 
 ```{julia}
-R"""
-dat2 = readRDS("data/Exp_2x2x3.rds");
-"""
-@rget(dat2)
+dat2 = load("data/Exp_2x2x3.rds");
 ```
 
 We select an LMM supported by the data. 
