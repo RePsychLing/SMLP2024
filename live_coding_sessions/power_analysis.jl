@@ -39,6 +39,7 @@ fit!(slpsimmod)
 
 slpsimpow = parametricbootstrap(MersenneTwister(42), 1000, slpsimmod; β=[500, 50], σ=250)
 
+# could also use `power_table` (defined in MixedModelsSim)
 combine(groupby(DataFrame(slpsimpow.coefpvalues), :coefname),
         :p => (p -> mean(<(0.05), p)) => :power)   
 
