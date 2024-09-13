@@ -50,7 +50,7 @@ sleepstudy = DataFrame(dataset("sleepstudy"))
 #| label: fig-reaction_vs_days_by_subject
 #| fig-cap: Average response time versus days of sleep deprivation by subject
 
-let f = Figure(; size=(800,400))
+let f = Figure(; size=(700, 400))
   yrange = maximum(sleepstudy.reaction) - minimum(sleepstudy.reaction)
   xrange = maximum(sleepstudy.days) - minimum(sleepstudy.days)
   
