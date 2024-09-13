@@ -82,3 +82,25 @@ plt = data(eff) *
     (visual(Lines) + 
      mapping(; lower=:lower, upper=:upper) * visual(LinesFill)) 
 draw(plt)
+
+# Pipes
+# weird syntax for built in
+plt |> draw
+
+using Statistics
+using Chain
+@chain eff begin
+    groupby([:livch])
+    combine(:use => mean => :use)
+end
+
+# equivalent to 
+@chain eff begin
+    groupby(_, [:livch])
+    combine(_, :use => mean => :use)
+end
+
+@macroexpand @chain eff begin
+    groupby([:livch])
+    combine(:use => mean => :use)
+end
