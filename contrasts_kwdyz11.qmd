@@ -22,6 +22,7 @@ using StatsModels
 CairoMakie.activate!(; type="png")
 
 import ProgressMeter
+progress = false
 ```
 
 # A word of caution {#sec-caution}
