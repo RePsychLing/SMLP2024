@@ -15,9 +15,9 @@ We specify three contrasts for the four-level factor CTR that are derived from s
 
 This comparison is of interest because a few years after the publication of @Kliegl2011, the theoretically critical correlation parameter (CP) between the spatial effect and the attraction effect was determined as the source of a non-singular LMM in that paper. The present study served the purpose to estimate this parameter with a larger sample and a wider variety of experimental conditions.
 
-Here we also include two additional experimental manipulations of target size and orientation of cue rectangle. A similar analysis was reported in the parsimonious mixed-model paper [@Bates2015]; it was also used in a paper of GAMMs [@Baayen2017]. Data and R scripts of those analyses are also available in [R-package RePsychLing](https://github.com/dmbates/RePsychLing/tree/master/data/).
+Here we also include two additional experimental manipulations of target size and orientation of cue rectangle. A similar analysis was reported in the parsimonious mixed-model paper [@Bates2015]; it was also used in a paper of GAMEMs [@Baayen2017]. Data and R scripts of those analyses are also available in [R-package RePsychLing](https://github.com/dmbates/RePsychLing/tree/master/data/).
 
-The analysis is based on log-transformed reaction times `lrt`, indicated by a _boxcox()_ check of model residuals.
+The analysis is based on reaction times `rt` to maintain compatibility with @Kliegl2011.
 
 In this vignette we focus on the reduction of model complexity. And we start with a quote:
 
@@ -65,7 +65,7 @@ describe(dat_subj)
 
 ```{julia}
 #| code-fold: true
-#| fig-cap: Comparative boxplots of mean log response time by subject under different conditions
+#| fig-cap: Comparative boxplots of mean response time by subject under different conditions
 #| label: fig-bxpltsubjcond
 boxplot(
   dat_subj.CTR.refs,
@@ -87,39 +87,9 @@ boxplot(
 )
 ```
 
-Mean of log reaction times for four cue-target relations. Targets appeared at (a) the cued position (valid) in a rectangle, (b) in the same rectangle cue, but at its other end, (c) on the second rectangle, but at a corresponding horizontal/vertical physical distance, or (d) at the other end of the second rectangle, that is $\sqrt{2}$ of horizontal/vertical distance diagonally across from the cue, that is also at larger physical distance compared to (c).
+Mean of reaction times for four cue-target relations. Targets appeared at (a) the cued position (valid) in a rectangle, (b) in the same rectangle cue, but at its other end, (c) on the second rectangle, but at a corresponding horizontal/vertical physical distance, or (d) at the other end of the second rectangle, that is $\sqrt{2}$ of horizontal/vertical distance diagonally across from the cue, that is also at larger physical distance compared to (c).
 
-We remove the outlier subject and replot, but we model the data points in `dat` and check whether this subject appears as an outlier in the caterpillar plot of conditional modes.
-
-```{julia}
-#| code-fold: true
-#| fig-cap: 'Comparative boxplots of mean log response time by subject under different conditions without outlier'
-#| label: fig-bxpltsubjcond2
-let dat_subj = filter(r -> r.rt_m < 510, dat_subj)
-  boxplot(
-    dat_subj.CTR.refs,
-    dat_subj.lrt_m;
-    orientation=:horizontal,
-    show_notch=true,
-    axis=(;
-      yticks=(
-        1:4,
-        [
-          "valid cue",
-          "same obj/diff pos",
-          "diff obj/same pos",
-          "diff obj/diff pos",
-        ]
-      )
-    ),
-    figure=(; resolution=(800, 300)),
-  )
-end
-```
-
-# Setup of linear mixed model
-
-## Contrasts
+# Contrasts
 
 ```{julia}
 contrasts = Dict(
@@ -129,53 +99,18 @@ contrasts = Dict(
 )
 ```
 
-```{julia}
-m_max_rt = let
-  form = @formula rt ~ 1 + CTR * size * cardinal +
-                           (1 + CTR * size * cardinal | Subj)
-  fit(MixedModel, form, dat; contrasts)
-end
-```
-
-```{julia}
-m_cpx_rt = let
-  form = @formula rt ~ 1 + CTR * size * cardinal +
-                           (1 + CTR + size + cardinal | Subj)
-  fit(MixedModel, form, dat; contrasts)
-end
-```
-
-## Box-Cox
-
-```{julia}
-#| eval: false
-bc1 = fit(BoxCoxTransformation, m_max_rt)
-```
-
-```{julia}
-bc2 = fit(BoxCoxTransformation, m_cpx_rt)
-```
-
-
-```{julia}
-#| eval: false
-boxcoxplot(bc2; conf_level=0.95)
-```
-
-Clear evidence for skew. Traditionally, we used log transforms for reaction times.  even stronger than log. We stay with log for now. Could try `1/sqrt(rt)`.
-
 # Maximum LMM
 
-This is the maximum LMM for the design.
+This is the maximum LMM for the design; `size` is a between-subject factor, 
+ignoring other information such as trial number, age and gender of subjects.
 
 ```{julia}
 m_max = let
-  form = @formula log(rt) ~ 1 + CTR * size * cardinal +
-                           (1 + CTR * size * cardinal | Subj)
+  form = @formula rt ~ 1 + CTR * cardinal * size +
+                           (1 + CTR * cardinal | Subj)
   fit(MixedModel, form, dat; contrasts)
-end
+end;
 ```
-
 
 ```{julia}
 issingular(m_max)
@@ -189,18 +124,20 @@ only(MixedModels.PCA(m_max))
 VarCorr(m_max)
 ```
 
+The LMM `m_max` is overparameterized but it is not immediately apparent why. 
+
 # Reduction strategy 1
 
 ##  Zero-correlation parameter LMM (1)
 
-Force CPs to zero.
+Force CPs to zero. _Reduction strategy 1_ is more suited for reducing model w/o theoretical expectations about CPs. The better reduction strategy for the present experiment with an _a priori_ interest in CPs is described as _Reduction strategy 2_.
 
 ```{julia}
 m_zcp1 = let
-  form = @formula log(rt) ~ 1 + CTR * size * cardinal +
-                   zerocorr(1 + CTR * size * cardinal | Subj)
+  form = @formula rt ~ 1 + CTR * cardinal * size +
+                   zerocorr(1 + CTR * cardinal | Subj)
   fit(MixedModel, form, dat; contrasts)
-end
+end;
 ```
 
 ```{julia}
@@ -215,16 +152,18 @@ only(MixedModels.PCA(m_zcp1))
 VarCorr(m_zcp1)
 ```
 
+The LMM `m_zcp1` is also overparameterized, but now there is clear evidence for absence of evidence for the VC of one of the interactions and the other two interaction-based VCs are also very small. 
+
 ## Reduced zcp LMM
 
-Take out VC for interactions.
+Take out VCs for interactions.
 
 ```{julia}
 m_zcp1_rdc = let
-  form = @formula log(rt) ~ 1 + CTR * size * cardinal +
-                   zerocorr(1 + CTR + size + cardinal | Subj)
+  form = @formula rt ~ 1 + CTR * cardinal * size +
+                   zerocorr(1 + CTR + cardinal | Subj)
   fit(MixedModel, form, dat; contrasts)
-end
+end;
 ```
 
 ```{julia}
@@ -239,27 +178,7 @@ only(MixedModels.PCA(m_zcp1_rdc))
 VarCorr(m_zcp1_rdc)
 ```
 
-## Model comparison 1
-Let's compare the three models.
-
-```{julia}
-gof_summary = let
-  nms = [:m_zcp1_rdc, :m_zcp1, :m_max]
-  mods = eval.(nms)
-  lrt = MixedModels.likelihoodratiotest(m_zcp1_rdc, m_zcp1, m_max)
-  DataFrame(;
-    name = nms,
-    dof=dof.(mods),
-    deviance=round.(deviance.(mods), digits=0),
-    AIC=round.(aic.(mods),digits=0),
-    AICc=round.(aicc.(mods),digits=0),
-     BIC=round.(bic.(mods),digits=0),
-    χ²=vcat(:., round.(lrt.tests.deviancediff, digits=0)),
-    χ²_dof=vcat(:., round.(lrt.tests.dofdiff, digits=0)),
-    pvalue=vcat(:., round.(lrt.tests.pvalues, digits=3))
-  )
-end
-```
+LMM `m_zcp_rdc` is ok . We add in CPs. 
 
 ## Parsimonious LMM (1)
 
@@ -267,10 +186,10 @@ Extend zcp-reduced LMM with CPs
 
 ```{julia}
 m_prm1 = let
-  form = @formula log(rt) ~ 1 + CTR * size * cardinal +
-                           (1 + CTR + size + cardinal | Subj)
+  form = @formula rt ~ 1 + CTR * cardinal * size +
+                           (1 + CTR + cardinal | Subj)
   fit(MixedModel, form, dat; contrasts)
-end
+end;
 ```
 
 ```{julia}
@@ -281,19 +200,21 @@ issingular(m_prm1)
 only(MixedModels.PCA(m_prm1))
 ```
 
+LMM `m_zcp_rdc` is ok . We add in CPs. 
+
 ```{julia}
 VarCorr(m_prm1)
 ```
 
-We note that the critical correlation parameter between spatial (`sod`) and attraction (`dod`) is now estimated at .60 -- not that close to the 1.0 boundary that caused singularity in @Kliegl2011.
+We note that the critical correlation parameter between spatial (`sod`) and attraction (`dod`) is now estimated at .54 -- not that close to the 1.0 boundary that caused singularity in @Kliegl2011.
 
-## Model comparison 2
+## Model comparison 1
 
 ```{julia}
 gof_summary = let
   nms = [:m_zcp1_rdc, :m_prm1, :m_max]
   mods = eval.(nms)
-  lrt = MixedModels.likelihoodratiotest(m_prm1, m_zcp1, m_max)
+  lrt = MixedModels.likelihoodratiotest(m_zcp1_rdc, m_prm1, m_max)
   DataFrame(;
     name = nms,
     dof=dof.(mods),
@@ -307,38 +228,62 @@ gof_summary = let
   )
 end
 ```
+
+AIC prefers LMM `m_prm1` over `m_zcp1_rdc`; BIC LMM `m_zcp1_rdc`. 
+As the CPs were one reason for conducting this experiment, AIC is the criterion of choice.
 
 # Reduction strategy 2
 
 ## Complex LMM
-Take out interaction VCs.
+Relative to LMM `m_max`, first we take out interaction VCs and associated CPs, because these VCs are very small. This is the same as LMM `m_prm1` above. 
 
 ```{julia}
 m_cpx = let
-  form = @formula log(rt) ~ 1 + CTR * size * cardinal +
-                           (1 + CTR + size + cardinal | Subj)
+  form = @formula rt ~ 1 + CTR * cardinal * size +
+                      (1 + CTR + cardinal | Subj)
   fit(MixedModel, form, dat; contrasts)
-end
+end;
 ```
 
 ## Zero-correlation parameter LMM (2)
-Take out interaction VCs.
+Now we check the significance of ensemble of CPs.
 
 ```{julia}
 m_zcp2 = let
-  form = @formula log(rt) ~ 1 + CTR * size * cardinal +
-                   zerocorr(1 + CTR + size + cardinal | Subj)
+  form = @formula rt ~ 1 + CTR * cardinal * size  +
+              zerocorr(1 + CTR + cardinal | Subj)
   fit(MixedModel, form, dat; contrasts)
-end
+end;
 ```
 
-## Model comparison 3
+
+```{julia}
+VarCorr(m_zcp2)
+```
+
+## Parsimonious LMM (2)
+
+The cardinal-related CPs are quite small. Do we need them?
+
+```{julia}
+m_prm2 = let
+  form = @formula(rt ~ 1 + CTR * cardinal * size  +
+                      (1 + CTR | Subj) + (0 + cardinal | Subj))
+  fit(MixedModel, form, dat; contrasts)
+end;
+```
+
+```{julia}
+VarCorr(m_prm2)
+```
+
+## Model comparison 2
 
 ```{julia}
 gof_summary = let
-  nms = [:m_zcp2, :m_cpx, :m_max]
+  nms = [:m_zcp2, :m_prm2, :m_cpx, :m_max]
   mods = eval.(nms)
-  lrt = MixedModels.likelihoodratiotest(m_zcp2, m_cpx, m_max)
+  lrt = MixedModels.likelihoodratiotest(m_zcp2, m_prm2, m_cpx, m_max)
   DataFrame(;
     name = nms,
     dof=dof.(mods),
@@ -353,25 +298,10 @@ gof_summary = let
 end
 ```
 
-# Check LMM for untransformed reaction times
-
-We see the model is singular.
-
-```{julia}
-issingular(m_cpx_rt)
-```
-
-```{julia}
-MixedModels.PCA(m_cpx_rt)
-```
-
-# Other checks
-
-```{julia}
-m_prm1.θ
-m_prm1.lowerbd
-m_prm1.λ
-```
+The cardinal-related CPs could be removed w/o loss of goodness of fit. 
+However, there is no harm in keeping them in the LMM. 
+The data support both LMM `m_prm2` and  `m_cpx` (same as: `m_prm1`).
+We keep the slightly more complex LMM `m_cpx` (`m_prm1`).
 
 # Diagnostic plots of LMM residuals
 
@@ -427,29 +357,6 @@ qqnorm(
 )
 ```
 
-## Observed and theoretical normal distribution
-******We****** can see this in this plot.
-Overall, it does not look too bad.
-
-```{julia}
-#| code-fold: true
-#| label: fig-stdresidm1dens
-#| fig-cap: '  Kernel density plot of the standardized residuals for model m1 versus a  standard normal'
-CairoMakie.activate!(; type="svg")
-let
-  n = nrow(dat)
-  dat_rz = (;
-    value=vcat(residuals(m_prm1) ./ std(residuals(m_prm1)), randn(n)),
-    curve=repeat(["residual", "normal"]; inner=n),
-  )
-  draw(
-    data(dat_rz) *
-    mapping(:value; color=:curve) *
-    density(; bandwidth=0.1);
-  )
-end
-```
-
 # Conditional modes
 
 ## Caterpillar plot
@@ -464,7 +371,6 @@ caterpillar!(Figure(; resolution=(800, 1200)), cm1; orderby=2)
 
 ## Shrinkage plot
 
-### Log-transformed reaction times (LMM `m_prm1`)
 
 ```{julia}
 #| code-fold: true
@@ -602,10 +508,7 @@ draw(
 Three CPs stand out positively, the correlation between GM and the spatial effect, GM and attraction effect, and the correlation between spatial and attraction effects.
 The second CP was positive, but not significant in the first study.
 The third CP replicates a CP that was judged questionable in script `kwdyz11.jl`.
-
-The three remaining CPs are not well defined for log-transformed reaction times; they only fit noise and should be removed.
-It is also possible that fitting the complex experimental design (including target size and rectangle orientation) will lead to more acceptable estimates.
-The corresponding plot based on LMM `m1_rt` for raw reaction times still shows them with very wide distributions, but acceptable.
+The three remaining CPs are not well defined for reaction times.
 
 # References
 

@@ -2,7 +2,7 @@ _file(x) = joinpath(CACHE[], string(x, ".arrow"))
 
 clear_scratchspaces!() = Scratch.clear_scratchspaces!(@__MODULE__)
 
-const datasets = 
+const DATASETS = 
     CSV.read(
         IOBuffer(
 """
@@ -21,6 +21,7 @@ fggk21_Child,c2fmn,1,61c91e00336e6f804e9f6b86986ebb4a14561cc4908b3a21cb27c113d2b
 fggk21_Score,7fqx3,1,99d73ee705aaf5f4ee696eadbba992d0113ba6f467ce337a62a63853e4617400
 kkl15,p8cea,2,90d7bb137c8613d7a15c8597c461aee7c7cb0f0989a07c80fc93e1fbe2e5c156
 kwdyz11,4cv52,3,2fa23aa8aa25e1adb10183c8d29646ae0d19d6baef9d711c9906f7fa1b225571
+exp_2x2x3,za9gs,1,cb09684b7373492e849c83f20a071b97f986123677134ac2ddb9ec0dcb32e503
 """
         ),
         Table;
@@ -29,9 +30,18 @@ kwdyz11,4cv52,3,2fa23aa8aa25e1adb10183c8d29646ae0d19d6baef9d711c9906f7fa1b225571
     )
 
 if @isdefined(_cacheddatasets)
-    empty!(_cacheddatasets)    # start from an empty cache in case datasets has changed
+    empty!(_cacheddatasets)    # start from an empty cache in case DATASETS has changed
 else
     const _cacheddatasets = Dict{Symbol, Arrow.Table}()
+end
+
+"""
+    datasets()
+
+Return a vector of the names of datasets available for use in [`dataset`](@ref).    
+"""
+function datasets()
+    return sort!(vcat(SMLP2024.DATASETS.dsname, MixedModelsDatasets.datasets()))
 end
 
 """
@@ -40,14 +50,14 @@ end
 Return as an `Arrow.Table` the dataset named `name`.
 
 Available dataset names, their versions, the filenames on the osf.io site and an SHA2 checksum of their contents
-are in the table `datasets`.
+are in the table `DATASETS`.
 
 The files are cached in the scratchspace for this package.  The name of this directory is the value of `CACHE[]`.
 """
 function dataset(nm::AbstractString)
     return get!(_cacheddatasets, Symbol(nm)) do  # retrieve from cache if available, otherwise
-        # check for nm in datasets table first so MMDS can be overridden
-        rows = filter(==(nm) ∘ getproperty(:dsname), datasets)
+        # check for nm in DATASETS table first so MMDS can be overridden
+        rows = filter(==(nm) ∘ getproperty(:dsname), DATASETS)
         if isempty(rows)
             nm in MMDS || error("Dataset '$nm' is not available")
             MixedModelsDatasets.dataset(nm)
@@ -58,10 +68,12 @@ function dataset(nm::AbstractString)
                 if ismissing(row.filename)
                     load_quiver()  # special-case `ratings` and `movies`
                 else
+                    @info "Downloading dataset..."
                     Downloads.download(
                         string("https://osf.io/", row.filename, "/download?version=", row.version),
                         fnm,
                     )
+                    @info "done"
                 end
             end
             if row.sha2 ≠ bytes2hex(open(sha2_256, fnm))

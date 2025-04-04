@@ -13,6 +13,8 @@ missings = "missings"
 Lik = "Lik"
 missings = "missings"
 represention = "representation"
+GAMMs = "GAMMs"
+
 
 [type.qmd]
 extend-glob = ["*.qmd"]
